@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL_USER")
+}
+
+model initGame {
+  id Int @id @default(autoincrement()) @map("Id")
+  baseHp Int @map("baseHp")
+  startGold Int @map("startGold")
+  serverHighScore Int @map("serverHighScore")
+
+  @@map("InitGame")
+}
+
+model monster {
+  id Int @id @default(autoincrement()) @map("Id")
+  hp Int @map("hp")
+  atk Int @map("atk")
+  speed Int @map("speed")
+  score Int @map("score")
+  gold Int @map("stargoldtGold")
+  stage Int @map("stage")
+  grade Int @map("servgradeerHighScore")
+
+  @@map("Monster")
+}
+
+model tower {
+  id Int @id @default(autoincrement()) @map("Id")
+  towerName String @map("towerName")
+  atk Int @map("atk")
+  atkSpeed Int @map("atkSpeed")
+  atkRange Int @map("atkRange")
+  isMultiHit Boolean @map("isMultiHit")
+  towerPrice Int @map("towerPrice")
+  isHeal Boolean @map("isHeal")
+
+  @@map("Tower")
+}
+
+model upgrade {
+  id Int @id @unique @default(autoincrement()) @map("id")
+  upgradeRatio Int @map("upgradeRatio")
+  
+  @@map("Upgrade")
+}
