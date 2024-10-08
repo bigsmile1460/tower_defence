@@ -1,7 +1,7 @@
 import { Base } from "./base.js";
 import { Monster } from "./monster.js";
 import { Tower } from "./tower.js";
-import Player from "./player.js";
+
 /* 
   어딘가에 엑세스 토큰이 저장이 안되어 있다면 로그인을 유도하는 코드를 여기에 추가해주세요!
 */
@@ -10,25 +10,21 @@ let serverSocket; // 서버 웹소켓 객체
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
-const PLAYER_WIDTH = 100; // 58
-const PLAYER_HEIGHT = 100; // 62
-
-let player = new Player(ctx, PLAYER_WIDTH, PLAYER_HEIGHT);
 const NUM_OF_MONSTERS = 5; // 몬스터 개수
 
-let userGold = 2000; // 유저 골드
+let userGold = 0; // 유저 골드
 let base; // 기지 객체
-let baseHp = 2000; // 기지 체력
+let baseHp = 0; // 기지 체력
 
-let towerCost = 500; // 타워 구입 비용
-let numOfInitialTowers = 3; // 초기 타워 개수
-let monsterLevel = 1; // 몬스터 레벨
-let monsterSpawnInterval = 5000; // 몬스터 생성 주기
+let towerCost = 0; // 타워 구입 비용
+let numOfInitialTowers = 0; // 초기 타워 개수
+let monsterLevel = 0; // 몬스터 레벨
+let monsterSpawnInterval = 1000; // 몬스터 생성 주기
 const monsters = [];
 const towers = [];
 
 let score = 0; // 게임 점수
-let highScore = 4000; // 기존 최고 점수
+let highScore = 0; // 기존 최고 점수
 let isInitGame = false;
 
 // 이미지 로딩 파트
@@ -144,6 +140,10 @@ function getRandomPositionNearPath(maxDistance) {
 }
 
 function placeInitialTowers() {
+  /* 
+    타워를 초기에 배치하는 함수입니다.
+    무언가 빠진 코드가 있는 것 같지 않나요? 
+  */
   for (let i = 0; i < numOfInitialTowers; i++) {
     const { x, y } = getRandomPositionNearPath(200);
     const tower = new Tower(x, y, towerCost);
@@ -153,16 +153,14 @@ function placeInitialTowers() {
 }
 
 function placeNewTower() {
-  if (userGold >= towerCost) {
-    const { x, y } = getRandomPositionNearPath(200);
-    const tower = new Tower(player.x, player.y);
-    towers.push(tower);
-    tower.draw(ctx, towerImage);
-    userGold -= towerCost;
-  } else {
-    ctx.fillStyle = "red";
-    ctx.fillText(`돈이 모자랍니다!`, 200, 200); // 최고 기록 표시
-  }
+  /* 
+    타워를 구입할 수 있는 자원이 있을 때 타워 구입 후 랜덤 배치하면 됩니다.
+    빠진 코드들을 채워넣어주세요! 
+  */
+  const { x, y } = getRandomPositionNearPath(200);
+  const tower = new Tower(x, y);
+  towers.push(tower);
+  tower.draw(ctx, towerImage);
 }
 
 function placeBase() {
@@ -179,7 +177,6 @@ function gameLoop() {
   // 렌더링 시에는 항상 배경 이미지부터 그려야 합니다! 그래야 다른 이미지들이 배경 이미지 위에 그려져요!
   ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height); // 배경 이미지 다시 그리기
   drawPath(monsterPath); // 경로 다시 그리기
-  player.draw();
 
   ctx.font = "25px Times New Roman";
   ctx.fillStyle = "skyblue";
@@ -221,8 +218,6 @@ function gameLoop() {
     } else {
       /* 몬스터가 죽었을 때 */
       monsters.splice(i, 1);
-      userGold += 30;
-      score += 100;
     }
   }
 
@@ -244,6 +239,7 @@ function initGame() {
   isInitGame = true;
 }
 
+const initStage = null;
 // 이미지 로딩 완료 후 서버와 연결하고 게임 초기화
 Promise.all([
   new Promise((resolve) => (backgroundImage.onload = resolve)),
@@ -253,9 +249,8 @@ Promise.all([
   ...monsterImages.map(
     (img) => new Promise((resolve) => (img.onload = resolve))
   ),
-]).then(() => {
+]).then(async () => {
   /* 서버 접속 코드 (여기도 완성해주세요!) */
-  initGame();
   let somewhere;
   serverSocket = io("http://localhost:3000", {
     auth: {
@@ -263,15 +258,41 @@ Promise.all([
     },
   });
 
-  serverSocket.on("response", async () => {});
-  /* 
-    서버의 이벤트들을 받는 코드들은 여기다가 쭉 작성해주시면 됩니다! 
-    e.g. serverSocket.on("...", () => {...});
-    이 때, 상태 동기화 이벤트의 경우에 아래의 코드를 마지막에 넣어주세요! 최초의 상태 동기화 이후에 게임을 초기화해야 하기 때문입니다! 
-    if (!isInitGame) {
-      initGame();
+  serverSocket.on("connection", (response) => {
+    console.log(response.message);
+    return;
+  });
+
+  serverSocket.on("response", (response) => {
+    if (response.broadCast) {
+      console.log(`${response.broadCast}`);
+      return;
     }
-  */
+
+    if (response.initStage) {
+      initStage = response.initStage;
+      return;
+    }
+
+    return console.log(response.message);
+  });
+
+  // const sendEvent = (handlerId, payload) => {
+  //   socket.emit("event", {
+  //     // 클라이언트에서 서버로 패킷을 보내는 것.
+  //     userId,
+  //     handlerId,
+  //     payload,
+  //   });
+  // };
+
+  // 서버의 이벤트들을 받는 코드들은 여기다가 쭉 작성해주시면 됩니다!
+  // e.g. serverSocket.on("...", () => {...});
+  // 이 때, 상태 동기화 이벤트의 경우에 아래의 코드를 마지막에 넣어주세요! 최초의 상태 동기화 이후에 게임을 초기화해야 하기 때문입니다!
+  if (!isInitGame) {
+    await sendEvent(1, {});
+    initGame();
+  }
 });
 
 const buyTowerButton = document.createElement("button");

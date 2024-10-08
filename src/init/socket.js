@@ -1,8 +1,8 @@
-import { Server as SocketIO } from "socket.io"; // 이름은 SockeIO로 쓸것이다.
+import { Server as socketIO } from "socket.io";
 import registerHandler from "../handlers/register.handler.js";
 
 const initSocket = (server) => {
-  const io = new SocketIO();
+  const io = new socketIO();
   io.attach(server);
 
   registerHandler(io);
