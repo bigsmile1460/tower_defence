@@ -6,6 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  output = "./generated/client1"
 }
 
 datasource db {
@@ -13,44 +14,11 @@ datasource db {
   url      = env("DATABASE_URL_USER")
 }
 
-model initGame {
-  id Int @id @default(autoincrement()) @map("Id")
-  baseHp Int @map("baseHp")
-  startGold Int @map("startGold")
-  serverHighScore Int @map("serverHighScore")
+model user {
+  id Int @id @default(autoincrement()) @map("id")
+  highScore Int @map("highScore")
+  password String @map("password")
+  email String @map("email")
 
-  @@map("InitGame")
-}
-
-model monster {
-  id Int @id @default(autoincrement()) @map("Id")
-  hp Int @map("hp")
-  atk Int @map("atk")
-  speed Int @map("speed")
-  score Int @map("score")
-  gold Int @map("stargoldtGold")
-  stage Int @map("stage")
-  grade Int @map("servgradeerHighScore")
-
-  @@map("Monster")
-}
-
-model tower {
-  id Int @id @default(autoincrement()) @map("Id")
-  towerName String @map("towerName")
-  atk Int @map("atk")
-  atkSpeed Int @map("atkSpeed")
-  atkRange Int @map("atkRange")
-  isMultiHit Boolean @map("isMultiHit")
-  towerPrice Int @map("towerPrice")
-  isHeal Boolean @map("isHeal")
-
-  @@map("Tower")
-}
-
-model upgrade {
-  id Int @id @unique @default(autoincrement()) @map("id")
-  upgradeRatio Int @map("upgradeRatio")
-  
-  @@map("Upgrade")
+  @@map("User")
 }
