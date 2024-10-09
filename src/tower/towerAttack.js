@@ -1,9 +1,17 @@
 import { createStage } from "../models/model.js";
+import towerAttackOperator from "../operator/towerAttackOperator.js";
 
 // 타워 공격
-export const towerAttack = (io, socket, payload) => {
+export const towerAttack = (io, socket, payload, userId) => {
   try {
-    console.log("타워 공격/힐 처리 성공", payload);
+    // 타워 공격 검증 함수
+    towerAttackOperator.towerAttackCheck(
+      payload.tower,
+      payload.monsters,
+      payload.inhibitor,
+      userId
+    );
+    console.log("타워 공격/힐 처리 성공");
 
     return { status: "success", Message: "타워 공격 성공!" };
   } catch (error) {

@@ -180,9 +180,9 @@ function gameLoop() {
   towers.forEach((tower) => {
     tower.draw(ctx, towerImage);
     tower.updateCooldown();
-    tower.singleAttack(tower, monsters, serverSocket); // 단일 공격
-    tower.multiAttack(tower, monsters, serverSocket); // 다중 공격
-    tower.heal(tower, base, serverSocket); // 힐
+    tower.singleAttack(tower, monsters); // 단일 공격
+    tower.multiAttack(tower, monsters); // 다중 공격
+    tower.heal(tower, base); // 힐
   });
 
   // 몬스터가 공격을 했을 수 있으므로 기지 다시 그리기
@@ -216,8 +216,8 @@ function initGame() {
   initMap(); // 맵 초기화 (배경, 몬스터 경로 그리기)
   placeBase(); // 기지 배치
 
-  /////////////////////// 임시 함수
-  serverSocket.emit("event", {
+  /////////////////////// 임시 함수 /////////////////////////
+  UserSocket.GetInstance().socket.emit("event", {
     userID: null,
     clientVersion: null,
     handlerId: 1,
@@ -226,7 +226,7 @@ function initGame() {
       base: base,
     },
   });
-  /////////////////////// 임시 함수
+  /////////////////////// 임시 함수 /////////////////////////
 
   setInterval(spawnMonster, monsterSpawnInterval); // 설정된 몬스터 생성 주기마다 몬스터 생성
   gameLoop(); // 게임 루프 최초 실행

@@ -7,7 +7,7 @@ export const handlerEvent = async (io, socket, data) => {
     const handler = handlerMapping[data.handlerId];
 
     // handler 실행
-    const response = await handler(io, socket, data.payload);
+    const response = await handler(io, socket, data.payload, data.userId);
 
     socket.emit("response", response);
   } catch (error) {
