@@ -215,6 +215,18 @@ function initGame() {
   initMap(); // 맵 초기화 (배경, 몬스터 경로 그리기)
   placeBase(); // 기지 배치
 
+  /////////////////////// 임시 함수
+  serverSocket.emit("event", {
+    userID: null,
+    clientVersion: null,
+    handlerId: 1,
+    payload: {
+      gold: userGold,
+      base: base,
+    },
+  });
+  /////////////////////// 임시 함수
+
   setInterval(spawnMonster, monsterSpawnInterval); // 설정된 몬스터 생성 주기마다 몬스터 생성
   gameLoop(); // 게임 루프 최초 실행
   isInitGame = true;

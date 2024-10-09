@@ -1,7 +1,7 @@
-import { towerAttack } from "../tower/towerAttack.js";
+import { gameStart, towerAttack } from "../tower/towerAttack.js";
 
 const handlerMapping = {
-  //   1: gameStart,
+  1: gameStart,
   //   2: stageChange,
   //   3: stageEnd,
   //   4: monsterDie,
