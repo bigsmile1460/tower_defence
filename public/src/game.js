@@ -245,7 +245,7 @@ Promise.all([
 ]).then(() => {
   /* 서버 접속 코드 (여기도 완성해주세요!) */
   UserSocket.GetInstance().Connect();
-    
+
   // 이 때, 상태 동기화 이벤트의 경우에 아래의 코드를 마지막에 넣어주세요! 최초의 상태 동기화 이후에 게임을 초기화해야 하기 때문입니다!
   if (!isInitGame) {
     initGame();
