@@ -1,3 +1,4 @@
+// stage 데이터 임시 저장
 let stages = [
   { id: 1, requireScore: 100, clearGold: 200 },
   { id: 2, requireScore: 1000, clearGold: 500 },

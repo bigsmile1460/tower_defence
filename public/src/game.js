@@ -213,6 +213,7 @@ function initGame() {
 
   setInterval(spawnMonster, monsterSpawnInterval); // 설정된 몬스터 생성 주기마다 몬스터 생성
 
+  // 지금 게임 시작 전에 데이터를 불러오는게 제대로 안되는 중
   setTimeout(() => {
     userGold = userSocketSave.initGameDB.startGold;
     baseHp = userSocketSave.initGameDB.baseHp;
