@@ -1,6 +1,7 @@
 import { prisma } from "../../prisma/utils/index.js";
 
 export const gameStart = async (userId, payload) => {
+  console.log(`게임 시작!!`);
   const initStage = await prisma.initStage.findFirst({
     where: {
       id: 0,
@@ -9,8 +10,6 @@ export const gameStart = async (userId, payload) => {
 
   return { initStage: initStage };
 };
-
-export const stageChange = async (userId, payload) => {};
 
 export const gameEnd = async (userId, payload) => {
   const oldHighScore = await prisma.initStage.findFirst({

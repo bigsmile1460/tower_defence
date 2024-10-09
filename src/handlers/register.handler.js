@@ -1,4 +1,4 @@
-import { handleConnection, handleDisconnect, handlerEvent } from "./helper";
+import { handleConnection, handleDisconnect, handlerEvent } from "./helper.js";
 
 const registerHandler = (io) => {
   try {

@@ -1,8 +1,8 @@
-import { gameStart, stageEnd, stageChange } from "./stage.handler";
+import { gameStart, gameEnd } from "./stage.handler.js";
 
 const handlerMapping = {
   1: gameStart,
-  3: stageEnd,
+  3: gameEnd,
 };
 
 export default handlerMapping;
