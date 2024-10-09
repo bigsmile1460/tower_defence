@@ -1,18 +1,13 @@
 import { Base } from "./base.js";
 import { Monster } from "./monster.js";
+import UserSocket from "./netWork/userSockets.js";
 import pathManager from "./path.js";
 import Player from "./player.js";
 import { Tower } from "./tower.js";
 
-/* 
-  어딘가에 엑세스 토큰이 저장이 안되어 있다면 로그인을 유도하는 코드를 여기에 추가해주세요!
-*/
-
-
 let serverSocket; // 서버 웹소켓 객체
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
-
 
 const player = new Player(ctx, 60, 60);
 
@@ -20,12 +15,13 @@ const NUM_OF_MONSTERS = 5; // 몬스터 개수
 
 let userGold = 0; // 유저 골드
 let base; // 기지 객체
-//let baseHp = 0; // 기지 체력
+let baseHp = 0; // 기지 체력
 
-let towerCost = 300; // 타워 구입 비용
+let stageChange = true;
+let towerCost = 0; // 타워 구입 비용
 let numOfInitialTowers = 0; // 초기 타워 개수
 let monsterLevel = 1; // 몬스터 레벨
-let monsterSpawnInterval = 500; // 몬스터 생성 주기
+let monsterSpawnInterval = 1000; // 몬스터 생성 주기
 const monsters = [];
 const towers = [];
 
@@ -53,11 +49,16 @@ for (let i = 1; i <= NUM_OF_MONSTERS; i++) {
   monsterImages.push(img);
 }
 
+// 경로 생성 클래스
+const path = new pathManager(canvas, ctx, pathImage, 60, 60);
+
+const userSocketSave = UserSocket.GetInstance();
+let monsterPath;
+
 // 클라이언트 - 서버 요청 코드들
-let initGameDB = null;
-let sendEvent;
+
 // 이미지 로딩 완료 후 서버와 연결하고 게임 초기화
-Promise.all([
+await Promise.all([
   new Promise((resolve) => (backgroundImage.onload = resolve)),
   new Promise((resolve) => (towerImage.onload = resolve)),
   new Promise((resolve) => (baseImage.onload = resolve)),
@@ -65,65 +66,19 @@ Promise.all([
   ...monsterImages.map(
     (img) => new Promise((resolve) => (img.onload = resolve))
   ),
-]).then( async () => {
-  /* 서버 접속 코드 (여기도 완성해주세요!) */
-  let somewhere;
-  serverSocket = io("http://localhost:3000", {
-    auth: {
-      token: somewhere, // 토큰이 저장된 어딘가에서 가져와야 합니다!
-    },
-  });
+]).then(async () => {
+  userSocketSave.Connect();
+  userSocketSave.SendEvent(1, {});
 
-  serverSocket.on("connection", (response) => {
-    console.log(response.message);
-    // 토큰 저장
-    return;
-  });
-
-  serverSocket.on("response", (response) => {
-    if (response.broadCast) {
-      console.log(`${response.broadCast}`);
-      return;
-    }
-
-    if (response.initGameDB) {
-      console.log(`ㅇㅇ`, response.initGameDB);
-      initGameDB = response.initGameDB;
-      userGold = response.initGameDB.startGold;
-      highScore = response.initGameDB.serverHighScore;
-      return;
-    }
-
-    return console.log(response);
-  });
-
-
-  sendEvent = (handlerId, payload) => {
-    serverSocket.emit("event", {
-      // 클라이언트에서 서버로 패킷을 보내는 것.
-      handlerId,
-      payload,
-    });
-  };
-  
-
-  // 서버의 이벤트들을 받는 코드들은 여기다가 쭉 작성해주시면 됩니다!
-  // e.g. serverSocket.on("...", () => {...});
-  // 이 때, 상태 동기화 이벤트의 경우에 아래의 코드를 마지막에 넣어주세요! 최초의 상태 동기화 이후에 게임을 초기화해야 하기 때문입니다!
   if (!isInitGame) {
-    sendEvent(1, {});
     initGame();
   }
 });
-
-const path = new pathManager(canvas, ctx, pathImage,60 ,60)
-let monsterPath;
 
 function initMap() {
   ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height); // 배경 이미지 그리기
   path.drawPath(monsterPath);
 }
-
 
 function placeInitialTowers() {
   /* 
@@ -143,10 +98,16 @@ function placeNewTower() {
     타워를 구입할 수 있는 자원이 있을 때 타워 구입 후 랜덤 배치하면 됩니다.
     빠진 코드들을 채워넣어주세요! 
   */
-  const { x, y } = path.getRandomPositionNearPath(200, monsterPath);
-  const tower = new Tower(x, y);
-  towers.push(tower);
-  tower.draw(ctx, towerImage);
+  if (userGold >= towerCost) {
+    // 서버의 userGold 감소 이벤트 필요?
+    userGold -= towerCost;
+    const { x, y } = path.getRandomPositionNearPath(200, monsterPath);
+    const tower = new Tower(player.x, player.y);
+    towers.push(tower);
+    tower.draw(ctx, towerImage);
+  } else {
+    console.log(`돈이 부족합니다.`);
+  }
 }
 
 function placeBase() {
@@ -165,10 +126,28 @@ async function gameLoop() {
   path.drawPath(monsterPath); // 경로 다시 그리기
   player.draw();
 
-  if(monsters.length >= 200) {
-    await sendEvent(3, {HighScore: score })
+  // 현재 스테이지가 마지막 스테이지인지
+  if (
+    userSocketSave.stages[userSocketSave.stages.length - 1].id ===
+    userSocketSave.currentStage.id
+  ) {
+    stageChange = false;
+  }
+
+  // 현재 몬스터의 수가 많거나 마지막 스테이지인 경우
+  if (monsters.length >= 200 || !stageChange) {
+    userSocketSave.SendEvent(3, { HighScore: score });
     location.reload();
   }
+
+  // 현재 스테이지에서 다음 스테이지로 넘어가는 요구사항에 만족시
+  if (score > userSocketSave.currentStage.requireScore && stageChange) {
+    userSocketSave.SendEvent(2, {
+      //userGold: userGold,
+      currentStage: userSocketSave.currentStage,
+    });
+  }
+
   ctx.font = "25px Times New Roman";
   ctx.fillStyle = "skyblue";
   ctx.fillText(`최고 기록: ${highScore}`, 100, 50); // 최고 기록 표시
@@ -177,7 +156,11 @@ async function gameLoop() {
   ctx.fillStyle = "yellow";
   ctx.fillText(`골드: ${userGold}`, 100, 150); // 골드 표시
   ctx.fillStyle = "black";
-  ctx.fillText(`현재 레벨: ${monsterLevel}`, 100, 200); // 최고 기록 표시
+  ctx.fillText(
+    `현재 스테이지: ${+UserSocket.GetInstance().currentStage.id}`,
+    100,
+    200
+  ); // 현재 스테이지 표시
 
   // 타워 그리기 및 몬스터 공격 처리
   towers.forEach((tower) => {
@@ -202,11 +185,15 @@ async function gameLoop() {
       const isDestroyed = monster.move(base);
       if (isDestroyed) {
         console.log(`억제기가 부숴졌습니다.`);
+        monsterSpawnInterval = 0;
       }
       monster.draw(ctx);
     } else {
       /* 몬스터가 죽었을 때 */
-      //monsters.splice(i, 1);
+      monsters.splice(i, 1);
+      //SendEvent(4, {});
+      score += 100;
+      userGold += 100;
       // 서버에 요청을 보내고 받은 응답으로 score를 표시
     }
   }
@@ -225,15 +212,17 @@ function initGame() {
   placeBase(); // 기지 배치
 
   setInterval(spawnMonster, monsterSpawnInterval); // 설정된 몬스터 생성 주기마다 몬스터 생성
-  gameLoop(); // 게임 루프 최초 실행
+
+  setTimeout(() => {
+    userGold = userSocketSave.initGameDB.startGold;
+    baseHp = userSocketSave.initGameDB.baseHp;
+    highScore = userSocketSave.initGameDB.serverHighScore;
+
+    gameLoop(); // 게임 루프 최초 실행
+  }, 1000);
+
   isInitGame = true;
 }
-
-
-
-
-
-
 
 const buyTowerButton = document.createElement("button");
 buyTowerButton.textContent = "타워 구입";
