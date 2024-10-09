@@ -1,20 +1,20 @@
-import { prismaUsers } from "../../prisma/utils/index.js";
+import { prismaAsset, prismaUser } from "../lib/utils/index.js";
 
 export const gameStart = async (userId, payload) => {
   console.log(`게임 시작!!`);
-  const initStage = await prismaUsers.initStage.findFirst({
+  const initGameDB = await prismaAsset.initGame.findFirst({
     where: {
-      id: 0,
+      id: 1,
     },
   });
 
-  return { initStage: initStage };
+  return { initGameDB: initGameDB };
 };
 
 export const gameEnd = async (userId, payload) => {
-  const oldHighScore = await prismaUsers.initStage.findFirst({
+  const oldHighScore = await prismaAsset.initGame.findFirst({
     where: {
-      id: 0,
+      id: 1,
     },
     orderBy: {
       serverHighScore: "desc",
@@ -23,7 +23,7 @@ export const gameEnd = async (userId, payload) => {
 
   if (payload.HighScore > oldHighScore) {
 
-    const newHighScore = await prismaUsers.initStage.update({
+    const newHighScore = await prismaAsset.initGame.update({
       where: {
         id: oldHighScore.id
       },
