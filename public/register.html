@@ -63,13 +63,13 @@
         })
       });
 
-      const S2C_SignUpResponse = await response.json();
+      const s2c_SignUpResponse = await response.json();
 
-      if (S2C_SignUpResponse.status == 201) {
+      if (s2c_SignUpResponse.status === 201) {
         window.location.href = "/index.html";
       }
 
-      alert(S2C_SignUpResponse.message);
+      alert(s2c_SignUpResponse.message);
     });
 
     document.getElementById("back").addEventListener("click", () => {
