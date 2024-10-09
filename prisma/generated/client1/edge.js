@@ -131,7 +131,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\appla\\Desktop\\GitHub\\TowerDefence\\prisma\\schemaAsset.prisma",
+    "sourceFilePath": "C:\\Users\\appla\\Desktop\\GitHub\\TowerDefence\\prisma\\schemaUser.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -148,13 +148,13 @@ const config = {
   "inlineDatasources": {
     "db": {
       "url": {
-        "fromEnvVar": "DATABASE_URL_ASSET",
+        "fromEnvVar": "DATABASE_URL_USER",
         "value": null
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"./generated/client1\"\n}\n\ndatasource db {\n  provider = \"mysql\"\n  url      = env(\"DATABASE_URL_ASSET\")\n}\n\nmodel user {\n  id        Int    @id @default(autoincrement()) @map(\"id\")\n  highScore Int    @map(\"highScore\")\n  password  String @map(\"password\")\n  email     String @map(\"email\")\n\n  @@map(\"User\")\n}\n",
-  "inlineSchemaHash": "8455714110aeab8b6f6250bd6ee1d500db9ab0a6d94deaf109fc721a868f9874",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"./generated/client1\"\n}\n\ndatasource db {\n  provider = \"mysql\"\n  url      = env(\"DATABASE_URL_USER\")\n}\n\nmodel user {\n  id        Int    @id @default(autoincrement()) @map(\"id\")\n  highScore Int    @map(\"highScore\")\n  password  String @map(\"password\")\n  email     String @map(\"email\")\n\n  @@map(\"User\")\n}\n",
+  "inlineSchemaHash": "29807137f69bfbe72f303a2605c421f28284dff8309db56496b322583a816427",
   "copyEngine": true
 }
 config.dirname = '/'
@@ -165,7 +165,7 @@ config.engineWasm = undefined
 
 config.injectableEdgeEnv = () => ({
   parsed: {
-    DATABASE_URL_ASSET: typeof globalThis !== 'undefined' && globalThis['DATABASE_URL_ASSET'] || typeof process !== 'undefined' && process.env && process.env.DATABASE_URL_ASSET || undefined
+    DATABASE_URL_USER: typeof globalThis !== 'undefined' && globalThis['DATABASE_URL_USER'] || typeof process !== 'undefined' && process.env && process.env.DATABASE_URL_USER || undefined
   }
 })
 
