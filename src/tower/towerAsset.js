@@ -21,4 +21,21 @@ router.post("/towerAsset", async (req, res, next) => {
   }
 });
 
+// 타워 강화 상승 능력치 정의 모델 생성
+router.post("/towerUpgrade", async (req, res, next) => {
+  try {
+    let { upgradeRatio } = req.body;
+
+    // 타워 강화 상승 능력치 정의 모델 생성
+    await towerAssetOperator.makeUpgradeRatioModel(upgradeRatio);
+
+    // 메시지 출력
+    res.status(200).json({
+      message: `강화 능력치 상승 비율이 ${upgradeRatio}%로 설정되었습니다.`,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default router;

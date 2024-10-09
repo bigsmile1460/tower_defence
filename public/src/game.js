@@ -1,4 +1,4 @@
-import { Base } from "./base.js";
+import { Inhibitor } from "./base.js";
 import { Monster } from "./monster.js";
 import UserSocket from "./Network/userSocket.js";
 import { Tower } from "./tower.js";
@@ -7,18 +7,15 @@ import { Tower } from "./tower.js";
   어딘가에 엑세스 토큰이 저장이 안되어 있다면 로그인을 유도하는 코드를 여기에 추가해주세요!
 */
 
-let serverSocket; // 서버 웹소켓 객체
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
 const NUM_OF_MONSTERS = 5; // 몬스터 개수
 
 let userGold = 0; // 유저 골드
-let base; // 기지 객체
-let baseHp = 0; // 기지 체력
+let inhibitor; // 기지 객체
+let inhibitorHp = 100; // 기지 체력
 
-let towerCost = 0; // 타워 구입 비용
-let numOfInitialTowers = 0; // 초기 타워 개수
 let monsterLevel = 0; // 몬스터 레벨
 let monsterSpawnInterval = 1000; // 몬스터 생성 주기
 const monsters = [];
@@ -35,8 +32,8 @@ backgroundImage.src = "images/bg.webp";
 const towerImage = new Image();
 towerImage.src = "images/tower.png";
 
-const baseImage = new Image();
-baseImage.src = "images/base.png";
+const inhibitorImage = new Image();
+inhibitorImage.src = "images/base.png";
 
 const pathImage = new Image();
 pathImage.src = "images/path.png";
@@ -151,10 +148,10 @@ function placeNewTower() {
   tower.draw(ctx, towerImage);
 }
 
-function placeBase() {
+function placeinhibitor() {
   const lastPoint = monsterPath[monsterPath.length - 1];
-  base = new Base(lastPoint.x, lastPoint.y, baseHp);
-  base.draw(ctx, baseImage);
+  inhibitor = new Inhibitor(lastPoint.x, lastPoint.y, inhibitorHp);
+  inhibitor.draw(ctx, inhibitorImage);
 }
 
 function spawnMonster() {
@@ -182,16 +179,16 @@ function gameLoop() {
     tower.updateCooldown();
     tower.singleAttack(tower, monsters); // 단일 공격
     tower.multiAttack(tower, monsters); // 다중 공격
-    tower.heal(tower, base); // 힐
+    tower.heal(tower, inhibitor); // 힐
   });
 
   // 몬스터가 공격을 했을 수 있으므로 기지 다시 그리기
-  base.draw(ctx, baseImage);
+  inhibitor.draw(ctx, inhibitorImage);
 
   for (let i = monsters.length - 1; i >= 0; i--) {
     const monster = monsters[i];
     if (monster.hp > 0) {
-      const isDestroyed = monster.move(base);
+      const isDestroyed = monster.move(inhibitor);
       if (isDestroyed) {
         /* 게임 오버 */
         alert("게임 오버. 스파르타 본부를 지키지 못했다...ㅠㅠ");
@@ -214,7 +211,7 @@ function initGame() {
 
   monsterPath = generateRandomMonsterPath(); // 몬스터 경로 생성
   initMap(); // 맵 초기화 (배경, 몬스터 경로 그리기)
-  placeBase(); // 기지 배치
+  placeinhibitor(); // 기지 배치
 
   /////////////////////// 임시 함수 /////////////////////////
   UserSocket.GetInstance().socket.emit("event", {
@@ -223,7 +220,7 @@ function initGame() {
     handlerId: 1,
     payload: {
       gold: userGold,
-      base: base,
+      inhibitor: inhibitor,
     },
   });
   /////////////////////// 임시 함수 /////////////////////////
@@ -237,7 +234,7 @@ function initGame() {
 Promise.all([
   new Promise((resolve) => (backgroundImage.onload = resolve)),
   new Promise((resolve) => (towerImage.onload = resolve)),
-  new Promise((resolve) => (baseImage.onload = resolve)),
+  new Promise((resolve) => (inhibitorImage.onload = resolve)),
   new Promise((resolve) => (pathImage.onload = resolve)),
   ...monsterImages.map(
     (img) => new Promise((resolve) => (img.onload = resolve))
