@@ -25,7 +25,7 @@ let base; // 기지 객체
 let towerCost = 300; // 타워 구입 비용
 let numOfInitialTowers = 0; // 초기 타워 개수
 let monsterLevel = 1; // 몬스터 레벨
-let monsterSpawnInterval = 1000; // 몬스터 생성 주기
+let monsterSpawnInterval = 500; // 몬스터 생성 주기
 const monsters = [];
 const towers = [];
 
@@ -52,6 +52,69 @@ for (let i = 1; i <= NUM_OF_MONSTERS; i++) {
   img.src = `images/monster${i}.png`;
   monsterImages.push(img);
 }
+
+// 클라이언트 - 서버 요청 코드들
+let initGameDB = null;
+let sendEvent;
+// 이미지 로딩 완료 후 서버와 연결하고 게임 초기화
+Promise.all([
+  new Promise((resolve) => (backgroundImage.onload = resolve)),
+  new Promise((resolve) => (towerImage.onload = resolve)),
+  new Promise((resolve) => (baseImage.onload = resolve)),
+  new Promise((resolve) => (pathImage.onload = resolve)),
+  ...monsterImages.map(
+    (img) => new Promise((resolve) => (img.onload = resolve))
+  ),
+]).then( async () => {
+  /* 서버 접속 코드 (여기도 완성해주세요!) */
+  let somewhere;
+  serverSocket = io("http://localhost:3000", {
+    auth: {
+      token: somewhere, // 토큰이 저장된 어딘가에서 가져와야 합니다!
+    },
+  });
+
+  serverSocket.on("connection", (response) => {
+    console.log(response.message);
+    // 토큰 저장
+    return;
+  });
+
+  serverSocket.on("response", (response) => {
+    if (response.broadCast) {
+      console.log(`${response.broadCast}`);
+      return;
+    }
+
+    if (response.initGameDB) {
+      console.log(`ㅇㅇ`, response.initGameDB);
+      initGameDB = response.initGameDB;
+      userGold = response.initGameDB.startGold;
+      highScore = response.initGameDB.serverHighScore;
+      return;
+    }
+
+    return console.log(response);
+  });
+
+
+  sendEvent = (handlerId, payload) => {
+    serverSocket.emit("event", {
+      // 클라이언트에서 서버로 패킷을 보내는 것.
+      handlerId,
+      payload,
+    });
+  };
+  
+
+  // 서버의 이벤트들을 받는 코드들은 여기다가 쭉 작성해주시면 됩니다!
+  // e.g. serverSocket.on("...", () => {...});
+  // 이 때, 상태 동기화 이벤트의 경우에 아래의 코드를 마지막에 넣어주세요! 최초의 상태 동기화 이후에 게임을 초기화해야 하기 때문입니다!
+  if (!isInitGame) {
+    sendEvent(1, {});
+    initGame();
+  }
+});
 
 const path = new pathManager(canvas, ctx, pathImage,60 ,60)
 let monsterPath;
@@ -96,14 +159,15 @@ function spawnMonster() {
   monsters.push(new Monster(monsterPath, monsterImages, monsterLevel));
 }
 
-function gameLoop() {
+async function gameLoop() {
   // 렌더링 시에는 항상 배경 이미지부터 그려야 합니다! 그래야 다른 이미지들이 배경 이미지 위에 그려져요!
   ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height); // 배경 이미지 다시 그리기
   path.drawPath(monsterPath); // 경로 다시 그리기
   player.draw();
 
   if(monsters.length >= 200) {
-    return;
+    await sendEvent(3, {HighScore: score })
+    location.reload();
   }
   ctx.font = "25px Times New Roman";
   ctx.fillStyle = "skyblue";
@@ -166,68 +230,7 @@ function initGame() {
 }
 
 
-// 클라이언트 - 서버 요청 코드들
-let initGameDB = null;
 
-// 이미지 로딩 완료 후 서버와 연결하고 게임 초기화
-Promise.all([
-  new Promise((resolve) => (backgroundImage.onload = resolve)),
-  new Promise((resolve) => (towerImage.onload = resolve)),
-  new Promise((resolve) => (baseImage.onload = resolve)),
-  new Promise((resolve) => (pathImage.onload = resolve)),
-  ...monsterImages.map(
-    (img) => new Promise((resolve) => (img.onload = resolve))
-  ),
-]).then( async () => {
-  /* 서버 접속 코드 (여기도 완성해주세요!) */
-  let somewhere;
-  serverSocket = io("http://localhost:3000", {
-    auth: {
-      token: somewhere, // 토큰이 저장된 어딘가에서 가져와야 합니다!
-    },
-  });
-
-  serverSocket.on("connection", (response) => {
-    console.log(response.message);
-    // 토큰 저장
-    return;
-  });
-
-  serverSocket.on("response", (response) => {
-    if (response.broadCast) {
-      console.log(`${response.broadCast}`);
-      return;
-    }
-
-    if (response.initGameDB) {
-      console.log(`ㅇㅇ`, response.initGameDB);
-      initGameDB = response.initGameDB;
-      userGold = response.initGameDB.startGold;
-      highScore = response.initGameDB.serverHighScore;
-      return;
-    }
-
-    return console.log(response);
-  });
-
-  const sendEvent = (handlerId, payload) => {
-    serverSocket.emit("event", {
-      // 클라이언트에서 서버로 패킷을 보내는 것.
-      handlerId,
-      payload,
-    });
-  };
-  
-  
-
-  // 서버의 이벤트들을 받는 코드들은 여기다가 쭉 작성해주시면 됩니다!
-  // e.g. serverSocket.on("...", () => {...});
-  // 이 때, 상태 동기화 이벤트의 경우에 아래의 코드를 마지막에 넣어주세요! 최초의 상태 동기화 이후에 게임을 초기화해야 하기 때문입니다!
-  if (!isInitGame) {
-    sendEvent(1, {});
-    initGame();
-  }
-});
 
 
 

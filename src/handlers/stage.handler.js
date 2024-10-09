@@ -16,21 +16,26 @@ export const gameEnd = async (userId, payload) => {
     where: {
       id: 1,
     },
-    orderBy: {
-      serverHighScore: "desc",
-    },
+    select: {
+      serverHighScore: true,
+    }
   });
 
   if (payload.HighScore > oldHighScore) {
 
     const newHighScore = await prismaAsset.initGame.update({
       where: {
-        id: oldHighScore.id
+        id: 1,
       },
       data: {
         serverHighScore: payload.HighScore,
       }
     })
+
+    if(!newHighScore) {
+      return {status: `fail` , error: `서버에서 에러 발생!`};
+    }
+
     return {
       status: `success`,
       broadCast: `${userId}님께서 최대점수 ${payload.HighScore}를 달성하였습니다.`,

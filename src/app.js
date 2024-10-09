@@ -14,6 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static("public"));
 initSocket(server);
+
 // 내 생각엔 여기에 토큰이 필요하다고 생각함
 server.listen(PORT, async () => {
   console.log(`서버가 ${process.env.PORT}로 시작됩니다.`);
