@@ -1,3 +1,4 @@
+// 매핑
 import { gameStart, gameEnd, stageChange } from "./stage.handler.js";
 
 const handlerMapping = {
