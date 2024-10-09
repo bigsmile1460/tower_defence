@@ -63,7 +63,7 @@ function placeInitialTowers() {
     무언가 빠진 코드가 있는 것 같지 않나요? 
   */
   for (let i = 0; i < numOfInitialTowers; i++) {
-    const { x, y } = path.getRandomPositionNearPath(200);
+    const { x, y } = path.getRandomPositionNearPath(200, monsterPath);
     const tower = new Tower(x, y, towerCost);
     towers.push(tower);
     tower.draw(ctx, towerImage);
@@ -75,7 +75,7 @@ function placeNewTower() {
     타워를 구입할 수 있는 자원이 있을 때 타워 구입 후 랜덤 배치하면 됩니다.
     빠진 코드들을 채워넣어주세요! 
   */
-  const { x, y } = path.getRandomPositionNearPath(200);
+  const { x, y } = path.getRandomPositionNearPath(200, monsterPath);
   const tower = new Tower(x, y);
   towers.push(tower);
   tower.draw(ctx, towerImage);

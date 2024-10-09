@@ -1,8 +1,8 @@
-import { prisma } from "../../prisma/utils/index.js";
+import { prismaUsers } from "../../prisma/utils/index.js";
 
 export const gameStart = async (userId, payload) => {
   console.log(`게임 시작!!`);
-  const initStage = await prisma.initStage.findFirst({
+  const initStage = await prismaUsers.initStage.findFirst({
     where: {
       id: 0,
     },
@@ -12,7 +12,7 @@ export const gameStart = async (userId, payload) => {
 };
 
 export const gameEnd = async (userId, payload) => {
-  const oldHighScore = await prisma.initStage.findFirst({
+  const oldHighScore = await prismaUsers.initStage.findFirst({
     where: {
       id: 0,
     },
@@ -22,6 +22,15 @@ export const gameEnd = async (userId, payload) => {
   });
 
   if (payload.HighScore > oldHighScore) {
+
+    const newHighScore = await prismaUsers.initStage.update({
+      where: {
+        id: oldHighScore.id
+      },
+      data: {
+        serverHighScore: payload.HighScore,
+      }
+    })
     return {
       status: `success`,
       broadCast: `${userId}님께서 최대점수 ${payload.HighScore}를 달성하였습니다.`,
