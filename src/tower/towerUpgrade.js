@@ -1,4 +1,4 @@
-import towerUpgradeOperator from "../operator/towerUpgradeOperator";
+import towerUpgradeOperator from "../operator/towerUpgradeOperator.js";
 
 // 타워 공격
 export const towerAttack = (io, socket, payload, userId) => {

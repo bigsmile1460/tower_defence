@@ -1,7 +1,7 @@
 import { prismaAsset } from "../lib/utils/prisma/index.js";
 import { getGold, getTower } from "../models/model.js";
 
-class towerAssetOperator {
+class towerUpgradeOperator {
   async towerUpgradeCheck(tower, gold, userId) {
     // 타워 구매 후 서버 골드와 클라이언트 골드 비교
     const serverGold = getGold(userId);
@@ -36,4 +36,4 @@ class towerAssetOperator {
   }
 }
 
-export default new towerAssetOperator();
+export default new towerUpgradeOperator();

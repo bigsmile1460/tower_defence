@@ -1,6 +1,6 @@
 import { getMonsters, getTower } from "../models/model.js";
 
-class towerAssetOperator {
+class towerAttackOperator {
   // 타워 공격 검증
   towerAttackCheck(tower, monsters, inhibitor, userId) {
     // 타워 공격 간격과 타워 공격 스피드 비교
@@ -100,4 +100,4 @@ class towerAssetOperator {
   }
 }
 
-export default new towerAssetOperator();
+export default new towerAttackOperator();
