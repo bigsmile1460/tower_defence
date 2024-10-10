@@ -1,9 +1,5 @@
 class UserSocket {
   // 스테이지 정보들 저장
-  initGameDB;
-  currentStage;
-  stages;
-
   constructor() {
     this.socket = null;
     this.gInstance = null;
@@ -32,16 +28,20 @@ class UserSocket {
     this.socket.on("connection", (data) => {});
 
     // 응답 패킷 이벤트 할당
-    this.socket.on("response", (data) => {
+    this.socket.on("response", async (data) => {
       if (data.initGameDB) {
-        this.initGameDB = data.initGameDB;
-        this.stages = data.stages;
-        this.currentStage = this.stages[0];
+        localStorage.setItem("initGameDB", JSON.stringify(data.initGameDB));
+        localStorage.setItem("stages", JSON.stringify(data.stages));
+        localStorage.setItem(
+          "currentStage",
+          await JSON.parse(localStorage.getItem("stages"))[0]
+        );
+        console.log(JSON.parse(localStorage.getItem("initGameDB")));
         return;
       }
 
       if (data.currentStage) {
-        this.currentStage = data.currentStage;
+        localStorage.setItem("currentStage", data.currentStage);
         return;
       }
     });

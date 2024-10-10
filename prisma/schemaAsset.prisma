@@ -23,7 +23,7 @@ enum attackType {
 
 model initGame {
   id Int @id @default(autoincrement()) @map("Id")
-  baseHp Int @map("baseHp")
+  inhibitorHp Int @map("baseHp")
   startGold Int @map("startGold")
   serverHighScore Int @map("serverHighScore")
 
