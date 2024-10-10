@@ -1,4 +1,4 @@
-import { Base } from "./base.js";
+import { Inhibitor } from "./base.js";
 import { Monster } from "./monster.js";
 
 import UserSocket from "./Network/userSocket.js";
@@ -15,8 +15,8 @@ const player = new Player(ctx, 60, 60);
 const NUM_OF_MONSTERS = 5; // 몬스터 개수
 
 let userGold = 0; // 유저 골드
-let base; // 기지 객체
-let baseHp = 0; // 기지 체력
+let inhibitor; // 기지 객체
+let inhibitorHp = 100; // 기지 체력
 
 let stageChange = true;
 let towerCost = 0; // 타워 구입 비용
@@ -37,8 +37,8 @@ backgroundImage.src = "images/bg.webp";
 const towerImage = new Image();
 towerImage.src = "images/tower.png";
 
-const baseImage = new Image();
-baseImage.src = "images/base.png";
+const inhibitorImage = new Image();
+inhibitorImage.src = "images/base.png";
 
 const pathImage = new Image();
 pathImage.src = "images/path.png";
@@ -62,7 +62,7 @@ let monsterPath;
 await Promise.all([
   new Promise((resolve) => (backgroundImage.onload = resolve)),
   new Promise((resolve) => (towerImage.onload = resolve)),
-  new Promise((resolve) => (baseImage.onload = resolve)),
+  new Promise((resolve) => (inhibitorImage.onload = resolve)),
   new Promise((resolve) => (pathImage.onload = resolve)),
   ...monsterImages.map(
     (img) => new Promise((resolve) => (img.onload = resolve))
@@ -104,10 +104,10 @@ function placeNewTower() {
   tower.draw(ctx, towerImage);
 }
 
-function placeBase() {
+function placeinhibitor() {
   const lastPoint = monsterPath[monsterPath.length - 1];
-  base = new Base(lastPoint.x, lastPoint.y, baseHp);
-  base.draw(ctx, baseImage);
+  inhibitor = new Inhibitor(lastPoint.x, lastPoint.y, inhibitorHp);
+  inhibitor.draw(ctx, inhibitorImage);
 }
 
 function spawnMonster() {
@@ -162,18 +162,18 @@ async function gameLoop() {
   towers.forEach((tower) => {
     tower.draw(ctx, towerImage);
     tower.updateCooldown();
-    //tower.singleAttack(tower, monsters, serverSocket); // 단일 공격
-    //tower.multiAttack(tower, monsters, serverSocket); // 다중 공격
-    //tower.heal(tower, base, serverSocket); // 힐
+    tower.singleAttack(tower, monsters); // 단일 공격
+    tower.multiAttack(tower, monsters); // 다중 공격
+    tower.heal(tower, inhibitor); // 힐
   });
 
   // 몬스터가 공격을 했을 수 있으므로 기지 다시 그리기
-  base.draw(ctx, baseImage);
+  inhibitor.draw(ctx, inhibitorImage);
 
   for (let i = monsters.length - 1; i >= 0; i--) {
     const monster = monsters[i];
     if (monster.hp > 0) {
-      const isDestroyed = monster.move(base);
+      const isDestroyed = monster.move(inhibitor);
       if (isDestroyed) {
         /* 게임 오버 */
         alert("게임 오버. 스파르타 본부를 지키지 못했다...ㅠㅠ");
@@ -197,14 +197,14 @@ function initGame() {
   monsterPath = path.generateRandomMonsterPath(); // 몬스터 경로 생성
   initMap(); // 맵 초기화 (배경, 몬스터 경로 그리기)
   placeInitialTowers(); // 설정된 초기 타워 개수만큼 사전에 타워 배치
-  placeBase(); // 기지 배치
+  placeinhibitor(); // 기지 배치
 
   setInterval(spawnMonster, monsterSpawnInterval); // 설정된 몬스터 생성 주기마다 몬스터 생성
 
   // 지금 게임 시작 전에 데이터를 불러오는게 제대로 안되는 중
   setTimeout(() => {
     userGold = userSocketSave.initGameDB.startGold;
-    baseHp = userSocketSave.initGameDB.baseHp;
+    inhibitorHp = userSocketSave.initGameDB.inhibitorHp;
     highScore = userSocketSave.initGameDB.serverHighScore;
 
     gameLoop(); // 게임 루프 최초 실행
@@ -212,6 +212,25 @@ function initGame() {
 
   isInitGame = true;
 }
+
+// 이미지 로딩 완료 후 서버와 연결하고 게임 초기화
+Promise.all([
+  new Promise((resolve) => (backgroundImage.onload = resolve)),
+  new Promise((resolve) => (towerImage.onload = resolve)),
+  new Promise((resolve) => (inhibitorImage.onload = resolve)),
+  new Promise((resolve) => (pathImage.onload = resolve)),
+  ...monsterImages.map(
+    (img) => new Promise((resolve) => (img.onload = resolve))
+  ),
+]).then(() => {
+  /* 서버 접속 코드 (여기도 완성해주세요!) */
+  UserSocket.GetInstance().Connect();
+
+  // 이 때, 상태 동기화 이벤트의 경우에 아래의 코드를 마지막에 넣어주세요! 최초의 상태 동기화 이후에 게임을 초기화해야 하기 때문입니다!
+  if (!isInitGame) {
+    initGame();
+  }
+});
 
 const buyTowerButton = document.createElement("button");
 buyTowerButton.textContent = "타워 구입";

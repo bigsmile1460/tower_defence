@@ -1,9 +1,10 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient as PrismaUserClient } from "../../../../prisma/userPrisma/client/index.js";
+import { PrismaClient as PrismaAssetClient } from "../../../../prisma/assetPrisma/client/index.js";
 import dotenv from "dotenv";
 
 dotenv.config();
 
-export const prismaUser = new PrismaClient({
+export const prismaUser = new PrismaUserClient({
   log: ["query", "info", "warn", "error"],
   errorFormat: "pretty",
   datasources: {
@@ -13,7 +14,7 @@ export const prismaUser = new PrismaClient({
   },
 });
 
-export const prismaAsset = new PrismaClient({
+export const prismaAsset = new PrismaAssetClient({
   log: ["query", "info", "warn", "error"],
   errorFormat: "pretty",
   datasources: {
