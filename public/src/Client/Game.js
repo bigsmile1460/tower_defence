@@ -51,8 +51,6 @@ class Game {
     this.buyTowerButton.addEventListener("click", () => {
       const newTower = new Tower(this.player.x, this.player.y);
       this.towers.push(newTower);
-
-      console.log(this.towers);
     });
 
     document.body.appendChild(this.buyTowerButton);
