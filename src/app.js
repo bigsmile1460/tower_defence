@@ -1,7 +1,7 @@
 import express from "express";
 import { createServer } from "http";
 import initSocket from "./init/socket.js";
-import usersRouter from "./routes/users.router.js";
+import usersRouter from "./routes/uers.router.js";
 import dotenv from "dotenv";
 
 const app = express();
