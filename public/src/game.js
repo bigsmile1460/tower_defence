@@ -1,4 +1,4 @@
-import Game from "../src/Client/Game.js"
+import Game from "../src/Client/Game.js";
 import UserSocket from "./Network/userSocket.js";
 
 let game = new Game();
@@ -44,12 +44,12 @@ async function GameStart() {
       towerImage: towerImage,
       baseImage: baseImage,
       pathImage: pathImage,
-      monsterImages: monsterImages
+      monsterImages: monsterImages,
     });
 
     setInterval(() => {
       game.SpawnMonster();
-    }, game.monsterSpawnInterval);    
+    }, game.monsterSpawnInterval);
 
     game.GameLoop();
   });

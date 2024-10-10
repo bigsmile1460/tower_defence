@@ -1,5 +1,5 @@
-import { prismaAsset, prismaUser } from "../lib/utils/prisma/index.js";
-import { getAllStages, getStages } from "../Storages/stage.js";
+import { prismaAsset } from "../lib/utils/prisma/index.js";
+import { getAllStages, getNextStage } from "../Storages/stage.js";
 
 export const gameStart = async (io, socket, payload, userId) => {
   console.log(`게임 시작!!`);
@@ -9,7 +9,6 @@ export const gameStart = async (io, socket, payload, userId) => {
     },
   });
 
-  console.log(initGameDB);
   const stages = getAllStages();
 
   return { initGameDB: initGameDB, stages: stages };
@@ -18,7 +17,9 @@ export const gameStart = async (io, socket, payload, userId) => {
 export const stageChange = async (io, socket, payload, userId) => {
   const currentStage = payload.currentStage;
 
-  const nextStage = getStages(currentStage.id + 1);
+  //서버 관련 유저 골드 증가 및 스코어 증가
+
+  const nextStage = getNextStage(currentStage.id + 1);
 
   return { currentStage: JSON.stringify(nextStage) };
 };
