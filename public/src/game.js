@@ -163,9 +163,9 @@ async function gameLoop() {
   towers.forEach((tower) => {
     tower.draw(ctx, towerImage);
     tower.updateCooldown();
-    tower.singleAttack(tower, monsters, serverSocket); // 단일 공격
-    tower.multiAttack(tower, monsters, serverSocket); // 다중 공격
-    tower.heal(tower, base, serverSocket); // 힐
+    //tower.singleAttack(tower, monsters, serverSocket); // 단일 공격
+    //tower.multiAttack(tower, monsters, serverSocket); // 다중 공격
+    //tower.heal(tower, base, serverSocket); // 힐
   });
 
   // 몬스터가 공격을 했을 수 있으므로 기지 다시 그리기
