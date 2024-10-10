@@ -31,7 +31,7 @@ export class Tower {
       this.beamDuration--;
     }
   }
-
+  
   singleAttack(tower, monsters, serverSocket) {
     // 공격 유형이 단일공격이 아닐 경우 함수 종료
     if (tower.attackType !== "singleAttack") {
