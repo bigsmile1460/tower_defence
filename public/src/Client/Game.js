@@ -2,7 +2,7 @@ import UserSocket from "../Network/userSocket.js";
 import { Tower } from "../tower.js";
 import pathManager from "../path.js";
 import { Monster } from "../monster.js";
-import { Base } from "../base.js";
+import { Inhibitor } from "../base.js";
 import Player from "../player.js";
 
 class Game {
@@ -81,7 +81,7 @@ class Game {
 
     PlaceBase() {
         const lastPoint = this.monsterPath[this.monsterPath.length - 1];
-        this.base = new Base(lastPoint.x, lastPoint.y, this.baseHP);
+        this.base = new Inhibitor(lastPoint.x, lastPoint.y, this.baseHP);
         this.base.draw(this.ctx, this.baseImage);
     }    
     
@@ -103,7 +103,6 @@ class Game {
     }
 
     async GameLoop() {       
-
         this.ctx.drawImage(this.backgroundImage, 0, 0, this.canvas.width, this.canvas.height);
 
         this.path.drawPath(this.monsterPath);
