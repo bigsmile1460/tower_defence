@@ -7,7 +7,6 @@ import Player from "./player.js";
 import { Tower } from "./tower.js";
 
 let serverSocket;
-
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -100,8 +99,7 @@ function placeNewTower() {
     타워를 구입할 수 있는 자원이 있을 때 타워 구입 후 랜덤 배치하면 됩니다.
     빠진 코드들을 채워넣어주세요! 
   */
-  const { x, y } = path.getRandomPositionNearPath(200, monsterPath);
-  const tower = new Tower(x, y);
+  const tower = new Tower(player.x, player.y);
   towers.push(tower);
   tower.draw(ctx, towerImage);
 }
