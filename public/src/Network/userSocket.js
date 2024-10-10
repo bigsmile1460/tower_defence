@@ -1,9 +1,7 @@
+import { getLocalStorage, setLocalStorage } from "../Local/localStorage.js";
+
 class UserSocket {
   // 스테이지 정보들 저장
-  initGameDB;
-  currentStage;
-  stages;
-
   constructor() {
     this.socket = null;
     this.gInstance = null;
@@ -25,25 +23,26 @@ class UserSocket {
       },
     });
 
-    // 서버의 이벤트들을 받는 코드들은 여기다가 쭉 작성해주시면 됩니다!
-    // e.g. serverSocket.on("...", () => {...});
-
     // 연결 이벤트 할당
     this.socket.on("connection", (data) => {});
 
     // 응답 패킷 이벤트 할당
     this.socket.on("response", (data) => {
       if (data.initGameDB) {
-        this.initGameDB = data.initGameDB;
-        this.stages = data.stages;
-        this.currentStage = this.stages[0];
+        setLocalStorage("initGameDB", data.initGameDB);
+        setLocalStorage("stages", data.stages);
+        setLocalStorage("currentStage", getLocalStorage("stages")[0]);
         return;
       }
 
       if (data.currentStage) {
-        this.currentStage = data.currentStage;
+        setLocalStorage(
+          localStorage.setItem("currentStage", data.currentStage)
+        );
         return;
       }
+
+      //console.log(data);
     });
   }
 

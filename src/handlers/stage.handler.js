@@ -1,7 +1,7 @@
 import { prismaAsset, prismaUser } from "../lib/utils/prisma/index.js";
 import { getAllStages, getStages } from "../Storages/stage.js";
 
-export const gameStart = async (userId, payload) => {
+export const gameStart = async (io, socket, payload, userId) => {
   console.log(`게임 시작!!`);
   const initGameDB = await prismaAsset.initGame.findFirst({
     where: {
@@ -9,20 +9,21 @@ export const gameStart = async (userId, payload) => {
     },
   });
 
+  console.log(initGameDB);
   const stages = getAllStages();
 
   return { initGameDB: initGameDB, stages: stages };
 };
 
-export const stageChange = async (userId, payload) => {
+export const stageChange = async (io, socket, payload, userId) => {
   const currentStage = payload.currentStage;
 
   const nextStage = getStages(currentStage.id + 1);
 
-  return { currentStage: nextStage };
+  return { currentStage: JSON.stringify(nextStage) };
 };
 
-export const gameEnd = async (userId, payload) => {
+export const gameEnd = async (io, socket, payload, userId) => {
   const { serverHighScore } = await prismaAsset.initGame.findFirst({
     where: {
       id: 1,
