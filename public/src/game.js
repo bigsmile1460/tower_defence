@@ -203,7 +203,6 @@ function initGame() {
 
   // 지금 게임 시작 전에 데이터를 불러오는게 제대로 안되는 중
   setTimeout(() => {
-    console.log(localStorage.getItem("initGameDB"));
     userGold = JSON.parse(localStorage.getItem("initGameDB")).startGold;
     inhibitorHp = JSON.parse(localStorage.getItem("initGameDB")).inhibitorHp;
     highScore = JSON.parse(localStorage.getItem("initGameDB")).serverHighScore;

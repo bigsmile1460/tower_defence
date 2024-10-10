@@ -28,20 +28,20 @@ class UserSocket {
     this.socket.on("connection", (data) => {});
 
     // 응답 패킷 이벤트 할당
-    this.socket.on("response", async (data) => {
+    this.socket.on("response", (data) => {
       if (data.initGameDB) {
         localStorage.setItem("initGameDB", JSON.stringify(data.initGameDB));
         localStorage.setItem("stages", JSON.stringify(data.stages));
         localStorage.setItem(
           "currentStage",
-          await JSON.parse(localStorage.getItem("stages"))[0]
+          JSON.parse(localStorage.getItem("stages"))[0]
         );
         console.log(JSON.parse(localStorage.getItem("initGameDB")));
         return;
       }
 
       if (data.currentStage) {
-        localStorage.setItem("currentStage", data.currentStage);
+        localStorage.setItem("currentStage", JSON.stringify(data.currentStage));
         return;
       }
     });
