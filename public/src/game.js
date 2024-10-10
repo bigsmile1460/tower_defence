@@ -56,7 +56,7 @@ const path = new pathManager(canvas, ctx, pathImage, 60, 60);
 const userSocketSave = UserSocket.GetInstance();
 
 let startTime = 0;
-let timeCheck = 0;
+let elapsedTime = 0;
 
 let stageChange = true;
 
@@ -73,11 +73,13 @@ await Promise.all([
     (img) => new Promise((resolve) => (img.onload = resolve))
   ),
 ]).then(() => {
+  //시작시 로컬 스토리지 초기화 , 시작 시간 지정
   clearLocalStorage();
   startTime = Date.now();
-  timeCheck = startTime;
+  elapsedTime = startTime;
+
   userSocketSave.Connect();
-  userSocketSave.SendEvent(1, {});
+  userSocketSave.SendEvent(1, {}); // 서버에 게임 시작 이벤트 보냄
 
   if (!isInitGame) {
     initGame();
@@ -120,8 +122,10 @@ async function gameLoop() {
   path.drawPath(monsterPath); // 경로 다시 그리기
   player.draw();
 
-  timeCheck++;
-  console.log((timeCheck - startTime) % 1000 === 0);
+  //경과 시간
+
+  elapsedTime++;
+
   // 현재 스테이지가 마지막 스테이지인지
   if (
     getLocalStorage("stages")[getLocalStorage("stages").length - 1].id ===
@@ -130,20 +134,10 @@ async function gameLoop() {
     stageChange = false;
   }
 
-  // 현재 몬스터의 수가 많거나 마지막 스테이지인 경우
-  if (
-    monsters.length >= 200 &&
-    !stageChange &&
-    score >=
-      getLocalStorage("stages")[getLocalStorage("stages").length - 1]
-        .requireScore
-  ) {
-    userSocketSave.SendEvent(3, { HighScore: score });
-    location.reload();
-  }
-
-  // 현재 스테이지에서 다음 스테이지로 넘어가는 요구사항에 만족시
-  if ((timeCheck - startTime) % 1000 === 0 && stageChange) {
+  // 시작 시간과 종료시간을 비교하여 500(실제로 1초?) 정도 차이가 나면 스테이지 변경 처리
+  if ((elapsedTime - startTime) % 500 === 0 && stageChange) {
+    userGold += getLocalStorage("currentStage").clearGold;
+    score += getLocalStorage("currentStage").Score;
     userSocketSave.SendEvent(2, {
       currentStage: getLocalStorage("currentStage"),
     });
@@ -189,7 +183,7 @@ async function gameLoop() {
     } else {
       /* 몬스터가 죽었을 때 */
       monsters.splice(i, 1);
-      score += 100;
+      score += 100; // 몬스터가 죽었을때 점수가 오르도록 간단한 처리
     }
   }
 

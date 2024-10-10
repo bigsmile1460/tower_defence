@@ -8,7 +8,12 @@ let stages = [
   { id: 6, Score: 5000, clearGold: 5000 },
 ];
 
-export const getStages = (id) => {
+export const createStage = () => {
+  // 스테이지 제작 관련 함수
+  return;
+};
+
+export const getNextStage = (id) => {
   return stages[id - 1];
 };
 
