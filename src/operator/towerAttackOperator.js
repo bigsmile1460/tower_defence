@@ -1,11 +1,12 @@
-import { getMonsters, getTower } from "../models/model.js";
+import { getInhibitor, getMonsters, getTower } from "../models/model.js";
 
 class towerAttackOperator {
   // 타워 공격 검증
   towerAttackCheck(tower, monsters, inhibitor, userId) {
     // 타워 공격 간격과 타워 공격 스피드 비교
-    const serverTower = getTower(userId, tower.id);
-    const attackInterval = tower.lastAttack - serverTower.lastAttack;
+    let serverTower = getTower(userId, tower.id);
+    const attackInterval =
+      ((tower.lastAttack - serverTower.lastAttack) * 60) / 1000;
     if (attackInterval < tower.attackSpeed) {
       throw new Error(
         "타워 공격 쿨 타임이 조작되었습니다: " +
@@ -78,7 +79,7 @@ class towerAttackOperator {
 
     // 공격 타입이 heal인 경우
     else if (tower.attackType === "heal") {
-      const serverInhiitor = getInhibitor;
+      const serverInhiitor = getInhibitor(userId);
       if (inhibitor.hp > serverInhiitor.hp + tower.attackPower) {
         throw new Error(
           "타워의 힐량이 조작되었습니다: " +
@@ -97,6 +98,9 @@ class towerAttackOperator {
     } else {
       throw new Error("타워의 공격 타입이 잘못되었습니다: " + tower.attackType);
     }
+
+    // 타워의 마지막 공격 시간 업데이트
+    serverTower.lastAttack = tower.lastAttack;
   }
 }
 

@@ -20,9 +20,9 @@ export const towerAttack = (io, socket, payload, userId) => {
 };
 
 ////////////// 게임 시작 임시 함수
-export const gameStart = (io, socket, payload) => {
+export const gameStart = (io, socket, payload, userId) => {
   try {
-    createStage("userId1", payload.gold, payload.base);
+    createStage(userId, payload.gold, payload.inhibitor);
 
     return { status: "success", Message: "게임 시작 성공!" };
   } catch (error) {

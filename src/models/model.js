@@ -1,12 +1,12 @@
 const stages = {};
 
-export const createStage = (userId, gold, base) => {
+export const createStage = (userId, gold, inhibitor) => {
   stages[userId] = {
     gold: gold,
     score: 0,
     towers: [],
     monsters: [],
-    base: { hp: base.hp, maxHp: base.maxHp },
+    inhibitor: { hp: inhibitor.hp, maxHp: inhibitor.maxHp },
     interval: 1000,
   };
 
@@ -25,4 +25,8 @@ export const getMonsters = (userId) => {
 
 export const getGold = (userId) => {
   return stages[userId].gold;
+};
+
+export const getInhibitor = (userId) => {
+  return stages[userId].inhibitor;
 };

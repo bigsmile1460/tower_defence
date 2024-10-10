@@ -10,7 +10,9 @@ export class Tower {
     atkSpeed,
     atkRange,
     attackType,
-    cost
+    cost,
+    upgradeCost,
+    upgradeAttackPower
   ) {
     // 생성자 안에서 타워들의 속성을 정의한다고 생각하시면 됩니다!
     this.id = id; // 타워id(인 게임에서 타워의 고유 아이디)
@@ -22,8 +24,12 @@ export class Tower {
     this.attackPower = 100; // 타워 공격력
     this.attackSpeed = 100; // 타워 공격 속도 ( /60 (초))
     this.attackRange = 300; // 타워 사거리
+    this.lastAttack = 0;
     this.attackType = "singleAttack"; // 타워 공격 유형
+    this.level = 1; // 타워 레벨
     this.cost = cost; // 타워 구입 비용
+    this.upgradeCost = upgradeCost; // 타워 강화 비용
+    this.upgradeAttackPower = upgradeAttackPower; // 타워 강화시 능력치 상승
     this.cooldown = 0; // 남은 쿨타임
     this.beamDuration = 0; // 남은 광선 지속 시간
     this.target = null; // 타워 광선의 목표
@@ -80,6 +86,7 @@ export class Tower {
 
     // 공격 성고 시 서버에 공격 결과 전달
     console.log("서버에 단일 공격 타워의 공격 실행 전달");
+    this.lastAttack = Date.now();
     UserSocket.GetInstance().socket.emit("event", {
       userID: null,
       clientVersion: null,
@@ -124,6 +131,7 @@ export class Tower {
 
     // 공격 성고 시 서버에 공격 결과 전달
     console.log("서버에 다중 공격 타워의 공격 실행 전달");
+    this.lastAttack = Date.now();
     UserSocket.GetInstance().socket.emit("event", {
       userID: null,
       clientVersion: null,
@@ -153,6 +161,7 @@ export class Tower {
 
     // 힐 성고 시 서버에 힐 결과 전달
     console.log("서버에 힐 타워의 힐 실행 전달");
+    this.lastAttack = Date.now();
     UserSocket.GetInstance().socket.emit("event", {
       userID: null,
       clientVersion: null,
@@ -166,5 +175,28 @@ export class Tower {
 
   updateCooldown() {
     this.cooldown--;
+  }
+
+  upgradeTower(userGold) {
+    // 돈이 부족한 경우 함수 종료
+    if (userGold < this.upgradeCost) {
+      return alert("돈이 부족합니다");
+    }
+
+    let gold = userGold - this.upgradeCost;
+    this.attackPower += this.upgradeAttackPower;
+    this.level += 1;
+
+    UserSocket.GetInstance().socket.emit("event", {
+      userID: null,
+      clientVersion: null,
+      handlerId: 8,
+      payload: {
+        gold: gold,
+        tower: this,
+      },
+    });
+
+    return gold;
   }
 }
