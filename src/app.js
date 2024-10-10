@@ -1,8 +1,7 @@
 import express from "express";
 import { createServer } from "http";
 import initSocket from "./init/socket.js";
-import usersRouter from "./routes/users.router.js";
-import towerAsset from "./tower/towerAsset.js";
+import usersRouter from "./routes/uers.router.js";
 import dotenv from "dotenv";
 
 const app = express();
@@ -14,8 +13,7 @@ const PORT = process.env.PORT;
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static("public"));
-
-app.use("/TowerDefence", [usersRouter, towerAsset]);
+app.use("/TowerDefence", [usersRouter]);
 
 initSocket(server);
 

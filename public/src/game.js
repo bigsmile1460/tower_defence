@@ -1,14 +1,17 @@
 import { Inhibitor } from "./base.js";
 import { Monster } from "./monster.js";
+
 import UserSocket from "./Network/userSocket.js";
+import pathManager from "./path.js";
+import Player from "./player.js";
 import { Tower } from "./tower.js";
 
-/* 
-  어딘가에 엑세스 토큰이 저장이 안되어 있다면 로그인을 유도하는 코드를 여기에 추가해주세요!
-*/
+let serverSocket;
 
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
+
+const player = new Player(ctx, 60, 60);
 
 const NUM_OF_MONSTERS = 5; // 몬스터 개수
 
@@ -16,7 +19,10 @@ let userGold = 0; // 유저 골드
 let inhibitor; // 기지 객체
 let inhibitorHp = 100; // 기지 체력
 
-let monsterLevel = 0; // 몬스터 레벨
+let stageChange = true;
+let towerCost = 0; // 타워 구입 비용
+let numOfInitialTowers = 0; // 초기 타워 개수
+let monsterLevel = 1; // 몬스터 레벨
 let monsterSpawnInterval = 1000; // 몬스터 생성 주기
 const monsters = [];
 const towers = [];
@@ -45,96 +51,48 @@ for (let i = 1; i <= NUM_OF_MONSTERS; i++) {
   monsterImages.push(img);
 }
 
+// 경로 생성 클래스
+const path = new pathManager(canvas, ctx, pathImage, 60, 60);
+
+const userSocketSave = UserSocket.GetInstance();
+
 let monsterPath;
+// 클라이언트 - 서버 요청 코드들
 
-function generateRandomMonsterPath() {
-  const path = [];
-  let currentX = 0;
-  let currentY = Math.floor(Math.random() * 21) + 500; // 500 ~ 520 범위의 y 시작 (캔버스 y축 중간쯤에서 시작할 수 있도록 유도)
+// 이미지 로딩 완료 후 서버와 연결하고 게임 초기화
+await Promise.all([
+  new Promise((resolve) => (backgroundImage.onload = resolve)),
+  new Promise((resolve) => (towerImage.onload = resolve)),
+  new Promise((resolve) => (baseImage.onload = resolve)),
+  new Promise((resolve) => (pathImage.onload = resolve)),
+  ...monsterImages.map(
+    (img) => new Promise((resolve) => (img.onload = resolve))
+  ),
+]).then(() => {
+  userSocketSave.Connect();
+  userSocketSave.SendEvent(1, {});
 
-  path.push({ x: currentX, y: currentY });
-
-  while (currentX < canvas.width) {
-    currentX += Math.floor(Math.random() * 100) + 50; // 50 ~ 150 범위의 x 증가
-    // x 좌표에 대한 clamp 처리
-    if (currentX > canvas.width) {
-      currentX = canvas.width;
-    }
-
-    currentY += Math.floor(Math.random() * 200) - 100; // -100 ~ 100 범위의 y 변경
-    // y 좌표에 대한 clamp 처리
-    if (currentY < 0) {
-      currentY = 0;
-    }
-    if (currentY > canvas.height) {
-      currentY = canvas.height;
-    }
-
-    path.push({ x: currentX, y: currentY });
+  if (!isInitGame) {
+    initGame();
   }
-
-  return path;
-}
+});
 
 function initMap() {
   ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height); // 배경 이미지 그리기
-  drawPath();
+  path.drawPath(monsterPath);
 }
 
-function drawPath() {
-  const segmentLength = 20; // 몬스터 경로 세그먼트 길이
-  const imageWidth = 60; // 몬스터 경로 이미지 너비
-  const imageHeight = 60; // 몬스터 경로 이미지 높이
-  const gap = 5; // 몬스터 경로 이미지 겹침 방지를 위한 간격
-
-  for (let i = 0; i < monsterPath.length - 1; i++) {
-    const startX = monsterPath[i].x;
-    const startY = monsterPath[i].y;
-    const endX = monsterPath[i + 1].x;
-    const endY = monsterPath[i + 1].y;
-
-    const deltaX = endX - startX;
-    const deltaY = endY - startY;
-    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY); // 피타고라스 정리로 두 점 사이의 거리를 구함 (유클리드 거리)
-    const angle = Math.atan2(deltaY, deltaX); // 두 점 사이의 각도는 tan-1(y/x)로 구해야 함 (자세한 것은 역삼각함수 참고): 삼각함수는 변의 비율! 역삼각함수는 각도를 구하는 것!
-
-    for (let j = gap; j < distance - gap; j += segmentLength) {
-      // 사실 이거는 삼각함수에 대한 기본적인 이해도가 있으면 충분히 이해하실 수 있습니다.
-      // 자세한 것은 https://thirdspacelearning.com/gcse-maths/geometry-and-measure/sin-cos-tan-graphs/ 참고 부탁해요!
-      const x = startX + Math.cos(angle) * j; // 다음 이미지 x좌표 계산(각도의 코사인 값은 x축 방향의 단위 벡터 * j를 곱하여 경로를 따라 이동한 x축 좌표를 구함)
-      const y = startY + Math.sin(angle) * j; // 다음 이미지 y좌표 계산(각도의 사인 값은 y축 방향의 단위 벡터 * j를 곱하여 경로를 따라 이동한 y축 좌표를 구함)
-      drawRotatedImage(pathImage, x, y, imageWidth, imageHeight, angle);
-    }
+function placeInitialTowers() {
+  /* 
+    타워를 초기에 배치하는 함수입니다.
+    무언가 빠진 코드가 있는 것 같지 않나요? 
+  */
+  for (let i = 0; i < numOfInitialTowers; i++) {
+    const { x, y } = path.getRandomPositionNearPath(200, monsterPath);
+    const tower = new Tower(x, y, towerCost);
+    towers.push(tower);
+    tower.draw(ctx, towerImage);
   }
-}
-
-function drawRotatedImage(image, x, y, width, height, angle) {
-  ctx.save();
-  ctx.translate(x + width / 2, y + height / 2);
-  ctx.rotate(angle);
-  ctx.drawImage(image, -width / 2, -height / 2, width, height);
-  ctx.restore();
-}
-
-function getRandomPositionNearPath(maxDistance) {
-  // 타워 배치를 위한 몬스터가 지나가는 경로 상에서 maxDistance 범위 내에서 랜덤한 위치를 반환하는 함수!
-  const segmentIndex = Math.floor(Math.random() * (monsterPath.length - 1));
-  const startX = monsterPath[segmentIndex].x;
-  const startY = monsterPath[segmentIndex].y;
-  const endX = monsterPath[segmentIndex + 1].x;
-  const endY = monsterPath[segmentIndex + 1].y;
-
-  const t = Math.random();
-  const posX = startX + t * (endX - startX);
-  const posY = startY + t * (endY - startY);
-
-  const offsetX = (Math.random() - 0.5) * 2 * maxDistance;
-  const offsetY = (Math.random() - 0.5) * 2 * maxDistance;
-
-  return {
-    x: posX + offsetX,
-    y: posY + offsetY,
-  };
 }
 
 function placeNewTower() {
@@ -142,7 +100,7 @@ function placeNewTower() {
     타워를 구입할 수 있는 자원이 있을 때 타워 구입 후 랜덤 배치하면 됩니다.
     빠진 코드들을 채워넣어주세요! 
   */
-  const { x, y } = getRandomPositionNearPath(200);
+  const { x, y } = path.getRandomPositionNearPath(200, monsterPath);
   const tower = new Tower(x, y);
   towers.push(tower);
   tower.draw(ctx, towerImage);
@@ -158,10 +116,38 @@ function spawnMonster() {
   monsters.push(new Monster(monsterPath, monsterImages, monsterLevel));
 }
 
-function gameLoop() {
+async function gameLoop() {
   // 렌더링 시에는 항상 배경 이미지부터 그려야 합니다! 그래야 다른 이미지들이 배경 이미지 위에 그려져요!
   ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height); // 배경 이미지 다시 그리기
-  drawPath(monsterPath); // 경로 다시 그리기
+  path.drawPath(monsterPath); // 경로 다시 그리기
+  player.draw();
+
+  // 현재 스테이지가 마지막 스테이지인지
+  if (
+    userSocketSave.stages[userSocketSave.stages.length - 1].id ===
+    userSocketSave.currentStage.id
+  ) {
+    stageChange = false;
+  }
+
+  // 현재 몬스터의 수가 많거나 마지막 스테이지인 경우
+  if (
+    monsters.length >= 200 &&
+    !stageChange &&
+    score >=
+      userSocketSave.stages[userSocketSave.stages.length - 1].requireScore
+  ) {
+    userSocketSave.SendEvent(3, { HighScore: score });
+    location.reload();
+  }
+
+  // 현재 스테이지에서 다음 스테이지로 넘어가는 요구사항에 만족시
+  if (score >= userSocketSave.currentStage.requireScore && stageChange) {
+    userSocketSave.SendEvent(2, {
+      //userGold: userGold,
+      currentStage: userSocketSave.currentStage,
+    });
+  }
 
   ctx.font = "25px Times New Roman";
   ctx.fillStyle = "skyblue";
@@ -170,8 +156,9 @@ function gameLoop() {
   ctx.fillText(`점수: ${score}`, 100, 100); // 현재 스코어 표시
   ctx.fillStyle = "yellow";
   ctx.fillText(`골드: ${userGold}`, 100, 150); // 골드 표시
-  ctx.fillStyle = "black";
-  ctx.fillText(`현재 레벨: ${monsterLevel}`, 100, 200); // 최고 기록 표시
+
+  ctx.fillStyle = "red";
+  ctx.fillText(`현재 스테이지: ${+userSocketSave.currentStage.id}`, 100, 200); // 현재 스테이지 표시
 
   // 타워 그리기 및 몬스터 공격 처리
   towers.forEach((tower) => {
@@ -209,24 +196,22 @@ function initGame() {
     return;
   }
 
-  monsterPath = generateRandomMonsterPath(); // 몬스터 경로 생성
+  monsterPath = path.generateRandomMonsterPath(); // 몬스터 경로 생성
   initMap(); // 맵 초기화 (배경, 몬스터 경로 그리기)
-  placeinhibitor(); // 기지 배치
-
-  /////////////////////// 임시 함수 /////////////////////////
-  UserSocket.GetInstance().socket.emit("event", {
-    userID: null,
-    clientVersion: null,
-    handlerId: 1,
-    payload: {
-      gold: userGold,
-      inhibitor: inhibitor,
-    },
-  });
-  /////////////////////// 임시 함수 /////////////////////////
+  placeInitialTowers(); // 설정된 초기 타워 개수만큼 사전에 타워 배치
+  placeBase(); // 기지 배치
 
   setInterval(spawnMonster, monsterSpawnInterval); // 설정된 몬스터 생성 주기마다 몬스터 생성
-  gameLoop(); // 게임 루프 최초 실행
+
+  // 지금 게임 시작 전에 데이터를 불러오는게 제대로 안되는 중
+  setTimeout(() => {
+    userGold = userSocketSave.initGameDB.startGold;
+    baseHp = userSocketSave.initGameDB.baseHp;
+    highScore = userSocketSave.initGameDB.serverHighScore;
+
+    gameLoop(); // 게임 루프 최초 실행
+  }, 1000);
+
   isInitGame = true;
 }
 

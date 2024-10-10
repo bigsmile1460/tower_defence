@@ -1,9 +1,9 @@
-import { gameStart, towerAttack } from "../tower/towerAttack.js";
-
+import { towerAttack } from "../tower/towerAttack.js";
+import { gameStart, stageChange, gameEnd } from "../handlers/stage.handler.js";
 const handlerMapping = {
   1: gameStart,
-  //   2: stageChange,
-  //   3: stageEnd,
+  2: stageChange,
+  3: gameEnd,
   //   4: monsterDie,
   //   5: spawnSpecial,
   //   6: spawnNormal,

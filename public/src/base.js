@@ -20,11 +20,7 @@ export class Inhibitor {
 
     ctx.font = "16px Arial";
     ctx.fillStyle = "white";
-    ctx.fillText(
-      `HP: ${this.hp}/${this.maxHp}`,
-      this.x - this.width,
-      this.y - this.height / 2 - 10
-    );
+    ctx.fillText(`억제기 HP: ${this.hp}/${this.maxHp}`, this.x - this.width, this.y - this.height / 2 - 10 );
   }
 
   takeDamage(amount) {
