@@ -1,4 +1,5 @@
 import { Inhibitor } from "./base.js";
+import { clearLocalStorage, getLocalStorage } from "./Local/localStorage.js";
 import { Monster } from "./monster.js";
 
 import UserSocket from "./Network/userSocket.js";
@@ -68,6 +69,7 @@ await Promise.all([
     (img) => new Promise((resolve) => (img.onload = resolve))
   ),
 ]).then(() => {
+  clearLocalStorage();
   userSocketSave.Connect();
   userSocketSave.SendEvent(1, {});
 
@@ -122,8 +124,8 @@ async function gameLoop() {
 
   // 현재 스테이지가 마지막 스테이지인지
   if (
-    userSocketSave.stages[userSocketSave.stages.length - 1].id ===
-    userSocketSave.currentStage.id
+    getLocalStorage("stages")[getLocalStorage("stages").length - 1].id ===
+    getLocalStorage("currentStage").id
   ) {
     stageChange = false;
   }
@@ -133,20 +135,21 @@ async function gameLoop() {
     monsters.length >= 200 &&
     !stageChange &&
     score >=
-      userSocketSave.stages[userSocketSave.stages.length - 1].requireScore
+      getLocalStorage("stages")[getLocalStorage("stages").length - 1]
+        .requireScore
   ) {
     userSocketSave.SendEvent(3, { HighScore: score });
     location.reload();
   }
 
   // 현재 스테이지에서 다음 스테이지로 넘어가는 요구사항에 만족시
-  if (score >= userSocketSave.currentStage.requireScore && stageChange) {
+  if (score >= getLocalStorage("currentStage").requireScore && stageChange) {
     userSocketSave.SendEvent(2, {
-      //userGold: userGold,
-      currentStage: userSocketSave.currentStage,
+      currentStage: getLocalStorage("currentStage"),
     });
   }
 
+  console.log(getLocalStorage("currentStage").id);
   ctx.font = "25px Times New Roman";
   ctx.fillStyle = "skyblue";
   ctx.fillText(`최고 기록: ${highScore}`, 100, 50); // 최고 기록 표시
@@ -156,7 +159,11 @@ async function gameLoop() {
   ctx.fillText(`골드: ${userGold}`, 100, 150); // 골드 표시
 
   ctx.fillStyle = "red";
-  ctx.fillText(`현재 스테이지: ${+userSocketSave.currentStage.id}`, 100, 200); // 현재 스테이지 표시
+  ctx.fillText(
+    `현재 스테이지: ${getLocalStorage("currentStage").id}`,
+    100,
+    200
+  ); // 현재 스테이지 표시
 
   // 타워 그리기 및 몬스터 공격 처리
   towers.forEach((tower) => {
@@ -183,6 +190,7 @@ async function gameLoop() {
     } else {
       /* 몬스터가 죽었을 때 */
       monsters.splice(i, 1);
+      score += 100;
     }
   }
 
@@ -201,13 +209,14 @@ function initGame() {
 
   setInterval(spawnMonster, monsterSpawnInterval); // 설정된 몬스터 생성 주기마다 몬스터 생성
 
-  // 지금 게임 시작 전에 데이터를 불러오는게 제대로 안되는 중
   setTimeout(() => {
-    userGold = JSON.parse(localStorage.getItem("initGameDB")).startGold;
-    inhibitorHp = JSON.parse(localStorage.getItem("initGameDB")).inhibitorHp;
-    highScore = JSON.parse(localStorage.getItem("initGameDB")).serverHighScore;
+    const { startGold, baseHp, serverHighScore } =
+      getLocalStorage("initGameDB");
+    userGold = startGold;
+    inhibitorHp = baseHp;
+    highScore = serverHighScore;
     gameLoop(); // 게임 루프 최초 실행
-  }, 3000);
+  }, 1000);
 
   isInitGame = true;
 }
