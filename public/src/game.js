@@ -1,6 +1,7 @@
 import { Base } from "./base.js";
 import { Monster } from "./monster.js";
-import UserSocket from "./netWork/userSocket.js";
+
+import UserSocket from "./Network/userSocket.js";
 import pathManager from "./path.js";
 import Player from "./player.js";
 import { Tower } from "./tower.js";
@@ -48,49 +49,142 @@ for (let i = 1; i <= NUM_OF_MONSTERS; i++) {
   monsterImages.push(img);
 }
 
+
 // 경로 생성 클래스
-const path = new pathManager(canvas, ctx, pathImage, 60, 60);
+//const path = new pathManager(canvas, ctx, pathImage, 60, 60);
 
-const userSocketSave = UserSocket.GetInstance();
+//const userSocketSave = UserSocket.GetInstance();
 
-let monsterPath;
+//let monsterPath;
 
 // 클라이언트 - 서버 요청 코드들
 
 // 이미지 로딩 완료 후 서버와 연결하고 게임 초기화
-await Promise.all([
-  new Promise((resolve) => (backgroundImage.onload = resolve)),
-  new Promise((resolve) => (towerImage.onload = resolve)),
-  new Promise((resolve) => (baseImage.onload = resolve)),
-  new Promise((resolve) => (pathImage.onload = resolve)),
-  ...monsterImages.map(
-    (img) => new Promise((resolve) => (img.onload = resolve))
-  ),
-]).then(() => {
-  userSocketSave.Connect();
-  userSocketSave.SendEvent(1, {});
+//await Promise.all([
+  //new Promise((resolve) => (backgroundImage.onload = resolve)),
+  //new Promise((resolve) => (towerImage.onload = resolve)),
+  //new Promise((resolve) => (baseImage.onload = resolve)),
+  //new Promise((resolve) => (pathImage.onload = resolve)),
+  //...monsterImages.map(
+    //(img) => new Promise((resolve) => (img.onload = resolve))
+  //),
+//]).then(() => {
+  //userSocketSave.Connect();
+  //userSocketSave.SendEvent(1, {});
 
-  if (!isInitGame) {
-    initGame();
-  }
-});
+  //if (!isInitGame) {
+    //initGame();
+  //}
+//});
 
-function initMap() {
-  ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height); // 배경 이미지 그리기
-  path.drawPath(monsterPath);
-}
+//function initMap() {
+ // ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height); // 배경 이미지 그리기
+  //path.drawPath(monsterPath);
+//}
 
-function placeInitialTowers() {
+//function placeInitialTowers() {
   /* 
     타워를 초기에 배치하는 함수입니다.
     무언가 빠진 코드가 있는 것 같지 않나요? 
   */
-  for (let i = 0; i < numOfInitialTowers; i++) {
-    const { x, y } = path.getRandomPositionNearPath(200, monsterPath);
-    const tower = new Tower(x, y, towerCost);
-    towers.push(tower);
-    tower.draw(ctx, towerImage);
+  //for (let i = 0; i < numOfInitialTowers; i++) {
+    //const { x, y } = path.getRandomPositionNearPath(200, monsterPath);
+    //const tower = new Tower(x, y, towerCost);
+    //towers.push(tower);
+    //tower.draw(ctx, towerImage);
+  //}
+//}
+
+let monsterPath;
+
+function generateRandomMonsterPath() {
+  const path = [];
+  let currentX = 0;
+  let currentY = Math.floor(Math.random() * 21) + 500; // 500 ~ 520 범위의 y 시작 (캔버스 y축 중간쯤에서 시작할 수 있도록 유도)
+
+  path.push({ x: currentX, y: currentY });
+
+  while (currentX < canvas.width) {
+    currentX += Math.floor(Math.random() * 100) + 50; // 50 ~ 150 범위의 x 증가
+    // x 좌표에 대한 clamp 처리
+    if (currentX > canvas.width) {
+      currentX = canvas.width;
+    }
+
+    currentY += Math.floor(Math.random() * 200) - 100; // -100 ~ 100 범위의 y 변경
+    // y 좌표에 대한 clamp 처리
+    if (currentY < 0) {
+      currentY = 0;
+    }
+    if (currentY > canvas.height) {
+      currentY = canvas.height;
+    }
+
+    path.push({ x: currentX, y: currentY });
   }
+
+  return path;
+}
+
+function initMap() {
+  ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height); // 배경 이미지 그리기
+  drawPath();
+}
+
+function drawPath() {
+  const segmentLength = 20; // 몬스터 경로 세그먼트 길이
+  const imageWidth = 60; // 몬스터 경로 이미지 너비
+  const imageHeight = 60; // 몬스터 경로 이미지 높이
+  const gap = 5; // 몬스터 경로 이미지 겹침 방지를 위한 간격
+
+  for (let i = 0; i < monsterPath.length - 1; i++) {
+    const startX = monsterPath[i].x;
+    const startY = monsterPath[i].y;
+    const endX = monsterPath[i + 1].x;
+    const endY = monsterPath[i + 1].y;
+
+    const deltaX = endX - startX;
+    const deltaY = endY - startY;
+    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY); // 피타고라스 정리로 두 점 사이의 거리를 구함 (유클리드 거리)
+    const angle = Math.atan2(deltaY, deltaX); // 두 점 사이의 각도는 tan-1(y/x)로 구해야 함 (자세한 것은 역삼각함수 참고): 삼각함수는 변의 비율! 역삼각함수는 각도를 구하는 것!
+
+    for (let j = gap; j < distance - gap; j += segmentLength) {
+      // 사실 이거는 삼각함수에 대한 기본적인 이해도가 있으면 충분히 이해하실 수 있습니다.
+      // 자세한 것은 https://thirdspacelearning.com/gcse-maths/geometry-and-measure/sin-cos-tan-graphs/ 참고 부탁해요!
+      const x = startX + Math.cos(angle) * j; // 다음 이미지 x좌표 계산(각도의 코사인 값은 x축 방향의 단위 벡터 * j를 곱하여 경로를 따라 이동한 x축 좌표를 구함)
+      const y = startY + Math.sin(angle) * j; // 다음 이미지 y좌표 계산(각도의 사인 값은 y축 방향의 단위 벡터 * j를 곱하여 경로를 따라 이동한 y축 좌표를 구함)
+      drawRotatedImage(pathImage, x, y, imageWidth, imageHeight, angle);
+    }
+  }
+}
+
+function drawRotatedImage(image, x, y, width, height, angle) {
+  ctx.save();
+  ctx.translate(x + width / 2, y + height / 2);
+  ctx.rotate(angle);
+  ctx.drawImage(image, -width / 2, -height / 2, width, height);
+  ctx.restore();
+}
+
+function getRandomPositionNearPath(maxDistance) {
+  // 타워 배치를 위한 몬스터가 지나가는 경로 상에서 maxDistance 범위 내에서 랜덤한 위치를 반환하는 함수!
+  const segmentIndex = Math.floor(Math.random() * (monsterPath.length - 1));
+  const startX = monsterPath[segmentIndex].x;
+  const startY = monsterPath[segmentIndex].y;
+  const endX = monsterPath[segmentIndex + 1].x;
+  const endY = monsterPath[segmentIndex + 1].y;
+
+  const t = Math.random();
+  const posX = startX + t * (endX - startX);
+  const posY = startY + t * (endY - startY);
+
+  const offsetX = (Math.random() - 0.5) * 2 * maxDistance;
+  const offsetY = (Math.random() - 0.5) * 2 * maxDistance;
+
+  return {
+    x: posX + offsetX,
+    y: posY + offsetY,
+  };
 }
 
 function placeNewTower() {
@@ -98,21 +192,15 @@ function placeNewTower() {
     타워를 구입할 수 있는 자원이 있을 때 타워 구입 후 랜덤 배치하면 됩니다.
     빠진 코드들을 채워넣어주세요! 
   */
-  if (userGold >= towerCost) {
-    // 서버의 userGold 감소 이벤트 필요?
-    userGold -= towerCost;
-    //const { x, y } = path.getRandomPositionNearPath(200, monsterPath);
-    const tower = new Tower(player.x, player.y);
-    towers.push(tower);
-    tower.draw(ctx, towerImage);
-  } else {
-    console.log(`돈이 부족합니다.`);
-  }
+const { x, y } = getRandomPositionNearPath(200);
+  const tower = new Tower(x, y);
+  towers.push(tower);
+  tower.draw(ctx, towerImage);
 }
 
 function placeBase() {
   const lastPoint = monsterPath[monsterPath.length - 1];
-  base = new Base(lastPoint.x, lastPoint.y);
+  base = new Base(lastPoint.x, lastPoint.y, baseHp);
   base.draw(ctx, baseImage);
 }
 
@@ -160,6 +248,7 @@ async function gameLoop() {
   ctx.fillText(`점수: ${score}`, 100, 100); // 현재 스코어 표시
   ctx.fillStyle = "yellow";
   ctx.fillText(`골드: ${userGold}`, 100, 150); // 골드 표시
+
   ctx.fillStyle = "red";
   ctx.fillText(`현재 스테이지: ${+userSocketSave.currentStage.id}`, 100, 200); // 현재 스테이지 표시
 
@@ -167,14 +256,9 @@ async function gameLoop() {
   towers.forEach((tower) => {
     tower.draw(ctx, towerImage);
     tower.updateCooldown();
-    monsters.forEach((monster) => {
-      const distance = Math.sqrt(
-        Math.pow(tower.x - monster.x, 2) + Math.pow(tower.y - monster.y, 2)
-      );
-      if (distance < tower.range) {
-        tower.attack(monster);
-      }
-    });
+    tower.singleAttack(tower, monsters, serverSocket); // 단일 공격
+    tower.multiAttack(tower, monsters, serverSocket); // 다중 공격
+    tower.heal(tower, base, serverSocket); // 힐
   });
 
   // 몬스터가 공격을 했을 수 있으므로 기지 다시 그리기
@@ -185,17 +269,14 @@ async function gameLoop() {
     if (monster.hp > 0) {
       const isDestroyed = monster.move(base);
       if (isDestroyed) {
-        console.log(`억제기가 부숴졌습니다.`);
-        monsterSpawnInterval = 0;
+        /* 게임 오버 */
+        alert("게임 오버. 스파르타 본부를 지키지 못했다...ㅠㅠ");
+        location.reload();
       }
       monster.draw(ctx);
     } else {
       /* 몬스터가 죽었을 때 */
       monsters.splice(i, 1);
-      //SendEvent(4, {});
-      score += 100;
-      userGold += 100;
-      // 서버에 요청을 보내고 받은 응답으로 score를 표시
     }
   }
 
