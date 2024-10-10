@@ -1,15 +1,15 @@
 import { Base } from "./base.js";
 import { Monster } from "./monster.js";
+
 import UserSocket from "./Network/userSocket.js";
+import pathManager from "./path.js";
+import Player from "./player.js";
 import { Tower } from "./tower.js";
 
-/* 
-  어딘가에 엑세스 토큰이 저장이 안되어 있다면 로그인을 유도하는 코드를 여기에 추가해주세요!
-*/
-
-let serverSocket; // 서버 웹소켓 객체
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
+
+const player = new Player(ctx, 60, 60);
 
 const NUM_OF_MONSTERS = 5; // 몬스터 개수
 
@@ -17,9 +17,10 @@ let userGold = 0; // 유저 골드
 let base; // 기지 객체
 let baseHp = 0; // 기지 체력
 
+let stageChange = true;
 let towerCost = 0; // 타워 구입 비용
 let numOfInitialTowers = 0; // 초기 타워 개수
-let monsterLevel = 0; // 몬스터 레벨
+let monsterLevel = 1; // 몬스터 레벨
 let monsterSpawnInterval = 1000; // 몬스터 생성 주기
 const monsters = [];
 const towers = [];
@@ -47,6 +48,52 @@ for (let i = 1; i <= NUM_OF_MONSTERS; i++) {
   img.src = `images/monster${i}.png`;
   monsterImages.push(img);
 }
+
+
+// 경로 생성 클래스
+//const path = new pathManager(canvas, ctx, pathImage, 60, 60);
+
+//const userSocketSave = UserSocket.GetInstance();
+
+//let monsterPath;
+
+// 클라이언트 - 서버 요청 코드들
+
+// 이미지 로딩 완료 후 서버와 연결하고 게임 초기화
+//await Promise.all([
+  //new Promise((resolve) => (backgroundImage.onload = resolve)),
+  //new Promise((resolve) => (towerImage.onload = resolve)),
+  //new Promise((resolve) => (baseImage.onload = resolve)),
+  //new Promise((resolve) => (pathImage.onload = resolve)),
+  //...monsterImages.map(
+    //(img) => new Promise((resolve) => (img.onload = resolve))
+  //),
+//]).then(() => {
+  //userSocketSave.Connect();
+  //userSocketSave.SendEvent(1, {});
+
+  //if (!isInitGame) {
+    //initGame();
+  //}
+//});
+
+//function initMap() {
+ // ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height); // 배경 이미지 그리기
+  //path.drawPath(monsterPath);
+//}
+
+//function placeInitialTowers() {
+  /* 
+    타워를 초기에 배치하는 함수입니다.
+    무언가 빠진 코드가 있는 것 같지 않나요? 
+  */
+  //for (let i = 0; i < numOfInitialTowers; i++) {
+    //const { x, y } = path.getRandomPositionNearPath(200, monsterPath);
+    //const tower = new Tower(x, y, towerCost);
+    //towers.push(tower);
+    //tower.draw(ctx, towerImage);
+  //}
+//}
 
 let monsterPath;
 
@@ -145,7 +192,7 @@ function placeNewTower() {
     타워를 구입할 수 있는 자원이 있을 때 타워 구입 후 랜덤 배치하면 됩니다.
     빠진 코드들을 채워넣어주세요! 
   */
-  const { x, y } = getRandomPositionNearPath(200);
+const { x, y } = getRandomPositionNearPath(200);
   const tower = new Tower(x, y);
   towers.push(tower);
   tower.draw(ctx, towerImage);
@@ -161,10 +208,38 @@ function spawnMonster() {
   monsters.push(new Monster(monsterPath, monsterImages, monsterLevel));
 }
 
-function gameLoop() {
+async function gameLoop() {
   // 렌더링 시에는 항상 배경 이미지부터 그려야 합니다! 그래야 다른 이미지들이 배경 이미지 위에 그려져요!
   ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height); // 배경 이미지 다시 그리기
-  drawPath(monsterPath); // 경로 다시 그리기
+  path.drawPath(monsterPath); // 경로 다시 그리기
+  player.draw();
+
+  // 현재 스테이지가 마지막 스테이지인지
+  if (
+    userSocketSave.stages[userSocketSave.stages.length - 1].id ===
+    userSocketSave.currentStage.id
+  ) {
+    stageChange = false;
+  }
+
+  // 현재 몬스터의 수가 많거나 마지막 스테이지인 경우
+  if (
+    monsters.length >= 200 &&
+    !stageChange &&
+    score >=
+      userSocketSave.stages[userSocketSave.stages.length - 1].requireScore
+  ) {
+    userSocketSave.SendEvent(3, { HighScore: score });
+    location.reload();
+  }
+
+  // 현재 스테이지에서 다음 스테이지로 넘어가는 요구사항에 만족시
+  if (score >= userSocketSave.currentStage.requireScore && stageChange) {
+    userSocketSave.SendEvent(2, {
+      //userGold: userGold,
+      currentStage: userSocketSave.currentStage,
+    });
+  }
 
   ctx.font = "25px Times New Roman";
   ctx.fillStyle = "skyblue";
@@ -173,8 +248,9 @@ function gameLoop() {
   ctx.fillText(`점수: ${score}`, 100, 100); // 현재 스코어 표시
   ctx.fillStyle = "yellow";
   ctx.fillText(`골드: ${userGold}`, 100, 150); // 골드 표시
-  ctx.fillStyle = "black";
-  ctx.fillText(`현재 레벨: ${monsterLevel}`, 100, 200); // 최고 기록 표시
+
+  ctx.fillStyle = "red";
+  ctx.fillText(`현재 스테이지: ${+userSocketSave.currentStage.id}`, 100, 200); // 현재 스테이지 표시
 
   // 타워 그리기 및 몬스터 공격 처리
   towers.forEach((tower) => {
@@ -212,33 +288,24 @@ function initGame() {
     return;
   }
 
-  monsterPath = generateRandomMonsterPath(); // 몬스터 경로 생성
+  monsterPath = path.generateRandomMonsterPath(); // 몬스터 경로 생성
   initMap(); // 맵 초기화 (배경, 몬스터 경로 그리기)
+  placeInitialTowers(); // 설정된 초기 타워 개수만큼 사전에 타워 배치
   placeBase(); // 기지 배치
 
   setInterval(spawnMonster, monsterSpawnInterval); // 설정된 몬스터 생성 주기마다 몬스터 생성
-  gameLoop(); // 게임 루프 최초 실행
+
+  // 지금 게임 시작 전에 데이터를 불러오는게 제대로 안되는 중
+  setTimeout(() => {
+    userGold = userSocketSave.initGameDB.startGold;
+    baseHp = userSocketSave.initGameDB.baseHp;
+    highScore = userSocketSave.initGameDB.serverHighScore;
+
+    gameLoop(); // 게임 루프 최초 실행
+  }, 1000);
+
   isInitGame = true;
 }
-
-// 이미지 로딩 완료 후 서버와 연결하고 게임 초기화
-Promise.all([
-  new Promise((resolve) => (backgroundImage.onload = resolve)),
-  new Promise((resolve) => (towerImage.onload = resolve)),
-  new Promise((resolve) => (baseImage.onload = resolve)),
-  new Promise((resolve) => (pathImage.onload = resolve)),
-  ...monsterImages.map(
-    (img) => new Promise((resolve) => (img.onload = resolve))
-  ),
-]).then(() => {
-  /* 서버 접속 코드 (여기도 완성해주세요!) */
-  UserSocket.GetInstance().Connect();
-    
-  // 이 때, 상태 동기화 이벤트의 경우에 아래의 코드를 마지막에 넣어주세요! 최초의 상태 동기화 이후에 게임을 초기화해야 하기 때문입니다!
-  if (!isInitGame) {
-    initGame();
-  }
-});
 
 const buyTowerButton = document.createElement("button");
 buyTowerButton.textContent = "타워 구입";
