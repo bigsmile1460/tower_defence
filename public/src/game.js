@@ -19,7 +19,6 @@ let userGold = 0; // 유저 골드
 let inhibitor; // 기지 객체
 let inhibitorHp = 100; // 기지 체력
 
-let stageChange = true;
 let towerCost = 0; // 타워 구입 비용
 let numOfInitialTowers = 0; // 초기 타워 개수
 let monsterLevel = 1; // 몬스터 레벨
@@ -56,6 +55,11 @@ const path = new pathManager(canvas, ctx, pathImage, 60, 60);
 
 const userSocketSave = UserSocket.GetInstance();
 
+let startTime = 0;
+let timeCheck = 0;
+
+let stageChange = true;
+
 let monsterPath;
 // 클라이언트 - 서버 요청 코드들
 
@@ -70,6 +74,8 @@ await Promise.all([
   ),
 ]).then(() => {
   clearLocalStorage();
+  startTime = Date.now();
+  timeCheck = startTime;
   userSocketSave.Connect();
   userSocketSave.SendEvent(1, {});
 
@@ -84,10 +90,6 @@ function initMap() {
 }
 
 function placeInitialTowers() {
-  /* 
-    타워를 초기에 배치하는 함수입니다.
-    무언가 빠진 코드가 있는 것 같지 않나요? 
-  */
   for (let i = 0; i < numOfInitialTowers; i++) {
     const { x, y } = path.getRandomPositionNearPath(200, monsterPath);
     const tower = new Tower(x, y, towerCost);
@@ -97,10 +99,6 @@ function placeInitialTowers() {
 }
 
 function placeNewTower() {
-  /* 
-    타워를 구입할 수 있는 자원이 있을 때 타워 구입 후 랜덤 배치하면 됩니다.
-    빠진 코드들을 채워넣어주세요! 
-  */
   const tower = new Tower(player.x, player.y);
   towers.push(tower);
   tower.draw(ctx, towerImage);
@@ -122,6 +120,8 @@ async function gameLoop() {
   path.drawPath(monsterPath); // 경로 다시 그리기
   player.draw();
 
+  timeCheck++;
+  console.log((timeCheck - startTime) % 1000 === 0);
   // 현재 스테이지가 마지막 스테이지인지
   if (
     getLocalStorage("stages")[getLocalStorage("stages").length - 1].id ===
@@ -143,13 +143,12 @@ async function gameLoop() {
   }
 
   // 현재 스테이지에서 다음 스테이지로 넘어가는 요구사항에 만족시
-  if (score >= getLocalStorage("currentStage").requireScore && stageChange) {
+  if ((timeCheck - startTime) % 1000 === 0 && stageChange) {
     userSocketSave.SendEvent(2, {
       currentStage: getLocalStorage("currentStage"),
     });
   }
 
-  console.log(getLocalStorage("currentStage").id);
   ctx.font = "25px Times New Roman";
   ctx.fillStyle = "skyblue";
   ctx.fillText(`최고 기록: ${highScore}`, 100, 50); // 최고 기록 표시

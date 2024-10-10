@@ -1,10 +1,6 @@
 // localStorage 처리 함수
 export function getLocalStorage(item) {
-  if (typeof item != "string") {
-    return localStorage.getItem(item);
-  } else {
-    return JSON.parse(localStorage.getItem(item));
-  }
+  return JSON.parse(localStorage.getItem(item));
 }
 
 export function setLocalStorage(item, value) {
@@ -12,7 +8,7 @@ export function setLocalStorage(item, value) {
   return;
 }
 
-export function clearLocalStorage(item) {
+export function clearLocalStorage() {
   localStorage.clear();
   return;
 }
