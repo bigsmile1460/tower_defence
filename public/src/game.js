@@ -63,7 +63,7 @@ let monsterPath;
 await Promise.all([
   new Promise((resolve) => (backgroundImage.onload = resolve)),
   new Promise((resolve) => (towerImage.onload = resolve)),
-  new Promise((resolve) => (baseImage.onload = resolve)),
+  new Promise((resolve) => (inhibitorImage.onload = resolve)),
   new Promise((resolve) => (pathImage.onload = resolve)),
   ...monsterImages.map(
     (img) => new Promise((resolve) => (img.onload = resolve))
@@ -199,14 +199,14 @@ function initGame() {
   monsterPath = path.generateRandomMonsterPath(); // 몬스터 경로 생성
   initMap(); // 맵 초기화 (배경, 몬스터 경로 그리기)
   placeInitialTowers(); // 설정된 초기 타워 개수만큼 사전에 타워 배치
-  placeBase(); // 기지 배치
+  placeinhibitor(); // 기지 배치
 
   setInterval(spawnMonster, monsterSpawnInterval); // 설정된 몬스터 생성 주기마다 몬스터 생성
 
   // 지금 게임 시작 전에 데이터를 불러오는게 제대로 안되는 중
   setTimeout(() => {
     userGold = userSocketSave.initGameDB.startGold;
-    baseHp = userSocketSave.initGameDB.baseHp;
+    inhibitorHp = userSocketSave.initGameDB.inhibitorHp;
     highScore = userSocketSave.initGameDB.serverHighScore;
 
     gameLoop(); // 게임 루프 최초 실행
