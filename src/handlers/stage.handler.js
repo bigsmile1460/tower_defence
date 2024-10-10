@@ -1,5 +1,5 @@
 import { prismaAsset, prismaUser } from "../lib/utils/index.js";
-import { getAllStages, getStages } from "../Models/stageModel.js";
+import { getAllStages, getStages } from "../Storages/stage.js";
 
 export const gameStart = async (userId, payload) => {
   console.log(`게임 시작!!`);

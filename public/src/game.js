@@ -1,11 +1,10 @@
 import { Base } from "./base.js";
 import { Monster } from "./monster.js";
-import UserSocket from "./netWork/userSockets.js";
+import UserSocket from "./netWork/userSocket.js";
 import pathManager from "./path.js";
 import Player from "./player.js";
 import { Tower } from "./tower.js";
 
-let serverSocket; // 서버 웹소켓 객체
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -53,6 +52,7 @@ for (let i = 1; i <= NUM_OF_MONSTERS; i++) {
 const path = new pathManager(canvas, ctx, pathImage, 60, 60);
 
 const userSocketSave = UserSocket.GetInstance();
+
 let monsterPath;
 
 // 클라이언트 - 서버 요청 코드들
@@ -66,7 +66,7 @@ await Promise.all([
   ...monsterImages.map(
     (img) => new Promise((resolve) => (img.onload = resolve))
   ),
-]).then(async () => {
+]).then(() => {
   userSocketSave.Connect();
   userSocketSave.SendEvent(1, {});
 
@@ -101,7 +101,7 @@ function placeNewTower() {
   if (userGold >= towerCost) {
     // 서버의 userGold 감소 이벤트 필요?
     userGold -= towerCost;
-    const { x, y } = path.getRandomPositionNearPath(200, monsterPath);
+    //const { x, y } = path.getRandomPositionNearPath(200, monsterPath);
     const tower = new Tower(player.x, player.y);
     towers.push(tower);
     tower.draw(ctx, towerImage);
@@ -135,13 +135,18 @@ async function gameLoop() {
   }
 
   // 현재 몬스터의 수가 많거나 마지막 스테이지인 경우
-  if (monsters.length >= 200 || !stageChange) {
+  if (
+    monsters.length >= 200 &&
+    !stageChange &&
+    score >=
+      userSocketSave.stages[userSocketSave.stages.length - 1].requireScore
+  ) {
     userSocketSave.SendEvent(3, { HighScore: score });
     location.reload();
   }
 
   // 현재 스테이지에서 다음 스테이지로 넘어가는 요구사항에 만족시
-  if (score > userSocketSave.currentStage.requireScore && stageChange) {
+  if (score >= userSocketSave.currentStage.requireScore && stageChange) {
     userSocketSave.SendEvent(2, {
       //userGold: userGold,
       currentStage: userSocketSave.currentStage,
@@ -155,12 +160,8 @@ async function gameLoop() {
   ctx.fillText(`점수: ${score}`, 100, 100); // 현재 스코어 표시
   ctx.fillStyle = "yellow";
   ctx.fillText(`골드: ${userGold}`, 100, 150); // 골드 표시
-  ctx.fillStyle = "black";
-  ctx.fillText(
-    `현재 스테이지: ${+UserSocket.GetInstance().currentStage.id}`,
-    100,
-    200
-  ); // 현재 스테이지 표시
+  ctx.fillStyle = "red";
+  ctx.fillText(`현재 스테이지: ${+userSocketSave.currentStage.id}`, 100, 200); // 현재 스테이지 표시
 
   // 타워 그리기 및 몬스터 공격 처리
   towers.forEach((tower) => {

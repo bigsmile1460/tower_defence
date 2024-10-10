@@ -1,4 +1,5 @@
 class pathManager {
+  // 경로 생성 관련 클래스
   constructor(canvas, ctx, pathImage, width, height) {
     this.canvas = canvas;
     this.ctx = ctx;
