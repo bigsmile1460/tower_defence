@@ -1,4 +1,4 @@
-import { prismaAsset, prismaUser } from "../lib/utils/index.js";
+import { prismaAsset, prismaUser } from "../lib/utils/prisma/index.js";
 import { getAllStages, getStages } from "../Storages/stage.js";
 
 export const gameStart = async (userId, payload) => {
