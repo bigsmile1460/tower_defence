@@ -6,6 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  output = "../prisma/assetPrisma/client"
 }
 
 datasource db {
@@ -50,13 +51,7 @@ model tower {
   attackRange Int @map("attackRange")
   attackType attackType @map("attackType")
   towerPrice Int @map("towerPrice")
+  upgradeAttackPower Int @map("upgradeAttackPower")
 
   @@map("Tower")
-}
-
-model upgrade {
-  id Int @id @unique @default(autoincrement()) @map("id")
-  upgradeRatio Int @map("upgradeRatio")
-  
-  @@map("Upgrade")
 }
