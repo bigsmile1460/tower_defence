@@ -8,7 +8,7 @@ const handlerMapping = {
   //   5: spawnSpecial,
   //   6: spawnNormal,
   7: towerAttack,
-  //   8: towerUpdate,
+  //   8: towerUpgrade,
   //   9: towerBuy,
   //   10: towerSell,
 };
