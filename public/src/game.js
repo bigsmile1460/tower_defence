@@ -7,7 +7,7 @@ import { Tower } from "./tower.js";
   어딘가에 엑세스 토큰이 저장이 안되어 있다면 로그인을 유도하는 코드를 여기에 추가해주세요!
 */
 
-let serverSocket; // 서버 웹소켓 객체
+
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -180,9 +180,9 @@ function gameLoop() {
   towers.forEach((tower) => {
     tower.draw(ctx, towerImage);
     tower.updateCooldown();
-    tower.singleAttack(tower, monsters, serverSocket); // 단일 공격
-    tower.multiAttack(tower, monsters, serverSocket); // 다중 공격
-    tower.heal(tower, base, serverSocket); // 힐
+    //tower.singleAttack(tower, monsters, serverSocket); // 단일 공격
+    //tower.multiAttack(tower, monsters, serverSocket); // 다중 공격
+    //tower.heal(tower, base, serverSocket); // 힐
   });
 
   // 몬스터가 공격을 했을 수 있으므로 기지 다시 그리기
