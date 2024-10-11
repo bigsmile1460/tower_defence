@@ -20,9 +20,9 @@ export const addMonster = (userId, monster) => {
 }
 
 //몬스터 정보
-export const getMonster = (userId) => {
-    return monsterInfo[userId] || []
-}
+// export const getMonster = (userId) => {
+//     return monsterInfo[userId] || []
+// }
 
 //몬스터 변동
 export const updateMonster = (userId, monsterUUID, attack) => {
