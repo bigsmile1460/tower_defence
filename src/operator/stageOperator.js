@@ -1,4 +1,4 @@
-import { getStage } from "../Storages/stage.js";
+import { getStage } from "../Storages/stage.storage.js";
 
 class stagesOperator {
   stageChange(startGameTime, elpsedTime, currentStage, nextStage) {

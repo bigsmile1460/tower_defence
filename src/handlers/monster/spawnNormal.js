@@ -1,5 +1,5 @@
-import { addMonster } from "../Storages/monster.storage.js";
-import { getMonster } from "../operator/monsterOperator.js";
+import { addMonster } from "../../Storages/monster.storage.js";
+import { getMonster } from "../../operator/monsterOperator.js";
 
 export const spawnNormal = async (userId, payload) => {
   // console.log("--------------------------")
@@ -14,7 +14,7 @@ export const spawnNormal = async (userId, payload) => {
     return { status: "fail", message: "" };
   }
   //몬스터 추가
-  addMonster(userId, getMonsterInfo);
+//  addMonster(userId, getMonsterInfo);
 
   return { status: "success", handler: 6 };
 };

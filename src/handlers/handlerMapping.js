@@ -1,11 +1,11 @@
-import { towerAttack } from "../tower/towerAttack.js";
+import { towerAttack } from "./tower/towerAttack.js";
 import {
   stageChange,
   stageEnd,
   stageStart,
-} from "../handlers/stage.handler.js";
-import { spawnNormal } from "./spawnNormal.handler.js";
-import { towerBuy } from "./towerBuy.handler.js";
+} from "./stage/stage.handler.js";
+import { spawnNormal } from "./monster/spawnNormal.js";
+import { towerBuy } from "./tower/towerBuy.handler.js";
 const handlerMapping = {
   1: stageStart,
   2: stageChange,

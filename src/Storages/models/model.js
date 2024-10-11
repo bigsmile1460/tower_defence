@@ -1,5 +1,3 @@
-const stages = {};
-
 export const createStage = (userId, gold, inhibitor) => {
   stages[userId] = {
     gold: gold,
