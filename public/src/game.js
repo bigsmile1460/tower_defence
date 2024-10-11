@@ -54,6 +54,8 @@ async function GameStart() {
       elpsedTime: Date.now(), // 변경 시간
     });
 
+    //몬스터 생성 호출, todo: 임시로 호출만 테스트. 추후 변경예정
+    UserSocket.GetInstance().SendEvent(6,{})
     // 몬스터 생성 주기
     setInterval(() => {
       game.SpawnMonster();
@@ -62,3 +64,4 @@ async function GameStart() {
     game.GameLoop();
   });
 }
+

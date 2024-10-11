@@ -1,7 +1,12 @@
-import { getMonster, addMonster } from "../storage/monster.storage.js"
+import { getMonster, addMonster } from "../Storages/monster.storage.js"
+
 
 
 export const spawnNormal = (userId, payload) => {
+    console.log("--------------------------")
+    console.log("spawnNormal userId:", userId)
+    console.log("--------------------------")
+    console.log("spawnNormal payload:", payload.id)
     const { stage } = payload
     
     const getMonsterInfo = getMonster(userId)
