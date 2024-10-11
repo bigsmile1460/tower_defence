@@ -252,6 +252,7 @@ class Game {
       } else {
         /* 몬스터가 죽었을 때 */
         this.monsters.splice(i, 1);
+        this.userGold += 100;
       }
     }
 
