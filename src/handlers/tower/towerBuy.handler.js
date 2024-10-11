@@ -1,11 +1,15 @@
-// import { addtowerBuy } from "../../Storages/tower.storage.js";
+import { towerBuyCheck } from "../../operator/towerBuyOperator.js";
+import { addtowerBuy } from "../../Storages/tower.storage.js";
 
-// export const towerBuy = async (io, socket, payload, userId) => {
-//   const towerInfo = await addtowerBuy(io, socket, payload, userId);
+export const towerBuy = async (io, socket, payload, userId) => {
+  try {
+    const towerInfo = await addtowerBuy(io, socket, payload, userId);
 
-//   if (towerInfo.towerPrice > payload.gold) {
-//     return { status: "fail", message: "골드가 부족 합니다" };
-//   }
+    towerBuyCheck(payload.gold, payload.price);
 
-//   return { status: "succues", towerInfo: towerInfo };
-// };
+    const userGold = (payload.gold -= payload.price);
+    return { status: "succues", towerInfo: towerInfo, userGold };
+  } catch (error) {
+    return { status: "fail", message: error };
+  }
+};
