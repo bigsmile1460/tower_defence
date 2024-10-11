@@ -199,7 +199,15 @@ function initGame() {
   placeInitialTowers(); // 설정된 초기 타워 개수만큼 사전에 타워 배치
   placeinhibitor(); // 기지 배치
 
-  setInterval(spawnMonster, monsterSpawnInterval); // 설정된 몬스터 생성 주기마다 몬스터 생성
+  //몬스터 스폰 이벤트
+  console.log("스폰 이벤트 ")
+  const result = userSocketSave.SendEvent(6,userSocketSave.stages)
+  console.log("result: ", result)
+
+  setInterval(() => {
+    spawnMonster()
+  }, monsterSpawnInterval);
+  // setInterval(spawnMonster, monsterSpawnInterval); // 설정된 몬스터 생성 주기마다 몬스터 생성
 
   // 지금 게임 시작 전에 데이터를 불러오는게 제대로 안되는 중
   setTimeout(() => {
@@ -213,24 +221,6 @@ function initGame() {
   isInitGame = true;
 }
 
-// 이미지 로딩 완료 후 서버와 연결하고 게임 초기화
-Promise.all([
-  new Promise((resolve) => (backgroundImage.onload = resolve)),
-  new Promise((resolve) => (towerImage.onload = resolve)),
-  new Promise((resolve) => (inhibitorImage.onload = resolve)),
-  new Promise((resolve) => (pathImage.onload = resolve)),
-  ...monsterImages.map(
-    (img) => new Promise((resolve) => (img.onload = resolve))
-  ),
-]).then(() => {
-  /* 서버 접속 코드 (여기도 완성해주세요!) */
-  UserSocket.GetInstance().Connect();
-
-  // 이 때, 상태 동기화 이벤트의 경우에 아래의 코드를 마지막에 넣어주세요! 최초의 상태 동기화 이후에 게임을 초기화해야 하기 때문입니다!
-  if (!isInitGame) {
-    initGame();
-  }
-});
 
 const buyTowerButton = document.createElement("button");
 buyTowerButton.textContent = "타워 구입";
