@@ -1,4 +1,4 @@
-// import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 const monsterInfo = {}
 
@@ -9,8 +9,9 @@ const monsterInfo = {}
 // {uuid:"uuid1",atk:1,hp:5,speed:1,score:1,stargoldtGold:1,stage:1}}
 //몬스터 추가 - 생성
 export const addMonster = (userId, monster) => {
-    const monsterUUID = "example"
-    //const monsterUUID = uuidv4()
+    // const monsterUUID = "example"
+    //몬스터 uuid 제공 - 객체 분류
+    const monsterUUID = uuidv4()
     if (!monsterInfo[userId]){
         monsterInfo[userId] = []
     }
