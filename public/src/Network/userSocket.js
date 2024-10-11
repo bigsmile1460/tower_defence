@@ -57,6 +57,7 @@ class UserSocket {
     this.socket.emit("event", {
       handlerId,
       payload,
+      accessToken: localStorage.getItem("authorization"),
     });
   }
 }
