@@ -5,7 +5,7 @@ class UserSocket {
 
   // 스테이지 정보들 저장
   constructor() {
-    this.socket = null;    
+    this.socket = null;
   }
 
   static GetInstance() {
@@ -28,6 +28,7 @@ class UserSocket {
     this.socket.on("connection", (data) => {});
 
     // 응답 패킷 이벤트 할당
+
     this.socket.on("response", (data) => {
       if (data.initGameDB) {
         setLocalStorage("initGameDB", data.initGameDB);
@@ -43,6 +44,10 @@ class UserSocket {
         return;
       }
 
+      if (data.towerInfo) {
+        setLocalStorage("towerInfo", data.towerInfo);
+        console.log(data.status);
+      }
       //console.log(data);
     });
   }
@@ -52,6 +57,7 @@ class UserSocket {
     this.socket.emit("event", {
       handlerId,
       payload,
+      accessToken: localStorage.getItem("authorization"),
     });
   }
 }

@@ -1908,7 +1908,7 @@ export namespace Prisma {
     score: number | null
     gold: number | null
     stage: number | null
-    grade: number | null
+    cycle: number | null
   }
 
   export type MonsterSumAggregateOutputType = {
@@ -1919,7 +1919,7 @@ export namespace Prisma {
     score: number | null
     gold: number | null
     stage: number | null
-    grade: number | null
+    cycle: number | null
   }
 
   export type MonsterMinAggregateOutputType = {
@@ -1930,7 +1930,7 @@ export namespace Prisma {
     score: number | null
     gold: number | null
     stage: number | null
-    grade: number | null
+    cycle: number | null
   }
 
   export type MonsterMaxAggregateOutputType = {
@@ -1941,7 +1941,7 @@ export namespace Prisma {
     score: number | null
     gold: number | null
     stage: number | null
-    grade: number | null
+    cycle: number | null
   }
 
   export type MonsterCountAggregateOutputType = {
@@ -1952,7 +1952,7 @@ export namespace Prisma {
     score: number
     gold: number
     stage: number
-    grade: number
+    cycle: number
     _all: number
   }
 
@@ -1965,7 +1965,7 @@ export namespace Prisma {
     score?: true
     gold?: true
     stage?: true
-    grade?: true
+    cycle?: true
   }
 
   export type MonsterSumAggregateInputType = {
@@ -1976,7 +1976,7 @@ export namespace Prisma {
     score?: true
     gold?: true
     stage?: true
-    grade?: true
+    cycle?: true
   }
 
   export type MonsterMinAggregateInputType = {
@@ -1987,7 +1987,7 @@ export namespace Prisma {
     score?: true
     gold?: true
     stage?: true
-    grade?: true
+    cycle?: true
   }
 
   export type MonsterMaxAggregateInputType = {
@@ -1998,7 +1998,7 @@ export namespace Prisma {
     score?: true
     gold?: true
     stage?: true
-    grade?: true
+    cycle?: true
   }
 
   export type MonsterCountAggregateInputType = {
@@ -2009,7 +2009,7 @@ export namespace Prisma {
     score?: true
     gold?: true
     stage?: true
-    grade?: true
+    cycle?: true
     _all?: true
   }
 
@@ -2107,7 +2107,7 @@ export namespace Prisma {
     score: number
     gold: number
     stage: number
-    grade: number
+    cycle: number
     _count: MonsterCountAggregateOutputType | null
     _avg: MonsterAvgAggregateOutputType | null
     _sum: MonsterSumAggregateOutputType | null
@@ -2137,7 +2137,7 @@ export namespace Prisma {
     score?: boolean
     gold?: boolean
     stage?: boolean
-    grade?: boolean
+    cycle?: boolean
   }, ExtArgs["result"]["monster"]>
 
 
@@ -2149,7 +2149,7 @@ export namespace Prisma {
     score?: boolean
     gold?: boolean
     stage?: boolean
-    grade?: boolean
+    cycle?: boolean
   }
 
 
@@ -2164,7 +2164,7 @@ export namespace Prisma {
       score: number
       gold: number
       stage: number
-      grade: number
+      cycle: number
     }, ExtArgs["result"]["monster"]>
     composites: {}
   }
@@ -2541,7 +2541,7 @@ export namespace Prisma {
     readonly score: FieldRef<"monster", 'Int'>
     readonly gold: FieldRef<"monster", 'Int'>
     readonly stage: FieldRef<"monster", 'Int'>
-    readonly grade: FieldRef<"monster", 'Int'>
+    readonly cycle: FieldRef<"monster", 'Int'>
   }
     
 
@@ -3766,7 +3766,7 @@ export namespace Prisma {
     score: 'score',
     gold: 'gold',
     stage: 'stage',
-    grade: 'grade'
+    cycle: 'cycle'
   };
 
   export type MonsterScalarFieldEnum = (typeof MonsterScalarFieldEnum)[keyof typeof MonsterScalarFieldEnum]
@@ -3890,7 +3890,7 @@ export namespace Prisma {
     score?: IntFilter<"monster"> | number
     gold?: IntFilter<"monster"> | number
     stage?: IntFilter<"monster"> | number
-    grade?: IntFilter<"monster"> | number
+    cycle?: IntFilter<"monster"> | number
   }
 
   export type monsterOrderByWithRelationInput = {
@@ -3901,7 +3901,7 @@ export namespace Prisma {
     score?: SortOrder
     gold?: SortOrder
     stage?: SortOrder
-    grade?: SortOrder
+    cycle?: SortOrder
   }
 
   export type monsterWhereUniqueInput = Prisma.AtLeast<{
@@ -3915,7 +3915,7 @@ export namespace Prisma {
     score?: IntFilter<"monster"> | number
     gold?: IntFilter<"monster"> | number
     stage?: IntFilter<"monster"> | number
-    grade?: IntFilter<"monster"> | number
+    cycle?: IntFilter<"monster"> | number
   }, "id">
 
   export type monsterOrderByWithAggregationInput = {
@@ -3926,7 +3926,7 @@ export namespace Prisma {
     score?: SortOrder
     gold?: SortOrder
     stage?: SortOrder
-    grade?: SortOrder
+    cycle?: SortOrder
     _count?: monsterCountOrderByAggregateInput
     _avg?: monsterAvgOrderByAggregateInput
     _max?: monsterMaxOrderByAggregateInput
@@ -3945,7 +3945,7 @@ export namespace Prisma {
     score?: IntWithAggregatesFilter<"monster"> | number
     gold?: IntWithAggregatesFilter<"monster"> | number
     stage?: IntWithAggregatesFilter<"monster"> | number
-    grade?: IntWithAggregatesFilter<"monster"> | number
+    cycle?: IntWithAggregatesFilter<"monster"> | number
   }
 
   export type towerWhereInput = {
@@ -4070,7 +4070,7 @@ export namespace Prisma {
     score: number
     gold: number
     stage: number
-    grade: number
+    cycle: number
   }
 
   export type monsterUncheckedCreateInput = {
@@ -4081,7 +4081,7 @@ export namespace Prisma {
     score: number
     gold: number
     stage: number
-    grade: number
+    cycle: number
   }
 
   export type monsterUpdateInput = {
@@ -4091,7 +4091,7 @@ export namespace Prisma {
     score?: IntFieldUpdateOperationsInput | number
     gold?: IntFieldUpdateOperationsInput | number
     stage?: IntFieldUpdateOperationsInput | number
-    grade?: IntFieldUpdateOperationsInput | number
+    cycle?: IntFieldUpdateOperationsInput | number
   }
 
   export type monsterUncheckedUpdateInput = {
@@ -4102,7 +4102,7 @@ export namespace Prisma {
     score?: IntFieldUpdateOperationsInput | number
     gold?: IntFieldUpdateOperationsInput | number
     stage?: IntFieldUpdateOperationsInput | number
-    grade?: IntFieldUpdateOperationsInput | number
+    cycle?: IntFieldUpdateOperationsInput | number
   }
 
   export type monsterCreateManyInput = {
@@ -4113,7 +4113,7 @@ export namespace Prisma {
     score: number
     gold: number
     stage: number
-    grade: number
+    cycle: number
   }
 
   export type monsterUpdateManyMutationInput = {
@@ -4123,7 +4123,7 @@ export namespace Prisma {
     score?: IntFieldUpdateOperationsInput | number
     gold?: IntFieldUpdateOperationsInput | number
     stage?: IntFieldUpdateOperationsInput | number
-    grade?: IntFieldUpdateOperationsInput | number
+    cycle?: IntFieldUpdateOperationsInput | number
   }
 
   export type monsterUncheckedUpdateManyInput = {
@@ -4134,7 +4134,7 @@ export namespace Prisma {
     score?: IntFieldUpdateOperationsInput | number
     gold?: IntFieldUpdateOperationsInput | number
     stage?: IntFieldUpdateOperationsInput | number
-    grade?: IntFieldUpdateOperationsInput | number
+    cycle?: IntFieldUpdateOperationsInput | number
   }
 
   export type towerCreateInput = {
@@ -4281,7 +4281,7 @@ export namespace Prisma {
     score?: SortOrder
     gold?: SortOrder
     stage?: SortOrder
-    grade?: SortOrder
+    cycle?: SortOrder
   }
 
   export type monsterAvgOrderByAggregateInput = {
@@ -4292,7 +4292,7 @@ export namespace Prisma {
     score?: SortOrder
     gold?: SortOrder
     stage?: SortOrder
-    grade?: SortOrder
+    cycle?: SortOrder
   }
 
   export type monsterMaxOrderByAggregateInput = {
@@ -4303,7 +4303,7 @@ export namespace Prisma {
     score?: SortOrder
     gold?: SortOrder
     stage?: SortOrder
-    grade?: SortOrder
+    cycle?: SortOrder
   }
 
   export type monsterMinOrderByAggregateInput = {
@@ -4314,7 +4314,7 @@ export namespace Prisma {
     score?: SortOrder
     gold?: SortOrder
     stage?: SortOrder
-    grade?: SortOrder
+    cycle?: SortOrder
   }
 
   export type monsterSumOrderByAggregateInput = {
@@ -4325,7 +4325,7 @@ export namespace Prisma {
     score?: SortOrder
     gold?: SortOrder
     stage?: SortOrder
-    grade?: SortOrder
+    cycle?: SortOrder
   }
 
   export type StringFilter<$PrismaModel = never> = {

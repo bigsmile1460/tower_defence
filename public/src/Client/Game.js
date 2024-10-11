@@ -24,7 +24,7 @@ class Game {
     this.monsters = []; // 몬스터 저장 배열
     this.towers = []; // 타워 저장 배열
 
-    this.score = 0; // 현재 플레이어의 스코어
+    this.score = 2000; // 현재 플레이어의 스코어
     this.highScore = 0; // 현재 서버 최고 스코어
 
     this.backgroundImage = null; // 배경 이미지
@@ -44,21 +44,77 @@ class Game {
     this.startTime = 0; // 게임 시작 시간
     this.elpsedTime = 0; // 게임 종료 시간
 
-    this.buyTowerButton = document.createElement("button");
-    this.buyTowerButton.textContent = "타워 구입";
-    this.buyTowerButton.style.position = "absolute";
-    this.buyTowerButton.style.top = "10px";
-    this.buyTowerButton.style.right = "10px";
-    this.buyTowerButton.style.padding = "10px 20px";
-    this.buyTowerButton.style.fontSize = "16px";
-    this.buyTowerButton.style.cursor = "pointer";
+    this.buySingleTowerButton = document.createElement("button");
+    this.buySingleTowerButton.textContent = "단일 공격 타워 구입";
+    this.buySingleTowerButton.style.position = "absolute";
+    this.buySingleTowerButton.style.top = "10px";
+    this.buySingleTowerButton.style.right = "10px";
+    this.buySingleTowerButton.style.padding = "10px 20px";
+    this.buySingleTowerButton.style.fontSize = "16px";
+    this.buySingleTowerButton.style.cursor = "pointer";
 
-    this.buyTowerButton.addEventListener("click", () => {
-      const newTower = new Tower(this.player.x, this.player.y);
-      this.towers.push(newTower);
+    this.buySingleTowerButton.addEventListener("click", () => {
+      UserSocket.GetInstance().SendEvent(9, {
+        id: 1,
+        gold: this.userGold,
+        price: 1000,
+      });
+      setTimeout(() => {
+        const newTower = new Tower(this.player.x, this.player.y);
+        this.towers.push(newTower);
+        console.log(getLocalStorage("towerInfo"));
+      }, 30);
     });
 
-    document.body.appendChild(this.buyTowerButton);
+    document.body.appendChild(this.buySingleTowerButton);
+
+    this.buyRangeTowerButton = document.createElement("button");
+    this.buyRangeTowerButton.textContent = "범위 공격 타워 구입";
+    this.buyRangeTowerButton.style.position = "absolute";
+    this.buyRangeTowerButton.style.top = "60px";
+    this.buyRangeTowerButton.style.right = "10px";
+    this.buyRangeTowerButton.style.padding = "10px 20px";
+    this.buyRangeTowerButton.style.fontSize = "16px";
+    this.buyRangeTowerButton.style.cursor = "pointer";
+
+    this.buyRangeTowerButton.addEventListener("click", () => {
+      UserSocket.GetInstance().SendEvent(9, {
+        id: 2,
+        gold: this.userGold,
+        price: 1200,
+      });
+      setTimeout(() => {
+        const newTower = new Tower(this.player.x, this.player.y);
+        this.towers.push(newTower);
+        console.log(getLocalStorage("towerInfo"));
+      }, 30);
+    });
+
+    document.body.appendChild(this.buyRangeTowerButton);
+
+    this.buyHealTowerButton = document.createElement("button");
+    this.buyHealTowerButton.textContent = "힐 타워 구입";
+    this.buyHealTowerButton.style.position = "absolute";
+    this.buyHealTowerButton.style.top = "110px";
+    this.buyHealTowerButton.style.right = "10px";
+    this.buyHealTowerButton.style.padding = "10px 20px";
+    this.buyHealTowerButton.style.fontSize = "16px";
+    this.buyHealTowerButton.style.cursor = "pointer";
+
+    this.buyHealTowerButton.addEventListener("click", () => {
+      UserSocket.GetInstance().SendEvent(9, {
+        id: 3,
+        gold: this.userGold,
+        price: 1500,
+      });
+      setTimeout(() => {
+        const newTower = new Tower(this.player.x, this.player.y);
+        this.towers.push(newTower);
+        console.log(getLocalStorage("towerInfo"));
+      }, 30);
+    });
+
+    document.body.appendChild(this.buyHealTowerButton);
   }
 
   InitMap() {
@@ -75,21 +131,21 @@ class Game {
   InitGame() {
     this.monsterPath = this.path.generateRandomMonsterPath();
     this.InitMap();
-    this.PlaceInitialTowers();
+    // this.PlaceInitialTowers();
     this.placeinhibitor();
   }
 
-  PlaceInitialTowers() {
-    for (let i = 0; i < this.numOfInitialTowers; i++) {
-      const { x, y } = this.path.getRandomPositionNearPath(
-        200,
-        this.monsterPath
-      );
-      const tower = new Tower(x, y, this.towerCost);
-      this.towers.push(tower);
-      tower.draw(this.ctx, this.towerImage);
-    }
-  }
+  // PlaceInitialTowers() {
+  //   for (let i = 0; i < this.numOfInitialTowers; i++) {
+  //     const { x, y } = this.path.getRandomPositionNearPath(
+  //       200,
+  //       this.monsterPath
+  //     );
+  //     const tower = new Tower(x, y, this.towerCost);
+  //     this.towers.push(tower);
+  //     tower.draw(this.ctx, this.towerImage);
+  //   }
+  // }
 
   placeinhibitor() {
     const lastPoint = this.monsterPath[this.monsterPath.length - 1];
@@ -121,7 +177,6 @@ class Game {
 
     this.path = new pathManager(this.canvas, this.ctx, this.pathImage, 60, 60);
 
-    UserSocket.GetInstance().SendEvent(1, {});
     this.InitGame();
   }
 
@@ -138,7 +193,12 @@ class Game {
 
     this.elpsedTime++;
 
-    // 현재 id가 마지막 스테이지일 때 스테이지 변경 금지
+    // 몬스터 300마리 이상 존재시 게임오버
+    if (this.monsters.length > 300) {
+      UserSocket.GetInstance().SendEvent(3, { HighScore: this.score });
+      alert(`게임 오버`);
+    }
+
     if (
       getLocalStorage("currentStage").id ===
       getLocalStorage("stages")[getLocalStorage("stages").length - 1].id
@@ -146,10 +206,11 @@ class Game {
       this.stageChange = false;
     }
 
-    // 일정 시간이 지날 경우 스테이집 ㅕㄴ경
+    // 일정 시간이 지날 경우 스테이지 변경
     if ((this.elpsedTime - this.startTime) % 500 === 0 && this.stageChange) {
       UserSocket.GetInstance().SendEvent(2, {
         currentStage: getLocalStorage("currentStage"),
+        elpsedTime: this.elpsedTime,
       });
     }
 
@@ -191,6 +252,7 @@ class Game {
       } else {
         /* 몬스터가 죽었을 때 */
         this.monsters.splice(i, 1);
+        this.userGold += 100;
       }
     }
 

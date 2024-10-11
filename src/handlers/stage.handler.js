@@ -1,8 +1,12 @@
-import { prismaAsset } from "../lib/utils/prisma/index.js";
+import { prismaAsset, prismaUser } from "../lib/utils/prisma/index.js";
 import { getAllStages, getNextStage } from "../Storages/stage.js";
+import stagesOperator from "../operator/stageOperator.js";
+let startGameTime = 0; // 시작 시간 검증용 변수
 
-export const gameStart = async (io, socket, payload, userId) => {
+// 토큰 검증
+export const stageStart = async (io, socket, payload, userId) => {
   console.log(`게임 시작!!`);
+  startGameTime = payload.startTime;
   const initGameDB = await prismaAsset.initGame.findFirst({
     where: {
       id: 1,
@@ -11,28 +15,52 @@ export const gameStart = async (io, socket, payload, userId) => {
 
   const stages = getAllStages();
 
-  return { initGameDB: initGameDB, stages: stages };
+  return { status: "success", initGameDB: initGameDB, stages: stages };
 };
 
 export const stageChange = async (io, socket, payload, userId) => {
   const currentStage = payload.currentStage;
-
-  //서버 관련 유저 골드 증가 및 스코어 증가
+  const elpsedTime = payload.elpsedTime;
 
   const nextStage = getNextStage(currentStage.id + 1);
 
-  return { currentStage: JSON.stringify(nextStage) };
+  stagesOperator.stageChange(
+    startGameTime,
+    elpsedTime,
+    currentStage,
+    nextStage
+  );
+
+  return { status: "success", currentStage: JSON.stringify(nextStage) };
 };
 
-export const gameEnd = async (io, socket, payload, userId) => {
+export const stageEnd = async (io, socket, payload, userId) => {
   const { serverHighScore } = await prismaAsset.initGame.findFirst({
     where: {
       id: 1,
     },
   });
 
+  const user = await prismaUser.user.findFirst({
+    where: {
+      userId: userId,
+    },
+  });
+
+  stagesOperator.stageEnd(user, serverHighScore);
+
+  if (payload.HighScore > user.highScore) {
+    await prismaUser.user.update({
+      where: {
+        userId: user.userId,
+      },
+      data: {
+        highScore: payload.HighScore,
+      },
+    });
+  }
   if (payload.HighScore > serverHighScore) {
-    const newHighScore = await prismaAsset.initGame.update({
+    await prismaAsset.initGame.update({
       where: {
         id: 1,
       },
@@ -40,10 +68,6 @@ export const gameEnd = async (io, socket, payload, userId) => {
         serverHighScore: payload.HighScore,
       },
     });
-
-    if (!newHighScore) {
-      return { status: `fail`, error: `서버에서 에러 발생!` };
-    }
 
     return {
       status: `success`,
