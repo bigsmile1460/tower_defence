@@ -137,7 +137,7 @@ exports.Prisma.MonsterScalarFieldEnum = {
   score: 'score',
   gold: 'gold',
   stage: 'stage',
-  grade: 'grade'
+  cycle: 'cycle'
 };
 
 exports.Prisma.TowerScalarFieldEnum = {
