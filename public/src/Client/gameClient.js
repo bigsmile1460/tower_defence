@@ -262,4 +262,4 @@ class GameClient {
   }
 }
 
-export default Game;
+export default GameClient;
