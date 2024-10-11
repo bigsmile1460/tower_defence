@@ -36,9 +36,9 @@ model monster {
   atk Int @map("atk")
   speed Int @map("speed")
   score Int @map("score")
-  gold Int @map("stargoldtGold")
+  gold Int @map("gold")
   stage Int @map("stage")
-  grade Int @map("servgradeerHighScore")
+  cycle Int @map("cycle")
 
   @@map("Monster")
 }

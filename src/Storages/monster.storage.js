@@ -14,7 +14,9 @@ export const addMonster = (userId, monster) => {
     if (!monsterInfo[userId]){
         monsterInfo[userId] = []
     }
+    console.log("몬스터 정보:", monster)
     monsterInfo[userId].push(monster)
+    console.log("monsterInfo: ", monsterInfo)
 }
 
 //몬스터 정보
@@ -23,7 +25,7 @@ export const getMonster = (userId) => {
 }
 
 //몬스터 변동
-export const updateMonster = (userId, monster, attack) => {
+export const updateMonster = (userId, monsterUUID, attack) => {
     monsterInfo[userId][hp] = monsterInfo[userId][hp] - attack
     
     if (monsterInfo[userId][hp] <= 0){

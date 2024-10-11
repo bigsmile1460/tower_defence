@@ -1,10 +1,11 @@
 import { getLocalStorage, setLocalStorage } from "../Local/localStorage.js";
 
 class UserSocket {
+  static gInstance = null;
+
   // 스테이지 정보들 저장
   constructor() {
-    this.socket = null;
-    this.gInstance = null;
+    this.socket = null;    
   }
 
   static GetInstance() {
