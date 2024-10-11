@@ -20,7 +20,7 @@ class stagesOperator {
   }
 
   stageEnd(user, serverHighScore) {
-    // 현재 유저가 DB에 존재하는지
+    // 유저 존재 유무 및 서버 최고 스코어 유무 검증
     console.log(`user`, user);
     if (!user) {
       throw new Error(`현재 유저가 존재하지 않음.`);
