@@ -16,7 +16,7 @@ class Game {
     this.inhibitor = null; // 억제기
     this.inhibitorHp = 0; // 억제기 체력
 
-    this.towerCost = 0; // 타워 구입시 가격
+    this.towerCost = 300; // 타워 구입시 가격
     this.numOfInitialTowers = 0; // 게임 시작시 타워 자동 생성 -> 없어도 됨
     this.monsterLevel = 1; // 몬스터 레벨
     this.monsterSpawnInterval = 1000; // 몬스터 스폰시간

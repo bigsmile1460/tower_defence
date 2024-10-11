@@ -42,11 +42,13 @@ export class Tower {
   }
 
   singleAttack(tower, monsters) {
+    console.log(`tower2`);
     // 공격 유형이 단일공격이 아닐 경우 함수 종료
     if (tower.attackType !== "singleAttack") {
       return;
     }
 
+    console.log(`tower`);
     // 공격 쿨 타임이 남아있을 경우 함수 종료
     if (this.cooldown > 0) {
       return;
