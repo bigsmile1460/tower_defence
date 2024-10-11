@@ -124,9 +124,11 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 
 exports.Prisma.InitGameScalarFieldEnum = {
   id: 'id',
-  inhibitorHp: 'inhibitorHp',
   startGold: 'startGold',
-  towerAmountLimit: 'towerAmountLimit'
+  towerAmountLimit: 'towerAmountLimit',
+  monsterCountLimit: 'monsterCountLimit',
+  inhibitorHp: 'inhibitorHp',
+  inhibitorHpLimit: 'inhibitorHpLimit'
 };
 
 exports.Prisma.MonsterScalarFieldEnum = {
