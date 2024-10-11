@@ -44,6 +44,10 @@ class UserSocket {
         return;
       }
 
+      if (data.towerInfo) {
+        setLocalStorage("towerInfo", data.towerInfo);
+        console.log(data.status);
+      }
       //console.log(data);
     });
   }
