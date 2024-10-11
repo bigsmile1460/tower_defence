@@ -40,7 +40,6 @@ class GameClient {
     this.path = null; // 경로
     //this.monsterPath = null; => 중첩된 거 같아서 주석처리 했습니다.
 
-    this.stageChange = true;
     this.startTime = 0; // 게임 시작 시간
     this.elpsedTime = 0; // 게임 종료 시간
 
@@ -178,7 +177,7 @@ class GameClient {
     this.InitGame();
   }
 
-  async GameLoop() {
+  GameLoop() {
     this.ctx.drawImage(
       this.backgroundImage,
       0,
@@ -197,15 +196,8 @@ class GameClient {
       alert(`게임 오버`);
     }
 
-    if (
-      getLocalStorage("currentStage").id ===
-      getLocalStorage("stages")[getLocalStorage("stages").length - 1].id
-    ) {
-      this.stageChange = false;
-    }
-
     // 일정 시간이 지날 경우 스테이지 변경
-    if ((this.elpsedTime - this.startTime) % 500 === 0 && this.stageChange) {
+    if ((this.elpsedTime - this.startTime) % 500 === 0) {
       UserSocket.GetInstance().SendEvent(2, {
         currentStage: getLocalStorage("currentStage"),
         elpsedTime: this.elpsedTime,
@@ -222,7 +214,7 @@ class GameClient {
 
     this.ctx.fillStyle = "red";
     this.ctx.fillText(
-      `현재 스테이지: ${getLocalStorage("currentStage").id}`,
+      `현재 스테이지: ${getLocalStorage("currentStage")[0].stageInfo.stageId}`,
       100,
       200
     ); // 현재 스테이지 표시

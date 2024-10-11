@@ -1,5 +1,5 @@
 import GameClient from "./Client/gameClient.js";
-import { getLocalStorage } from "./Local/localStorage.js";
+import { clearLocalStorage, getLocalStorage } from "./Local/localStorage.js";
 import UserSocket from "./Network/userSocket.js";
 
 let gameClient = new GameClient();
@@ -37,6 +37,7 @@ async function GameStart() {
       (img) => new Promise((resolve) => (img.onload = resolve))
     ),
   ]).then(() => {
+    //clearLocalStorage();
     UserSocket.GetInstance().Connect();
     UserSocket.GetInstance().SendEvent(1, {
       startTime: Date.now(),
@@ -49,9 +50,10 @@ async function GameStart() {
       inhibitorImage: inhibitorImage,
       pathImage: pathImage,
       monsterImages: monsterImages,
-      userGold: getLocalStorage("initGameDB").startGold, // 시작시 유저 골드
-      inhibitorHp: getLocalStorage("initGameDB").baseHp, // 시작시 기지 체력
-      highScore: getLocalStorage("initGameDB").serverHighScore, // 시작시 서버 최고 점수
+
+      userGold: getLocalStorage("currentStage")[0].stageInfo.gold, // 시작시 유저 골드
+      inhibitorHp: getLocalStorage("currentStage")[0].stageInfo.inhibitorHp, // 시작시 기지 체력
+      highScore: getLocalStorage("highScore"), // 시작시 서버 최고 점수
       startTime: Date.now(), // 현재 시간
       elpsedTime: Date.now(), // 변경 시간
     });
