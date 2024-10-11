@@ -146,7 +146,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "D:\\spa\\TowerDefence\\prisma\\assetPrisma\\client",
+      "value": "C:\\Users\\devPark\\Desktop\\study_redis\\sparta\\devGame\\teamproject_towerdef\\TowerDefence\\prisma\\assetPrisma\\client",
       "fromEnvVar": null
     },
     "config": {
@@ -160,7 +160,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "D:\\spa\\TowerDefence\\prisma\\schemaAsset.prisma",
+    "sourceFilePath": "C:\\Users\\devPark\\Desktop\\study_redis\\sparta\\devGame\\teamproject_towerdef\\TowerDefence\\prisma\\schemaAsset.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {

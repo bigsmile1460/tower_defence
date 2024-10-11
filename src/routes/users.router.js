@@ -2,6 +2,7 @@ import express from 'express';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import { prismaUser } from "../lib/utils/prisma/index.js";
+import { CreateAccessToken } from '../lib/utils/token/tokenCreate.js';
 
 const usersRouter = express.Router();
 dotenv.config();
@@ -19,6 +20,12 @@ usersRouter.post('/SignUp', async (req,res,next)=>{
     {
         return res.status(404).json({ message: "이메일을 입력해주세요" });
     }
+
+    const emailRule = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if(!emailRule.test(email))
+    {
+        return res.status(404).json({message:"이메일 형식에 맞게 입력해주세요"});
+    }    
 
     if(password.length === 0)
     {
@@ -51,6 +58,12 @@ usersRouter.post('/SignIn', async (req, res, next) => {
     if (email.length === 0) {
         return res.status(404).json({ message: "이메일을 입력해주세요" });
     }
+
+    const emailRule = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if(!emailRule.test(email))
+    {
+        return res.status(404).json({message:"이메일 형식에 맞게 입력해주세요"});
+    }  
 
     if(password.length ===0){
         return res.status(404).json({message:"비밀번호를 입력해주세요"});
