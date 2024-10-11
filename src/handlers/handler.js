@@ -27,9 +27,18 @@ export const handlerEvent = async (io, socket, data) => {
     }
 
     // handler 실행
-    const response = await handler(io, socket, data.payload, decodedAccessToken.email);    
+    const response = await handler(
+      io,
+      socket,
+      data.payload,
+      decodedAccessToken.email
+    );
 
-    socket.emit("response", response);
+    if (response.data) {
+      socket.emit("event", { handlerId: 1, payload: response });
+    } else {
+      socket.emit("event", { handlerId: 2, payload: response });
+    }
   } catch (error) {
     console.log("Handler 변환 중 에러 발생", error);
   }
