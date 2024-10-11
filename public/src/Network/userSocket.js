@@ -46,7 +46,8 @@ class UserSocket {
 
       if (data.towerInfo) {
         setLocalStorage("towerInfo", data.towerInfo);
-        console.log(data.status);
+        setLocalStorage("userGold", data.userGold);
+        return;
       }
       //console.log(data);
     });
