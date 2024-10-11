@@ -1,4 +1,3 @@
-import { createStage } from "../../Storages/models/model.js";
 import towerAttackOperator from "../../operator/towerAttackOperator.js";
 
 // 타워 공격
@@ -18,19 +17,6 @@ export const towerAttack = (io, socket, payload, userId) => {
     // 서버에서는 error 알 수 있음
     console.log("타워 공격 정보 처리 중 에러 발생", error);
     // 클라이언트에서는 fail만
-    return { status : "fail", Message: "타워 공격" };
+    return { status: "fail", Message: "타워 공격" };
   }
 };
-
-////////////// 게임 시작 임시 함수
-export const gameStart = (io, socket, payload, userId) => {
-  try {
-    createStage(userId, payload.gold, payload.inhibitor);
-
-    return { status: "success", Message: "게임 시작 성공!" };
-  } catch (error) {
-    console.log("게임 시작 정보 처리 중 에러 발생", error);
-  }
-};
-
-////////////// 게임 시작 임시 함수
