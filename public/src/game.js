@@ -1,8 +1,8 @@
-import Game from "../src/Client/Game.js";
+import GameClient from "./Client/gameClient.js";
 import { getLocalStorage } from "./Local/localStorage.js";
 import UserSocket from "./Network/userSocket.js";
 
-let game = new Game();
+let gameClient = new GameClient();
 
 const NUM_OF_MONSTERS = 5;
 const backgroundImage = new Image();
@@ -43,7 +43,7 @@ async function GameStart() {
       accesToken: localStorage.getItem("authorization"),
     });
 
-    game.GameStart({
+    gameClient.GameStart({
       backgroundImage: backgroundImage,
       towerImage: towerImage,
       inhibitorImage: inhibitorImage,
@@ -60,9 +60,9 @@ async function GameStart() {
     UserSocket.GetInstance().SendEvent(6, {});
     // 몬스터 생성 주기
     setInterval(() => {
-      game.SpawnMonster();
-    }, game.monsterSpawnInterval);
+      gameClient.SpawnMonster();
+    }, gameClient.monsterSpawnInterval);
 
-    game.GameLoop();
+    gameClient.GameLoop();
   });
 }

@@ -21,23 +21,25 @@ enum attackType {
 }
 
 model initGame {
-  id              Int @id @default(autoincrement()) @map("Id")
-  baseHp          Int @map("baseHp")
-  startGold       Int @map("startGold")
-  serverHighScore Int @map("serverHighScore")
+  id                Int @id @default(autoincrement()) @map("Id")
+  startGold         Int @map("startGold")
+  towerAmountLimit  Int @default(6) @map("towerAmountLimit")
+  monsterCountLimit Int @default(200) @map("monsterCountLimit")
+  inhibitorHp       Int @map("inhibitorHp")
+  inhibitorHpLimit  Int @default(1000) @map("inhibitorHpLimit")
 
   @@map("InitGame")
 }
 
 model monster {
-  id    Int @id @default(autoincrement()) @map("Id")
-  hp    Int @map("hp")
-  atk   Int @map("atk")
-  speed Int @map("speed")
-  score Int @map("score")
-  gold  Int @map("gold")
-  stage Int @map("stage")
-  cycle Int @map("cycle")
+  id     Int @id @default(autoincrement()) @map("Id")
+  hp     Int @map("hp")
+  attack Int @map("attack")
+  speed  Int @map("speed")
+  score  Int @map("score")
+  gold   Int @map("gold")
+  stage  Int @map("stage")
+  cycle  Int @map("cycle")
 
   @@map("Monster")
 }

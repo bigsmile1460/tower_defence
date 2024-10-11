@@ -1,6 +1,5 @@
-import { prismaAsset, prismaUser } from "../lib/utils/prisma/index.js";
-import { getAllStages, getNextStage } from "../Storages/stage.js";
-import stagesOperator from "../operator/stageOperator.js";
+import { prismaAsset, prismaUser } from "../../lib/utils/prisma/index.js";
+import stagesOperator from "../../operator/stageOperator.js";
 let startGameTime = 0; // 시작 시간 검증용 변수
 
 // 토큰 검증

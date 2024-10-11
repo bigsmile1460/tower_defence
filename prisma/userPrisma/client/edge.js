@@ -117,7 +117,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\devPark\\Desktop\\study_redis\\sparta\\devGame\\teamproject_towerdef\\TowerDefence\\prisma\\userPrisma\\client",
+      "value": "D:\\Sparta\\websocket_game\\TowerDefence\\prisma\\userPrisma\\client",
       "fromEnvVar": null
     },
     "config": {
@@ -131,7 +131,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\devPark\\Desktop\\study_redis\\sparta\\devGame\\teamproject_towerdef\\TowerDefence\\prisma\\schemaUser.prisma",
+    "sourceFilePath": "D:\\Sparta\\websocket_game\\TowerDefence\\prisma\\schemaUser.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -145,6 +145,7 @@ const config = {
     "db"
   ],
   "activeProvider": "mysql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {

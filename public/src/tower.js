@@ -41,9 +41,9 @@ export class Tower {
     }
   }
 
-  singleAttack(tower, monsters) {
+  singleAttack(monsters) {
     // 공격 유형이 단일공격이 아닐 경우 함수 종료
-    if (tower.attackType !== "singleAttack") {
+    if (this.attackType !== "singleAttack") {
       return;
     }
 
@@ -56,11 +56,11 @@ export class Tower {
     let attack = false;
     for (let monster of monsters) {
       const distance = Math.sqrt(
-        Math.pow(tower.x - monster.x, 2) + Math.pow(tower.y - monster.y, 2)
+        Math.pow(this.x - monster.x, 2) + Math.pow(this.y - monster.y, 2)
       );
-      if (distance < tower.attackRange) {
+      if (distance < this.attackRange) {
         monster.hp -= this.attackPower;
-        this.cooldown = this.attackSpeed; // 남은 쿨타임 = 공격 속도 (초당 60프레임)
+        this.cooldown = this.attackSpeed * 2; // 남은 쿨타임 = 공격 속도 (초당 60프레임) 이여야 하는데 (내 컴퓨터는 120프레임이라 *2배)
         this.beamDuration = 30; // 광선 지속 시간 (0.5초)
         this.target = monster; // 광선의 목표 설정
         attack = true;
@@ -74,22 +74,13 @@ export class Tower {
     }
 
     // 공격 성고 시 서버에 공격 결과 전달
-    console.log("서버에 단일 공격 타워의 공격 실행 전달");
     this.lastAttack = Date.now();
-    UserSocket.GetInstance().socket.emit("event", {
-      userID: null,
-      clientVersion: null,
-      handlerId: 7,
-      payload: {
-        tower: tower,
-        monsters: monsters,
-      },
-    });
+    UserSocket.GetInstance().SendEvent(7, { tower: this, monsters: monsters });
   }
 
-  multiAttack(tower, monsters) {
+  multiAttack(monsters) {
     // 공격 유형이 다중공격이 아닐 경우 함수 종료
-    if (tower.attackType !== "multiAttack") {
+    if (this.attackType !== "multiAttack") {
       return;
     }
 
@@ -102,11 +93,11 @@ export class Tower {
     let attack = false;
     for (let monster of monsters) {
       const distance = Math.sqrt(
-        Math.pow(tower.x - monster.x, 2) + Math.pow(tower.y - monster.y, 2)
+        Math.pow(this.x - monster.x, 2) + Math.pow(this.y - monster.y, 2)
       );
-      if (distance < tower.attackRange) {
+      if (distance < this.attackRange) {
         monster.hp -= this.attackPower;
-        this.cooldown = this.attackSpeed; // 남은 쿨타임 = 공격 속도 (초당 60프레임)
+        this.cooldown = this.attackSpeed * 2; // 남은 쿨타임 = 공격 속도 (초당 60프레임) 이여야 하는데 (내 컴퓨터는 120프레임이라 *2배)
         this.beamDuration = 30; // 광선 지속 시간 (0.5초)
         this.target = monster; // 광선의 목표 설정
         attack = true;
@@ -119,22 +110,13 @@ export class Tower {
     }
 
     // 공격 성고 시 서버에 공격 결과 전달
-    console.log("서버에 다중 공격 타워의 공격 실행 전달");
     this.lastAttack = Date.now();
-    UserSocket.GetInstance().socket.emit("event", {
-      userID: null,
-      clientVersion: null,
-      handlerId: 7,
-      payload: {
-        tower: tower,
-        monsters: monsters,
-      },
-    });
+    UserSocket.GetInstance().SendEvent(7, { tower: tower, monsters: monsters });
   }
 
-  heal(tower, base) {
+  heal(inhibitor) {
     // 공격 유형이 힐이 아닐 경우 함수 종료
-    if (tower.attackType !== "heal") {
+    if (this.attackType !== "heal") {
       return;
     }
 
@@ -143,22 +125,16 @@ export class Tower {
       return;
     }
 
-    base.hp = Math.min(base.hp + this.attackPower, base.maxHp);
+    inhibitor.hp = Math.min(inhibitor.hp + this.attackPower, inhibitor.maxHp);
     this.cooldown = this.attackSpeed; // 남은 쿨타임 = 공격 속도 (초당 60프레임)
     this.beamDuration = 30; // 광선 지속 시간 (0.5초)
-    this.target = base; // 광선의 목표 설정
+    this.target = inhibitor; // 광선의 목표 설정
 
-    // 힐 성고 시 서버에 힐 결과 전달
-    console.log("서버에 힐 타워의 힐 실행 전달");
+    // 공격 성고 시 서버에 공격 결과 전달
     this.lastAttack = Date.now();
-    UserSocket.GetInstance().socket.emit("event", {
-      userID: null,
-      clientVersion: null,
-      handlerId: 7,
-      payload: {
-        tower: tower,
-        base: base,
-      },
+    UserSocket.GetInstance().SendEvent(7, {
+      tower: this,
+      inhibitor: inhibitor,
     });
   }
 
@@ -176,15 +152,9 @@ export class Tower {
     this.attackPower += this.upgradeAttackPower;
     this.level += 1;
 
-    UserSocket.GetInstance().socket.emit("event", {
-      userID: null,
-      clientVersion: null,
-      handlerId: 8,
-      payload: {
-        gold: gold,
-        tower: this,
-      },
-    });
+    // 공격 성고 시 서버에 공격 결과 전달
+    this.lastAttack = Date.now();
+    UserSocket.GetInstance().SendEvent(8, { userGold: userGold, tower: this });
 
     return gold;
   }

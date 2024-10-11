@@ -6,7 +6,7 @@ import { Inhibitor } from "../base.js";
 import Player from "../player.js";
 import { getLocalStorage } from "../Local/localStorage.js";
 
-class Game {
+class GameClient {
   constructor() {
     this.canvas = document.getElementById("gameCanvas");
     this.ctx = this.canvas.getContext("2d");
@@ -262,4 +262,4 @@ class Game {
   }
 }
 
-export default Game;
+export default GameClient;

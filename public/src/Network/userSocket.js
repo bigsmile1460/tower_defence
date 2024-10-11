@@ -38,15 +38,14 @@ class UserSocket {
       }
 
       if (data.currentStage) {
-        setLocalStorage(
-          localStorage.setItem("currentStage", data.currentStage)
-        );
+        setLocalStorage("currentStage", data.currentStage);
         return;
       }
 
       if (data.towerInfo) {
         setLocalStorage("towerInfo", data.towerInfo);
-        console.log(data.status);
+        setLocalStorage("userGold", data.userGold);
+        return;
       }
       //console.log(data);
     });

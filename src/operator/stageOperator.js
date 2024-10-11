@@ -1,5 +1,3 @@
-import { getStage } from "../Storages/stage.js";
-
 class stagesOperator {
   stageChange(startGameTime, elpsedTime, currentStage, nextStage) {
     const elpsedStage = getStage(currentStage.id);
