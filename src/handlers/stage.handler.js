@@ -50,7 +50,14 @@ export const stageEnd = async (io, socket, payload, userId) => {
   stagesOperator.stageEnd(user, serverHighScore);
 
   if (payload.HighScore > user.highScore) {
-    await prismaUser.user.update({});
+    await prismaUser.user.update({
+      where: {
+        userId: user.userId,
+      },
+      data: {
+        highScore: payload.HighScore,
+      },
+    });
   }
   if (payload.HighScore > serverHighScore) {
     await prismaAsset.initGame.update({
