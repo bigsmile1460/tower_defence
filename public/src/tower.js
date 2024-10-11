@@ -2,24 +2,25 @@ import { getLocalStorage } from "./Local/localStorage.js";
 import UserSocket from "./Network/userSocket.js";
 
 export class Tower {
-  constructor(x, y, towerId, cost, upgradeCost, upgradeAttackPower) {
+  constructor(x, y, id, towerId) {
     // 생성자 안에서 타워들의 속성을 정의한다고 생각하시면 됩니다!
-    this.id = getLocalStorage("towerInfo").id; // 타워id(인 게임에서 타워의 고유 아이디)
+    this.id = id; // 타워id(인 게임에서 타워의 고유 아이디)
     this.towerId = towerId; // DB상의 타워id
     this.x = x; // 타워 이미지 x 좌표
     this.y = y; // 타워 이미지 y 좌표
     this.width = 78; // 타워 이미지 가로 길이 (이미지 파일 길이에 따라 변경 필요하며 세로 길이와 비율을 맞춰주셔야 합니다!)
     this.height = 150; // 타워 이미지 세로 길이
-    this.attackPower = getLocalStorage("towerInfo").attackPower; // 타워 공격력
-    this.attackSpeed = getLocalStorage("towerInfo").attackSpeed; // 타워 공격 속도 ( /60 (초))
-    this.attackRange = getLocalStorage("towerInfo").attackRange; // 타워 사거리
-    this.lastAttack = 0;
-    this.attackType = getLocalStorage("towerInfo").attackType; // 타워 공격 유형
+    this.attackPower = getLocalStorage("towerInfo")[towerId - 1].attackPower; // 타워 공격력
+    this.attackSpeed = getLocalStorage("towerInfo")[towerId - 1].attackSpeed; // 타워 공격 속도 (단위 (ms))
+    this.attackRange = getLocalStorage("towerInfo")[towerId - 1].attackRange; // 타워 사거리
+    this.lastAttack =
+      Date.now() - getLocalStorage("towerInfo")[towerId - 1].attackSpeed; // 타워의 마지막 공격 시간
+    this.attackType = getLocalStorage("towerInfo")[towerId - 1].attackType; // 타워 공격 유형
     this.level = 1; // 타워 레벨
-    this.cost = cost; // 타워 구입 비용
-    this.upgradeCost = upgradeCost; // 타워 강화 비용
-    this.upgradeAttackPower = upgradeAttackPower; // 타워 강화시 능력치 상승
-    this.cooldown = 0; // 남은 쿨타임
+    this.cost = getLocalStorage("towerInfo")[towerId - 1].towerPrice; // 타워 구입 비용
+    this.upgradeCost = getLocalStorage("towerInfo")[towerId - 1].towerPrice / 2; // 타워 강화 비용
+    this.upgradeAttackPower =
+      getLocalStorage("towerInfo")[towerId - 1].attackRange; // 타워 강화시 능력치 상승
     this.beamDuration = 0; // 남은 광선 지속 시간
     this.target = null; // 타워 광선의 목표
   }
@@ -48,7 +49,7 @@ export class Tower {
     }
 
     // 공격 쿨 타임이 남아있을 경우 함수 종료
-    if (this.cooldown > 0) {
+    if (this.lastAttack + this.attackSpeed > Date.now()) {
       return;
     }
 
@@ -60,8 +61,7 @@ export class Tower {
       );
       if (distance < this.attackRange) {
         monster.hp -= this.attackPower;
-        this.cooldown = this.attackSpeed * 2; // 남은 쿨타임 = 공격 속도 (초당 60프레임) 이여야 하는데 (내 컴퓨터는 120프레임이라 *2배)
-        this.beamDuration = 30; // 광선 지속 시간 (0.5초)
+        this.beamDuration = 30; // 광선 지속 시간 (30프레임)
         this.target = monster; // 광선의 목표 설정
         attack = true;
         break;
@@ -75,7 +75,12 @@ export class Tower {
 
     // 공격 성고 시 서버에 공격 결과 전달
     this.lastAttack = Date.now();
-    UserSocket.GetInstance().SendEvent(7, { tower: this, monsters: monsters });
+    UserSocket.GetInstance().SendEvent(7, {
+      id: this.id,
+      towerId: this.towerId,
+      lastAttack: this.lastAttack,
+      monsters: monsters,
+    });
   }
 
   multiAttack(monsters) {
@@ -85,7 +90,7 @@ export class Tower {
     }
 
     // 공격 쿨 타임이 남아있을 경우 함수 종료
-    if (this.cooldown > 0) {
+    if (this.lastAttack + this.attackSpeed > Date.now()) {
       return;
     }
 
@@ -97,7 +102,6 @@ export class Tower {
       );
       if (distance < this.attackRange) {
         monster.hp -= this.attackPower;
-        this.cooldown = this.attackSpeed * 2; // 남은 쿨타임 = 공격 속도 (초당 60프레임) 이여야 하는데 (내 컴퓨터는 120프레임이라 *2배)
         this.beamDuration = 30; // 광선 지속 시간 (0.5초)
         this.target = monster; // 광선의 목표 설정
         attack = true;
@@ -111,7 +115,12 @@ export class Tower {
 
     // 공격 성고 시 서버에 공격 결과 전달
     this.lastAttack = Date.now();
-    UserSocket.GetInstance().SendEvent(7, { tower: tower, monsters: monsters });
+    UserSocket.GetInstance().SendEvent(7, {
+      id: this.id,
+      towerId: this.towerId,
+      lastAttack: this.lastAttack,
+      monsters: monsters,
+    });
   }
 
   heal(inhibitor) {
@@ -120,26 +129,23 @@ export class Tower {
       return;
     }
 
-    // 힐 쿨 타임이 남아있을 경우 함수 종료
-    if (this.cooldown > 0) {
+    // 공격 쿨 타임이 남아있을 경우 함수 종료
+    if (this.lastAttack + this.attackSpeed > Date.now()) {
       return;
     }
 
     inhibitor.hp = Math.min(inhibitor.hp + this.attackPower, inhibitor.maxHp);
-    this.cooldown = this.attackSpeed; // 남은 쿨타임 = 공격 속도 (초당 60프레임)
     this.beamDuration = 30; // 광선 지속 시간 (0.5초)
     this.target = inhibitor; // 광선의 목표 설정
 
     // 공격 성고 시 서버에 공격 결과 전달
     this.lastAttack = Date.now();
     UserSocket.GetInstance().SendEvent(7, {
-      tower: this,
+      id: this.id,
+      towerId: this.towerId,
+      lastAttack: this.lastAttack,
       inhibitor: inhibitor,
     });
-  }
-
-  updateCooldown() {
-    this.cooldown--;
   }
 
   upgradeTower(userGold) {
@@ -152,9 +158,11 @@ export class Tower {
     this.attackPower += this.upgradeAttackPower;
     this.level += 1;
 
-    // 공격 성고 시 서버에 공격 결과 전달
-    this.lastAttack = Date.now();
-    UserSocket.GetInstance().SendEvent(8, { userGold: userGold, tower: this });
+    // 업그레이드 성공 시 서버에 결과 전달
+    UserSocket.GetInstance().SendEvent(8, {
+      userGold: userGold,
+      attackPower: this.attackPower,
+    });
 
     return gold;
   }

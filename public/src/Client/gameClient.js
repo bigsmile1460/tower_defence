@@ -54,16 +54,16 @@ class GameClient {
     this.buySingleTowerButton.style.cursor = "pointer";
 
     this.buySingleTowerButton.addEventListener("click", () => {
+      console.log(getLocalStorage("towerInfo"));
+      if (this.userGold > getLocalStorage("towerInfo")[0].towerPrice) {
+        this.userGold -= getLocalStorage("towerInfo")[0].towerPrice;
+      }
+      const newTower = new Tower(this.player.x, this.player.y, 0, 1);
+      this.towers.push(newTower);
       UserSocket.GetInstance().SendEvent(9, {
-        id: 1,
+        tower: newTower,
         gold: this.userGold,
-        price: 1000,
       });
-      setTimeout(() => {
-        const newTower = new Tower(this.player.x, this.player.y);
-        this.towers.push(newTower);
-        console.log(getLocalStorage("towerInfo"));
-      }, 30);
     });
 
     document.body.appendChild(this.buySingleTowerButton);
@@ -78,16 +78,15 @@ class GameClient {
     this.buyRangeTowerButton.style.cursor = "pointer";
 
     this.buyRangeTowerButton.addEventListener("click", () => {
+      if (this.userGold > getLocalStorage("towerInfo")[1].towerPrice) {
+        this.userGold -= getLocalStorage("towerInfo")[1].towerPrice;
+      }
+      const newTower = new Tower(this.player.x, this.player.y, 0, 2);
+      this.towers.push(newTower);
       UserSocket.GetInstance().SendEvent(9, {
-        id: 2,
+        tower: newTower,
         gold: this.userGold,
-        price: 1200,
       });
-      setTimeout(() => {
-        const newTower = new Tower(this.player.x, this.player.y);
-        this.towers.push(newTower);
-        console.log(getLocalStorage("towerInfo"));
-      }, 30);
     });
 
     document.body.appendChild(this.buyRangeTowerButton);
@@ -102,16 +101,15 @@ class GameClient {
     this.buyHealTowerButton.style.cursor = "pointer";
 
     this.buyHealTowerButton.addEventListener("click", () => {
+      if (this.userGold > getLocalStorage("towerInfo")[2].towerPrice) {
+        this.userGold -= getLocalStorage("towerInfo")[2].towerPrice;
+      }
+      const newTower = new Tower(this.player.x, this.player.y, 0, 3);
+      this.towers.push(newTower);
       UserSocket.GetInstance().SendEvent(9, {
-        id: 3,
+        tower: newTower,
         gold: this.userGold,
-        price: 1500,
       });
-      setTimeout(() => {
-        const newTower = new Tower(this.player.x, this.player.y);
-        this.towers.push(newTower);
-        console.log(getLocalStorage("towerInfo"));
-      }, 30);
     });
 
     document.body.appendChild(this.buyHealTowerButton);
@@ -231,10 +229,9 @@ class GameClient {
 
     this.towers.forEach((tower) => {
       tower.draw(this.ctx, this.towerImage);
-      tower.updateCooldown();
-      tower.singleAttack(tower, this.monsters); // 단일 공격
-      tower.multiAttack(tower, this.monsters); // 다중 공격
-      tower.heal(tower, this.inhibitor); // 힐
+      tower.singleAttack(this.monsters); // 단일 공격
+      tower.multiAttack(this.monsters); // 다중 공격
+      tower.heal(this.inhibitor); // 힐
     });
 
     this.inhibitor.draw(this.ctx, this.inhibitorImage);

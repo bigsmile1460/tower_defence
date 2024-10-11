@@ -1,4 +1,5 @@
 import { getLocalStorage, setLocalStorage } from "../Local/localStorage.js";
+import { handlerEvent } from "../clientHandler/handler.js";
 
 class UserSocket {
   static gInstance = null;
@@ -28,27 +29,7 @@ class UserSocket {
     this.socket.on("connection", (data) => {});
 
     // 응답 패킷 이벤트 할당
-
-    this.socket.on("response", (data) => {
-      if (data.initGameDB) {
-        setLocalStorage("initGameDB", data.initGameDB);
-        setLocalStorage("stages", data.stages);
-        setLocalStorage("currentStage", getLocalStorage("stages")[0]);
-        return;
-      }
-
-      if (data.currentStage) {
-        setLocalStorage("currentStage", data.currentStage);
-        return;
-      }
-
-      if (data.towerInfo) {
-        setLocalStorage("towerInfo", data.towerInfo);
-        setLocalStorage("userGold", data.userGold);
-        return;
-      }
-      //console.log(data);
-    });
+    this.socket.on("event", (data) => handlerEvent(data));
   }
 
   // 서버에 패킷 전송
