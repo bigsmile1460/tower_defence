@@ -121,7 +121,6 @@ class Game {
 
     this.path = new pathManager(this.canvas, this.ctx, this.pathImage, 60, 60);
 
-    UserSocket.GetInstance().SendEvent(1, {});
     this.InitGame();
   }
 
@@ -138,8 +137,12 @@ class Game {
 
     this.elpsedTime++;
 
-    // 엔딩 조건? 무한 루프? 몬스터가 무한으로 강해지는 상태?
-    // 현재 id가 마지막 스테이지일 때 스테이지 변경 금지
+    // 몬스터 300마리 이상 존재시 게임오버
+    if (this.monsters.length > 300) {
+      UserSocket.GetInstance().SendEvent(3, { HighScore: this.score });
+      alert(`게임 오버`);
+    }
+
     if (
       getLocalStorage("currentStage").id ===
       getLocalStorage("stages")[getLocalStorage("stages").length - 1].id

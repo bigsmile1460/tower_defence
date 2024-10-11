@@ -1,8 +1,11 @@
 import { prismaAsset } from "../lib/utils/prisma/index.js";
 import { getAllStages, getNextStage } from "../Storages/stage.js";
 
+let startGameTime = 0; // 시작 시간 검증용 변수
+
 export const gameStart = async (io, socket, payload, userId) => {
   console.log(`게임 시작!!`);
+  startGameTime = payload.startTime;
   const initGameDB = await prismaAsset.initGame.findFirst({
     where: {
       id: 1,
@@ -11,7 +14,9 @@ export const gameStart = async (io, socket, payload, userId) => {
 
   const stages = getAllStages();
 
-  return { initGameDB: initGameDB, stages: stages };
+  // initGameDB와 stages에 정보가 있는지 없는지 검증
+
+  return { status: "success", initGameDB: initGameDB, stages: stages };
 };
 
 export const stageChange = async (io, socket, payload, userId) => {
@@ -22,7 +27,11 @@ export const stageChange = async (io, socket, payload, userId) => {
 
   const nextStage = getNextStage(currentStage.id + 1);
 
-  return { currentStage: JSON.stringify(nextStage) };
+  // 현재 스테이지를 제대로 넘어갈 수 있는지 검증 다음 스테이지 존재 유무
+  // 다음 스테이지의 정보가 존재하는지 검증
+  // 다음 스테이지 넘어가기 위한 시간차이 elpesedTime - startTime  <= 500
+
+  return { status: "success", currentStage: JSON.stringify(nextStage) };
 };
 
 export const gameEnd = async (io, socket, payload, userId) => {
@@ -44,6 +53,7 @@ export const gameEnd = async (io, socket, payload, userId) => {
 
     // 오퍼레이터로 처리를 합시다...
     // gameEnd.Operator.js
+    // 스코어 갱신이 안됬을 경우에 대한 에러검증
     if (!newHighScore) {
       return { status: `fail`, error: `서버에서 에러 발생!` };
     }
