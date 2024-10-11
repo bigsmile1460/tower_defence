@@ -18,6 +18,7 @@ export const stageChange = async (io, socket, payload, userId) => {
   const currentStage = payload.currentStage;
 
   //서버 관련 유저 골드 증가 및 스코어 증가
+  // 유저 관련 DB가 하나 필요하다고 생각함
 
   const nextStage = getNextStage(currentStage.id + 1);
 
@@ -41,6 +42,8 @@ export const gameEnd = async (io, socket, payload, userId) => {
       },
     });
 
+    // 오퍼레이터로 처리를 합시다...
+    // gameEnd.Operator.js
     if (!newHighScore) {
       return { status: `fail`, error: `서버에서 에러 발생!` };
     }

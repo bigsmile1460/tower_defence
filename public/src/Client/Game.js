@@ -138,6 +138,7 @@ class Game {
 
     this.elpsedTime++;
 
+    // 엔딩 조건? 무한 루프? 몬스터가 무한으로 강해지는 상태?
     // 현재 id가 마지막 스테이지일 때 스테이지 변경 금지
     if (
       getLocalStorage("currentStage").id ===
@@ -146,7 +147,7 @@ class Game {
       this.stageChange = false;
     }
 
-    // 일정 시간이 지날 경우 스테이집 ㅕㄴ경
+    // 일정 시간이 지날 경우 스테이지 변경
     if ((this.elpsedTime - this.startTime) % 500 === 0 && this.stageChange) {
       UserSocket.GetInstance().SendEvent(2, {
         currentStage: getLocalStorage("currentStage"),
