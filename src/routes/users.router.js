@@ -2,6 +2,7 @@ import express from 'express';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import { prismaUser } from "../lib/utils/prisma/index.js";
+import { CreateAccessToken } from '../lib/utils/token/tokenCreate.js';
 
 const usersRouter = express.Router();
 dotenv.config();
