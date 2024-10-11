@@ -3,8 +3,14 @@ import { getAllStages, getNextStage } from "../Storages/stage.js";
 
 let startGameTime = 0; // 시작 시간 검증용 변수
 
+// 토큰 검증
 export const gameStart = async (io, socket, payload, userId) => {
   console.log(`게임 시작!!`);
+  const accesToken = payload.accesToken;
+
+  if (!accesToken) {
+    console.log(`게임 에러`);
+  }
   startGameTime = payload.startTime;
   const initGameDB = await prismaAsset.initGame.findFirst({
     where: {

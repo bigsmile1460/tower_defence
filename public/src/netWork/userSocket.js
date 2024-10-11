@@ -5,7 +5,7 @@ class UserSocket {
 
   // 스테이지 정보들 저장
   constructor() {
-    this.socket = null;    
+    this.socket = null;
   }
 
   static GetInstance() {
