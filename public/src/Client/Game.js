@@ -24,7 +24,7 @@ class Game {
     this.monsters = []; // 몬스터 저장 배열
     this.towers = []; // 타워 저장 배열
 
-    this.score = 0; // 현재 플레이어의 스코어
+    this.score = 2000; // 현재 플레이어의 스코어
     this.highScore = 0; // 현재 서버 최고 스코어
 
     this.backgroundImage = null; // 배경 이미지
@@ -177,7 +177,6 @@ class Game {
 
     this.path = new pathManager(this.canvas, this.ctx, this.pathImage, 60, 60);
 
-    UserSocket.GetInstance().SendEvent(1, {});
     this.InitGame();
   }
 
@@ -194,7 +193,12 @@ class Game {
 
     this.elpsedTime++;
 
-    // 현재 id가 마지막 스테이지일 때 스테이지 변경 금지
+    // 몬스터 300마리 이상 존재시 게임오버
+    if (this.monsters.length > 300) {
+      UserSocket.GetInstance().SendEvent(3, { HighScore: this.score });
+      alert(`게임 오버`);
+    }
+
     if (
       getLocalStorage("currentStage").id ===
       getLocalStorage("stages")[getLocalStorage("stages").length - 1].id
@@ -202,10 +206,11 @@ class Game {
       this.stageChange = false;
     }
 
-    // 일정 시간이 지날 경우 스테이집 ㅕㄴ경
+    // 일정 시간이 지날 경우 스테이지 변경
     if ((this.elpsedTime - this.startTime) % 500 === 0 && this.stageChange) {
       UserSocket.GetInstance().SendEvent(2, {
         currentStage: getLocalStorage("currentStage"),
+        elpsedTime: this.elpsedTime,
       });
     }
 
@@ -247,6 +252,7 @@ class Game {
       } else {
         /* 몬스터가 죽었을 때 */
         this.monsters.splice(i, 1);
+        this.userGold += 100;
       }
     }
 

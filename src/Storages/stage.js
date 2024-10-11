@@ -8,9 +8,12 @@ let stages = [
   { id: 6, Score: 5000, clearGold: 5000 },
 ];
 
-export const createStage = () => {
-  // 스테이지 제작 관련 함수
-  return;
+export const getStage = (id) => {
+  const currentStage = stages.find((stage) => {
+    return stage.id === id;
+  });
+
+  return currentStage;
 };
 
 export const getNextStage = (id) => {

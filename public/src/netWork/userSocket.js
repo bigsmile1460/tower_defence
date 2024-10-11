@@ -28,6 +28,7 @@ class UserSocket {
     this.socket.on("connection", (data) => {});
 
     // 응답 패킷 이벤트 할당
+
     this.socket.on("response", (data) => {
       if (data.initGameDB) {
         setLocalStorage("initGameDB", data.initGameDB);
@@ -56,6 +57,7 @@ class UserSocket {
     this.socket.emit("event", {
       handlerId,
       payload,
+      accessToken: localStorage.getItem("authorization"),
     });
   }
 }

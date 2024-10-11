@@ -1,5 +1,4 @@
 import Game from "../src/Client/Game.js";
-import { Inhibitor } from "./base.js";
 import { getLocalStorage } from "./Local/localStorage.js";
 import UserSocket from "./Network/userSocket.js";
 
@@ -39,7 +38,10 @@ async function GameStart() {
     ),
   ]).then(() => {
     UserSocket.GetInstance().Connect();
-    UserSocket.GetInstance().SendEvent(1, {});
+    UserSocket.GetInstance().SendEvent(1, {
+      startTime: Date.now(),
+      accesToken: localStorage.getItem("authorization"),
+    });
 
     game.GameStart({
       backgroundImage: backgroundImage,
@@ -55,7 +57,7 @@ async function GameStart() {
     });
 
     //몬스터 생성 호출, todo: 임시로 호출만 테스트. 추후 변경예정
-    UserSocket.GetInstance().SendEvent(6,{})
+    UserSocket.GetInstance().SendEvent(6, {});
     // 몬스터 생성 주기
     setInterval(() => {
       game.SpawnMonster();
@@ -64,4 +66,3 @@ async function GameStart() {
     game.GameLoop();
   });
 }
-
