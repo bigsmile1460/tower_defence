@@ -6,7 +6,7 @@ import { Inhibitor } from "../base.js";
 import Player from "../player.js";
 import { getLocalStorage } from "../Local/localStorage.js";
 
-class Game {
+class GameClient {
   constructor() {
     this.canvas = document.getElementById("gameCanvas");
     this.ctx = this.canvas.getContext("2d");
@@ -16,7 +16,7 @@ class Game {
     this.inhibitor = null; // 억제기
     this.inhibitorHp = 0; // 억제기 체력
 
-    this.towerCost = 300; // 타워 구입시 가격
+    this.towerCost = 0; // 타워 구입시 가격
     this.numOfInitialTowers = 0; // 게임 시작시 타워 자동 생성 -> 없어도 됨
     this.monsterLevel = 1; // 몬스터 레벨
     this.monsterSpawnInterval = 1000; // 몬스터 스폰시간
@@ -54,9 +54,6 @@ class Game {
     this.buySingleTowerButton.style.cursor = "pointer";
 
     this.buySingleTowerButton.addEventListener("click", () => {
-      if (this.userGold < 1000) {
-        return { status: "fail", message: "골드가 부족합니다" };
-      }
       UserSocket.GetInstance().SendEvent(9, {
         id: 1,
         gold: this.userGold,
@@ -65,7 +62,7 @@ class Game {
       setTimeout(() => {
         const newTower = new Tower(this.player.x, this.player.y);
         this.towers.push(newTower);
-        this.userGold = getLocalStorage("userGold");
+        console.log(getLocalStorage("towerInfo"));
       }, 30);
     });
 
@@ -81,18 +78,15 @@ class Game {
     this.buyRangeTowerButton.style.cursor = "pointer";
 
     this.buyRangeTowerButton.addEventListener("click", () => {
-      if (this.userGold < 1200) {
-        return { status: "fail", message: "골드가 부족합니다" };
-      }
       UserSocket.GetInstance().SendEvent(9, {
         id: 2,
-        gold: +this.userGold,
+        gold: this.userGold,
         price: 1200,
       });
       setTimeout(() => {
         const newTower = new Tower(this.player.x, this.player.y);
         this.towers.push(newTower);
-        this.userGold = getLocalStorage("userGold");
+        console.log(getLocalStorage("towerInfo"));
       }, 30);
     });
 
@@ -108,9 +102,6 @@ class Game {
     this.buyHealTowerButton.style.cursor = "pointer";
 
     this.buyHealTowerButton.addEventListener("click", () => {
-      if (this.userGold < 1500) {
-        return { status: "fail", message: "골드가 부족합니다" };
-      }
       UserSocket.GetInstance().SendEvent(9, {
         id: 3,
         gold: this.userGold,
@@ -119,7 +110,7 @@ class Game {
       setTimeout(() => {
         const newTower = new Tower(this.player.x, this.player.y);
         this.towers.push(newTower);
-        this.userGold = getLocalStorage("userGold");
+        console.log(getLocalStorage("towerInfo"));
       }, 30);
     });
 

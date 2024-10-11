@@ -1,4 +1,4 @@
-import { getInhibitor, getMonsters, getTower } from "../models/model.js";
+import { getInhibitor, getMonsters, getTower } from "../Storages/models/model.js";
 
 class towerAttackOperator {
   // 타워 공격 검증

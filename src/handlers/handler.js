@@ -29,7 +29,6 @@ export const handlerEvent = async (io, socket, data) => {
     // handler 실행
     // io, socket 뺼까요?
     const response = await handler(io, socket, data.payload, data.userId);
-    console.log(response);
 
     socket.emit("response", response);
   } catch (error) {

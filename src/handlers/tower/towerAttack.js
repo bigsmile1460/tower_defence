@@ -1,5 +1,5 @@
-import { createStage } from "../models/model.js";
-import towerAttackOperator from "../operator/towerAttackOperator.js";
+import { createStage } from "../../Storages/models/model.js";
+import towerAttackOperator from "../../operator/towerAttackOperator.js";
 
 // 타워 공격
 export const towerAttack = (io, socket, payload, userId) => {
@@ -13,9 +13,12 @@ export const towerAttack = (io, socket, payload, userId) => {
     );
     console.log("타워 공격/힐 처리 성공");
 
-    return { status: "success", Message: "타워 공격 성공!" };
+    return { status: "success", Message: "타워 공격" };
   } catch (error) {
+    // 서버에서는 error 알 수 있음
     console.log("타워 공격 정보 처리 중 에러 발생", error);
+    // 클라이언트에서는 fail만
+    return { status : "fail", Message: "타워 공격" };
   }
 };
 
@@ -29,4 +32,5 @@ export const gameStart = (io, socket, payload, userId) => {
     console.log("게임 시작 정보 처리 중 에러 발생", error);
   }
 };
+
 ////////////// 게임 시작 임시 함수
