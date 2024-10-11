@@ -24,7 +24,7 @@ class Game {
     this.monsters = []; // 몬스터 저장 배열
     this.towers = []; // 타워 저장 배열
 
-    this.score = 0; // 현재 플레이어의 스코어
+    this.score = 2000; // 현재 플레이어의 스코어
     this.highScore = 0; // 현재 서버 최고 스코어
 
     this.backgroundImage = null; // 배경 이미지
@@ -154,6 +154,7 @@ class Game {
     if ((this.elpsedTime - this.startTime) % 500 === 0 && this.stageChange) {
       UserSocket.GetInstance().SendEvent(2, {
         currentStage: getLocalStorage("currentStage"),
+        elpsedTime: this.elpsedTime,
       });
     }
 

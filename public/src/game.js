@@ -1,6 +1,5 @@
 import Game from "../src/Client/Game.js";
-import { Inhibitor } from "./base.js";
-import { clearLocalStorage, getLocalStorage } from "./Local/localStorage.js";
+import { getLocalStorage } from "./Local/localStorage.js";
 import UserSocket from "./Network/userSocket.js";
 
 let game = new Game();
@@ -38,11 +37,10 @@ async function GameStart() {
       (img) => new Promise((resolve) => (img.onload = resolve))
     ),
   ]).then(() => {
-    clearLocalStorage();
     UserSocket.GetInstance().Connect();
     UserSocket.GetInstance().SendEvent(1, {
       startTime: Date.now(),
-      accesToken: getLocalStorage(getLocalStorage("authorization")),
+      accesToken: localStorage.getItem("authorization"),
     });
 
     game.GameStart({

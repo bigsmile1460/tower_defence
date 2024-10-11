@@ -8,6 +8,14 @@ let stages = [
   { id: 6, Score: 5000, clearGold: 5000 },
 ];
 
+export const getStage = (id) => {
+  const currentStage = stages.find((stage) => {
+    return stage.id === id;
+  });
+
+  return currentStage;
+};
+
 export const getNextStage = (id) => {
   return stages[id - 1];
 };
