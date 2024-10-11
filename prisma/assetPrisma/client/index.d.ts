@@ -1035,74 +1035,94 @@ export namespace Prisma {
 
   export type InitGameAvgAggregateOutputType = {
     id: number | null
-    inhibitorHp: number | null
     startGold: number | null
     towerAmountLimit: number | null
+    monsterCountLimit: number | null
+    inhibitorHp: number | null
+    inhibitorHpLimit: number | null
   }
 
   export type InitGameSumAggregateOutputType = {
     id: number | null
-    inhibitorHp: number | null
     startGold: number | null
     towerAmountLimit: number | null
+    monsterCountLimit: number | null
+    inhibitorHp: number | null
+    inhibitorHpLimit: number | null
   }
 
   export type InitGameMinAggregateOutputType = {
     id: number | null
-    inhibitorHp: number | null
     startGold: number | null
     towerAmountLimit: number | null
+    monsterCountLimit: number | null
+    inhibitorHp: number | null
+    inhibitorHpLimit: number | null
   }
 
   export type InitGameMaxAggregateOutputType = {
     id: number | null
-    inhibitorHp: number | null
     startGold: number | null
     towerAmountLimit: number | null
+    monsterCountLimit: number | null
+    inhibitorHp: number | null
+    inhibitorHpLimit: number | null
   }
 
   export type InitGameCountAggregateOutputType = {
     id: number
-    inhibitorHp: number
     startGold: number
     towerAmountLimit: number
+    monsterCountLimit: number
+    inhibitorHp: number
+    inhibitorHpLimit: number
     _all: number
   }
 
 
   export type InitGameAvgAggregateInputType = {
     id?: true
-    inhibitorHp?: true
     startGold?: true
     towerAmountLimit?: true
+    monsterCountLimit?: true
+    inhibitorHp?: true
+    inhibitorHpLimit?: true
   }
 
   export type InitGameSumAggregateInputType = {
     id?: true
-    inhibitorHp?: true
     startGold?: true
     towerAmountLimit?: true
+    monsterCountLimit?: true
+    inhibitorHp?: true
+    inhibitorHpLimit?: true
   }
 
   export type InitGameMinAggregateInputType = {
     id?: true
-    inhibitorHp?: true
     startGold?: true
     towerAmountLimit?: true
+    monsterCountLimit?: true
+    inhibitorHp?: true
+    inhibitorHpLimit?: true
   }
 
   export type InitGameMaxAggregateInputType = {
     id?: true
-    inhibitorHp?: true
     startGold?: true
     towerAmountLimit?: true
+    monsterCountLimit?: true
+    inhibitorHp?: true
+    inhibitorHpLimit?: true
   }
 
   export type InitGameCountAggregateInputType = {
     id?: true
-    inhibitorHp?: true
     startGold?: true
     towerAmountLimit?: true
+    monsterCountLimit?: true
+    inhibitorHp?: true
+    inhibitorHpLimit?: true
     _all?: true
   }
 
@@ -1194,9 +1214,11 @@ export namespace Prisma {
 
   export type InitGameGroupByOutputType = {
     id: number
-    inhibitorHp: number
     startGold: number
     towerAmountLimit: number
+    monsterCountLimit: number
+    inhibitorHp: number
+    inhibitorHpLimit: number
     _count: InitGameCountAggregateOutputType | null
     _avg: InitGameAvgAggregateOutputType | null
     _sum: InitGameSumAggregateOutputType | null
@@ -1220,17 +1242,21 @@ export namespace Prisma {
 
   export type initGameSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    inhibitorHp?: boolean
     startGold?: boolean
     towerAmountLimit?: boolean
+    monsterCountLimit?: boolean
+    inhibitorHp?: boolean
+    inhibitorHpLimit?: boolean
   }, ExtArgs["result"]["initGame"]>
 
 
   export type initGameSelectScalar = {
     id?: boolean
-    inhibitorHp?: boolean
     startGold?: boolean
     towerAmountLimit?: boolean
+    monsterCountLimit?: boolean
+    inhibitorHp?: boolean
+    inhibitorHpLimit?: boolean
   }
 
 
@@ -1239,9 +1265,11 @@ export namespace Prisma {
     objects: {}
     scalars: $Extensions.GetPayloadResult<{
       id: number
-      inhibitorHp: number
       startGold: number
       towerAmountLimit: number
+      monsterCountLimit: number
+      inhibitorHp: number
+      inhibitorHpLimit: number
     }, ExtArgs["result"]["initGame"]>
     composites: {}
   }
@@ -1612,9 +1640,11 @@ export namespace Prisma {
    */ 
   interface initGameFieldRefs {
     readonly id: FieldRef<"initGame", 'Int'>
-    readonly inhibitorHp: FieldRef<"initGame", 'Int'>
     readonly startGold: FieldRef<"initGame", 'Int'>
     readonly towerAmountLimit: FieldRef<"initGame", 'Int'>
+    readonly monsterCountLimit: FieldRef<"initGame", 'Int'>
+    readonly inhibitorHp: FieldRef<"initGame", 'Int'>
+    readonly inhibitorHpLimit: FieldRef<"initGame", 'Int'>
   }
     
 
@@ -3750,9 +3780,11 @@ export namespace Prisma {
 
   export const InitGameScalarFieldEnum: {
     id: 'id',
-    inhibitorHp: 'inhibitorHp',
     startGold: 'startGold',
-    towerAmountLimit: 'towerAmountLimit'
+    towerAmountLimit: 'towerAmountLimit',
+    monsterCountLimit: 'monsterCountLimit',
+    inhibitorHp: 'inhibitorHp',
+    inhibitorHpLimit: 'inhibitorHpLimit'
   };
 
   export type InitGameScalarFieldEnum = (typeof InitGameScalarFieldEnum)[keyof typeof InitGameScalarFieldEnum]
@@ -3835,16 +3867,20 @@ export namespace Prisma {
     OR?: initGameWhereInput[]
     NOT?: initGameWhereInput | initGameWhereInput[]
     id?: IntFilter<"initGame"> | number
-    inhibitorHp?: IntFilter<"initGame"> | number
     startGold?: IntFilter<"initGame"> | number
     towerAmountLimit?: IntFilter<"initGame"> | number
+    monsterCountLimit?: IntFilter<"initGame"> | number
+    inhibitorHp?: IntFilter<"initGame"> | number
+    inhibitorHpLimit?: IntFilter<"initGame"> | number
   }
 
   export type initGameOrderByWithRelationInput = {
     id?: SortOrder
-    inhibitorHp?: SortOrder
     startGold?: SortOrder
     towerAmountLimit?: SortOrder
+    monsterCountLimit?: SortOrder
+    inhibitorHp?: SortOrder
+    inhibitorHpLimit?: SortOrder
   }
 
   export type initGameWhereUniqueInput = Prisma.AtLeast<{
@@ -3852,16 +3888,20 @@ export namespace Prisma {
     AND?: initGameWhereInput | initGameWhereInput[]
     OR?: initGameWhereInput[]
     NOT?: initGameWhereInput | initGameWhereInput[]
-    inhibitorHp?: IntFilter<"initGame"> | number
     startGold?: IntFilter<"initGame"> | number
     towerAmountLimit?: IntFilter<"initGame"> | number
+    monsterCountLimit?: IntFilter<"initGame"> | number
+    inhibitorHp?: IntFilter<"initGame"> | number
+    inhibitorHpLimit?: IntFilter<"initGame"> | number
   }, "id">
 
   export type initGameOrderByWithAggregationInput = {
     id?: SortOrder
-    inhibitorHp?: SortOrder
     startGold?: SortOrder
     towerAmountLimit?: SortOrder
+    monsterCountLimit?: SortOrder
+    inhibitorHp?: SortOrder
+    inhibitorHpLimit?: SortOrder
     _count?: initGameCountOrderByAggregateInput
     _avg?: initGameAvgOrderByAggregateInput
     _max?: initGameMaxOrderByAggregateInput
@@ -3874,9 +3914,11 @@ export namespace Prisma {
     OR?: initGameScalarWhereWithAggregatesInput[]
     NOT?: initGameScalarWhereWithAggregatesInput | initGameScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"initGame"> | number
-    inhibitorHp?: IntWithAggregatesFilter<"initGame"> | number
     startGold?: IntWithAggregatesFilter<"initGame"> | number
     towerAmountLimit?: IntWithAggregatesFilter<"initGame"> | number
+    monsterCountLimit?: IntWithAggregatesFilter<"initGame"> | number
+    inhibitorHp?: IntWithAggregatesFilter<"initGame"> | number
+    inhibitorHpLimit?: IntWithAggregatesFilter<"initGame"> | number
   }
 
   export type monsterWhereInput = {
@@ -4018,49 +4060,63 @@ export namespace Prisma {
   }
 
   export type initGameCreateInput = {
-    inhibitorHp: number
     startGold: number
     towerAmountLimit?: number
+    monsterCountLimit?: number
+    inhibitorHp: number
+    inhibitorHpLimit?: number
   }
 
   export type initGameUncheckedCreateInput = {
     id?: number
-    inhibitorHp: number
     startGold: number
     towerAmountLimit?: number
+    monsterCountLimit?: number
+    inhibitorHp: number
+    inhibitorHpLimit?: number
   }
 
   export type initGameUpdateInput = {
-    inhibitorHp?: IntFieldUpdateOperationsInput | number
     startGold?: IntFieldUpdateOperationsInput | number
     towerAmountLimit?: IntFieldUpdateOperationsInput | number
+    monsterCountLimit?: IntFieldUpdateOperationsInput | number
+    inhibitorHp?: IntFieldUpdateOperationsInput | number
+    inhibitorHpLimit?: IntFieldUpdateOperationsInput | number
   }
 
   export type initGameUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
-    inhibitorHp?: IntFieldUpdateOperationsInput | number
     startGold?: IntFieldUpdateOperationsInput | number
     towerAmountLimit?: IntFieldUpdateOperationsInput | number
+    monsterCountLimit?: IntFieldUpdateOperationsInput | number
+    inhibitorHp?: IntFieldUpdateOperationsInput | number
+    inhibitorHpLimit?: IntFieldUpdateOperationsInput | number
   }
 
   export type initGameCreateManyInput = {
     id?: number
-    inhibitorHp: number
     startGold: number
     towerAmountLimit?: number
+    monsterCountLimit?: number
+    inhibitorHp: number
+    inhibitorHpLimit?: number
   }
 
   export type initGameUpdateManyMutationInput = {
-    inhibitorHp?: IntFieldUpdateOperationsInput | number
     startGold?: IntFieldUpdateOperationsInput | number
     towerAmountLimit?: IntFieldUpdateOperationsInput | number
+    monsterCountLimit?: IntFieldUpdateOperationsInput | number
+    inhibitorHp?: IntFieldUpdateOperationsInput | number
+    inhibitorHpLimit?: IntFieldUpdateOperationsInput | number
   }
 
   export type initGameUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
-    inhibitorHp?: IntFieldUpdateOperationsInput | number
     startGold?: IntFieldUpdateOperationsInput | number
     towerAmountLimit?: IntFieldUpdateOperationsInput | number
+    monsterCountLimit?: IntFieldUpdateOperationsInput | number
+    inhibitorHp?: IntFieldUpdateOperationsInput | number
+    inhibitorHpLimit?: IntFieldUpdateOperationsInput | number
   }
 
   export type monsterCreateInput = {
@@ -4224,37 +4280,47 @@ export namespace Prisma {
 
   export type initGameCountOrderByAggregateInput = {
     id?: SortOrder
-    inhibitorHp?: SortOrder
     startGold?: SortOrder
     towerAmountLimit?: SortOrder
+    monsterCountLimit?: SortOrder
+    inhibitorHp?: SortOrder
+    inhibitorHpLimit?: SortOrder
   }
 
   export type initGameAvgOrderByAggregateInput = {
     id?: SortOrder
-    inhibitorHp?: SortOrder
     startGold?: SortOrder
     towerAmountLimit?: SortOrder
+    monsterCountLimit?: SortOrder
+    inhibitorHp?: SortOrder
+    inhibitorHpLimit?: SortOrder
   }
 
   export type initGameMaxOrderByAggregateInput = {
     id?: SortOrder
-    inhibitorHp?: SortOrder
     startGold?: SortOrder
     towerAmountLimit?: SortOrder
+    monsterCountLimit?: SortOrder
+    inhibitorHp?: SortOrder
+    inhibitorHpLimit?: SortOrder
   }
 
   export type initGameMinOrderByAggregateInput = {
     id?: SortOrder
-    inhibitorHp?: SortOrder
     startGold?: SortOrder
     towerAmountLimit?: SortOrder
+    monsterCountLimit?: SortOrder
+    inhibitorHp?: SortOrder
+    inhibitorHpLimit?: SortOrder
   }
 
   export type initGameSumOrderByAggregateInput = {
     id?: SortOrder
-    inhibitorHp?: SortOrder
     startGold?: SortOrder
     towerAmountLimit?: SortOrder
+    monsterCountLimit?: SortOrder
+    inhibitorHp?: SortOrder
+    inhibitorHpLimit?: SortOrder
   }
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
