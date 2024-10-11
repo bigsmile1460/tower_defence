@@ -10,19 +10,24 @@ export const handlerEvent = async (io, socket, data) => {
     // handlerId 변환
     const handler = handlerMapping[data.handlerId];
 
-    const [c2sTokenType, c2sAccessToken] = data.accessToken.split(' ');
-    if(c2sTokenType !== process.env.TOKEN_TYPE_CHECK)
-    {
+    const [c2sTokenType, c2sAccessToken] = data.accessToken.split(" ");
+    if (c2sTokenType !== process.env.TOKEN_TYPE_CHECK) {
       socket.emit("response", { status: "fail" });
     }
 
-    const decodedAccessToken = ValidateToken(c2sAccessToken, process.env.ACCESS_TOKEN_SECRET_KEY);
-    if(!decodedAccessToken)
-    {
-      return socket.emit("response", { status: "fail", message: "토큰이 만료되었습니다." });
+    const decodedAccessToken = ValidateToken(
+      c2sAccessToken,
+      process.env.ACCESS_TOKEN_SECRET_KEY
+    );
+    if (!decodedAccessToken) {
+      return socket.emit("response", {
+        status: "fail",
+        message: "토큰이 만료되었습니다.",
+      });
     }
 
     // handler 실행
+    // io, socket 뺼까요?
     const response = await handler(io, socket, data.payload, data.userId);
 
     socket.emit("response", response);

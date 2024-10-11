@@ -38,9 +38,7 @@ class UserSocket {
       }
 
       if (data.currentStage) {
-        setLocalStorage(
-          localStorage.setItem("currentStage", data.currentStage)
-        );
+        setLocalStorage("currentStage", data.currentStage);
         return;
       }
 
