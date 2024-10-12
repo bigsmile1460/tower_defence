@@ -4,7 +4,7 @@ import towerUpgradeOperator from "../../operator/towerUpgradeOperator.js";
 export const towerAttack = (io, socket, payload, userId) => {
   try {
     // 타워 업그레이드 검증 함수
-    towerUpgradeOperator.towerUpgradeCheck(payload.tower, payload.gold, userId);
+    towerUpgradeOperator.towerUpgradeCheck(payload, userId);
     console.log("타워 강화 처리 성공");
 
     return { status: "success", Message: "타워 공격 성공!" };
