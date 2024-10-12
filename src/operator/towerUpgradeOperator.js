@@ -8,18 +8,18 @@ export const towerUpgradeGoldCheck = (userId, id) => {
     throw new Error(`플레이중이지 않은 userId 신청: ${userId}`);
   }
 
-  // 업그레이드 비용 찾기
+  // 업그레이드 할 타워 조회
   const servertower = getTower(userId, id);
   if (!servertower) {
     throw new Error(`존재 하지 않는 tower.id 신청: ${id}`);
   }
 
   // 골드 부족할 경우 return true
-  if (gold < servertower.towerPrice) {
+  if (gold < servertower.upgradePrice) {
     return true;
   }
 
-  // stageStorage에서 골드 차감오기 setGold(userId, gold - servertower.towerPrice/2)
+  // stageStorage에서 골드 차감오기 setGold(userId, gold - servertower.towerPrice * serverTower.sellPriceRate)
 
   return false;
 };

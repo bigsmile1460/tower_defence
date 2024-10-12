@@ -2863,7 +2863,9 @@ export namespace Prisma {
     attackSpeed: number | null
     attackRange: number | null
     towerPrice: number | null
+    sellPriceRate: number | null
     upgradeAttackPower: number | null
+    upgradePrice: number | null
   }
 
   export type TowerSumAggregateOutputType = {
@@ -2872,7 +2874,9 @@ export namespace Prisma {
     attackSpeed: number | null
     attackRange: number | null
     towerPrice: number | null
+    sellPriceRate: number | null
     upgradeAttackPower: number | null
+    upgradePrice: number | null
   }
 
   export type TowerMinAggregateOutputType = {
@@ -2883,7 +2887,9 @@ export namespace Prisma {
     attackRange: number | null
     attackType: $Enums.attackType | null
     towerPrice: number | null
+    sellPriceRate: number | null
     upgradeAttackPower: number | null
+    upgradePrice: number | null
   }
 
   export type TowerMaxAggregateOutputType = {
@@ -2894,7 +2900,9 @@ export namespace Prisma {
     attackRange: number | null
     attackType: $Enums.attackType | null
     towerPrice: number | null
+    sellPriceRate: number | null
     upgradeAttackPower: number | null
+    upgradePrice: number | null
   }
 
   export type TowerCountAggregateOutputType = {
@@ -2905,7 +2913,9 @@ export namespace Prisma {
     attackRange: number
     attackType: number
     towerPrice: number
+    sellPriceRate: number
     upgradeAttackPower: number
+    upgradePrice: number
     _all: number
   }
 
@@ -2916,7 +2926,9 @@ export namespace Prisma {
     attackSpeed?: true
     attackRange?: true
     towerPrice?: true
+    sellPriceRate?: true
     upgradeAttackPower?: true
+    upgradePrice?: true
   }
 
   export type TowerSumAggregateInputType = {
@@ -2925,7 +2937,9 @@ export namespace Prisma {
     attackSpeed?: true
     attackRange?: true
     towerPrice?: true
+    sellPriceRate?: true
     upgradeAttackPower?: true
+    upgradePrice?: true
   }
 
   export type TowerMinAggregateInputType = {
@@ -2936,7 +2950,9 @@ export namespace Prisma {
     attackRange?: true
     attackType?: true
     towerPrice?: true
+    sellPriceRate?: true
     upgradeAttackPower?: true
+    upgradePrice?: true
   }
 
   export type TowerMaxAggregateInputType = {
@@ -2947,7 +2963,9 @@ export namespace Prisma {
     attackRange?: true
     attackType?: true
     towerPrice?: true
+    sellPriceRate?: true
     upgradeAttackPower?: true
+    upgradePrice?: true
   }
 
   export type TowerCountAggregateInputType = {
@@ -2958,7 +2976,9 @@ export namespace Prisma {
     attackRange?: true
     attackType?: true
     towerPrice?: true
+    sellPriceRate?: true
     upgradeAttackPower?: true
+    upgradePrice?: true
     _all?: true
   }
 
@@ -3056,7 +3076,9 @@ export namespace Prisma {
     attackRange: number
     attackType: $Enums.attackType
     towerPrice: number
+    sellPriceRate: number
     upgradeAttackPower: number
+    upgradePrice: number
     _count: TowerCountAggregateOutputType | null
     _avg: TowerAvgAggregateOutputType | null
     _sum: TowerSumAggregateOutputType | null
@@ -3086,7 +3108,9 @@ export namespace Prisma {
     attackRange?: boolean
     attackType?: boolean
     towerPrice?: boolean
+    sellPriceRate?: boolean
     upgradeAttackPower?: boolean
+    upgradePrice?: boolean
   }, ExtArgs["result"]["tower"]>
 
 
@@ -3098,7 +3122,9 @@ export namespace Prisma {
     attackRange?: boolean
     attackType?: boolean
     towerPrice?: boolean
+    sellPriceRate?: boolean
     upgradeAttackPower?: boolean
+    upgradePrice?: boolean
   }
 
 
@@ -3113,7 +3139,9 @@ export namespace Prisma {
       attackRange: number
       attackType: $Enums.attackType
       towerPrice: number
+      sellPriceRate: number
       upgradeAttackPower: number
+      upgradePrice: number
     }, ExtArgs["result"]["tower"]>
     composites: {}
   }
@@ -3490,7 +3518,9 @@ export namespace Prisma {
     readonly attackRange: FieldRef<"tower", 'Int'>
     readonly attackType: FieldRef<"tower", 'attackType'>
     readonly towerPrice: FieldRef<"tower", 'Int'>
+    readonly sellPriceRate: FieldRef<"tower", 'Float'>
     readonly upgradeAttackPower: FieldRef<"tower", 'Int'>
+    readonly upgradePrice: FieldRef<"tower", 'Int'>
   }
     
 
@@ -3812,7 +3842,9 @@ export namespace Prisma {
     attackRange: 'attackRange',
     attackType: 'attackType',
     towerPrice: 'towerPrice',
-    upgradeAttackPower: 'upgradeAttackPower'
+    sellPriceRate: 'sellPriceRate',
+    upgradeAttackPower: 'upgradeAttackPower',
+    upgradePrice: 'upgradePrice'
   };
 
   export type TowerScalarFieldEnum = (typeof TowerScalarFieldEnum)[keyof typeof TowerScalarFieldEnum]
@@ -4001,7 +4033,9 @@ export namespace Prisma {
     attackRange?: IntFilter<"tower"> | number
     attackType?: EnumattackTypeFilter<"tower"> | $Enums.attackType
     towerPrice?: IntFilter<"tower"> | number
+    sellPriceRate?: FloatFilter<"tower"> | number
     upgradeAttackPower?: IntFilter<"tower"> | number
+    upgradePrice?: IntFilter<"tower"> | number
   }
 
   export type towerOrderByWithRelationInput = {
@@ -4012,7 +4046,9 @@ export namespace Prisma {
     attackRange?: SortOrder
     attackType?: SortOrder
     towerPrice?: SortOrder
+    sellPriceRate?: SortOrder
     upgradeAttackPower?: SortOrder
+    upgradePrice?: SortOrder
   }
 
   export type towerWhereUniqueInput = Prisma.AtLeast<{
@@ -4026,7 +4062,9 @@ export namespace Prisma {
     attackRange?: IntFilter<"tower"> | number
     attackType?: EnumattackTypeFilter<"tower"> | $Enums.attackType
     towerPrice?: IntFilter<"tower"> | number
+    sellPriceRate?: FloatFilter<"tower"> | number
     upgradeAttackPower?: IntFilter<"tower"> | number
+    upgradePrice?: IntFilter<"tower"> | number
   }, "id">
 
   export type towerOrderByWithAggregationInput = {
@@ -4037,7 +4075,9 @@ export namespace Prisma {
     attackRange?: SortOrder
     attackType?: SortOrder
     towerPrice?: SortOrder
+    sellPriceRate?: SortOrder
     upgradeAttackPower?: SortOrder
+    upgradePrice?: SortOrder
     _count?: towerCountOrderByAggregateInput
     _avg?: towerAvgOrderByAggregateInput
     _max?: towerMaxOrderByAggregateInput
@@ -4056,7 +4096,9 @@ export namespace Prisma {
     attackRange?: IntWithAggregatesFilter<"tower"> | number
     attackType?: EnumattackTypeWithAggregatesFilter<"tower"> | $Enums.attackType
     towerPrice?: IntWithAggregatesFilter<"tower"> | number
+    sellPriceRate?: FloatWithAggregatesFilter<"tower"> | number
     upgradeAttackPower?: IntWithAggregatesFilter<"tower"> | number
+    upgradePrice?: IntWithAggregatesFilter<"tower"> | number
   }
 
   export type initGameCreateInput = {
@@ -4200,7 +4242,9 @@ export namespace Prisma {
     attackRange: number
     attackType: $Enums.attackType
     towerPrice: number
+    sellPriceRate: number
     upgradeAttackPower: number
+    upgradePrice: number
   }
 
   export type towerUncheckedCreateInput = {
@@ -4211,7 +4255,9 @@ export namespace Prisma {
     attackRange: number
     attackType: $Enums.attackType
     towerPrice: number
+    sellPriceRate: number
     upgradeAttackPower: number
+    upgradePrice: number
   }
 
   export type towerUpdateInput = {
@@ -4221,7 +4267,9 @@ export namespace Prisma {
     attackRange?: IntFieldUpdateOperationsInput | number
     attackType?: EnumattackTypeFieldUpdateOperationsInput | $Enums.attackType
     towerPrice?: IntFieldUpdateOperationsInput | number
+    sellPriceRate?: FloatFieldUpdateOperationsInput | number
     upgradeAttackPower?: IntFieldUpdateOperationsInput | number
+    upgradePrice?: IntFieldUpdateOperationsInput | number
   }
 
   export type towerUncheckedUpdateInput = {
@@ -4232,7 +4280,9 @@ export namespace Prisma {
     attackRange?: IntFieldUpdateOperationsInput | number
     attackType?: EnumattackTypeFieldUpdateOperationsInput | $Enums.attackType
     towerPrice?: IntFieldUpdateOperationsInput | number
+    sellPriceRate?: FloatFieldUpdateOperationsInput | number
     upgradeAttackPower?: IntFieldUpdateOperationsInput | number
+    upgradePrice?: IntFieldUpdateOperationsInput | number
   }
 
   export type towerCreateManyInput = {
@@ -4243,7 +4293,9 @@ export namespace Prisma {
     attackRange: number
     attackType: $Enums.attackType
     towerPrice: number
+    sellPriceRate: number
     upgradeAttackPower: number
+    upgradePrice: number
   }
 
   export type towerUpdateManyMutationInput = {
@@ -4253,7 +4305,9 @@ export namespace Prisma {
     attackRange?: IntFieldUpdateOperationsInput | number
     attackType?: EnumattackTypeFieldUpdateOperationsInput | $Enums.attackType
     towerPrice?: IntFieldUpdateOperationsInput | number
+    sellPriceRate?: FloatFieldUpdateOperationsInput | number
     upgradeAttackPower?: IntFieldUpdateOperationsInput | number
+    upgradePrice?: IntFieldUpdateOperationsInput | number
   }
 
   export type towerUncheckedUpdateManyInput = {
@@ -4264,7 +4318,9 @@ export namespace Prisma {
     attackRange?: IntFieldUpdateOperationsInput | number
     attackType?: EnumattackTypeFieldUpdateOperationsInput | $Enums.attackType
     towerPrice?: IntFieldUpdateOperationsInput | number
+    sellPriceRate?: FloatFieldUpdateOperationsInput | number
     upgradeAttackPower?: IntFieldUpdateOperationsInput | number
+    upgradePrice?: IntFieldUpdateOperationsInput | number
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -4415,6 +4471,17 @@ export namespace Prisma {
     not?: NestedEnumattackTypeFilter<$PrismaModel> | $Enums.attackType
   }
 
+  export type FloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
   export type towerCountOrderByAggregateInput = {
     id?: SortOrder
     towerName?: SortOrder
@@ -4423,7 +4490,9 @@ export namespace Prisma {
     attackRange?: SortOrder
     attackType?: SortOrder
     towerPrice?: SortOrder
+    sellPriceRate?: SortOrder
     upgradeAttackPower?: SortOrder
+    upgradePrice?: SortOrder
   }
 
   export type towerAvgOrderByAggregateInput = {
@@ -4432,7 +4501,9 @@ export namespace Prisma {
     attackSpeed?: SortOrder
     attackRange?: SortOrder
     towerPrice?: SortOrder
+    sellPriceRate?: SortOrder
     upgradeAttackPower?: SortOrder
+    upgradePrice?: SortOrder
   }
 
   export type towerMaxOrderByAggregateInput = {
@@ -4443,7 +4514,9 @@ export namespace Prisma {
     attackRange?: SortOrder
     attackType?: SortOrder
     towerPrice?: SortOrder
+    sellPriceRate?: SortOrder
     upgradeAttackPower?: SortOrder
+    upgradePrice?: SortOrder
   }
 
   export type towerMinOrderByAggregateInput = {
@@ -4454,7 +4527,9 @@ export namespace Prisma {
     attackRange?: SortOrder
     attackType?: SortOrder
     towerPrice?: SortOrder
+    sellPriceRate?: SortOrder
     upgradeAttackPower?: SortOrder
+    upgradePrice?: SortOrder
   }
 
   export type towerSumOrderByAggregateInput = {
@@ -4463,7 +4538,9 @@ export namespace Prisma {
     attackSpeed?: SortOrder
     attackRange?: SortOrder
     towerPrice?: SortOrder
+    sellPriceRate?: SortOrder
     upgradeAttackPower?: SortOrder
+    upgradePrice?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -4493,6 +4570,22 @@ export namespace Prisma {
     _max?: NestedEnumattackTypeFilter<$PrismaModel>
   }
 
+  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -4507,6 +4600,14 @@ export namespace Prisma {
 
   export type EnumattackTypeFieldUpdateOperationsInput = {
     set?: $Enums.attackType
+  }
+
+  export type FloatFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -4593,6 +4694,22 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumattackTypeFilter<$PrismaModel>
     _max?: NestedEnumattackTypeFilter<$PrismaModel>
+  }
+
+  export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
   }
 
 

@@ -17,9 +17,11 @@ export const getTower = (userId, id) => {
   return servertower;
 };
 
+// 타워 업그레이드
 export const upgradeTower = (userId, id) => {
   let servertowers = towers[userId].find((data) => data.id === id);
   servertowers.attackPower += servertowers.upgradeAttackPower;
+  servertowers.towerPrice += servertowers.upgradePrice;
   return servertowers;
 };
 
@@ -32,7 +34,9 @@ export const pushTower = (userId, towerData, timeStamp) => {
     attackSpeed: towerData.attackSpeed,
     attackType: towerData.attackType,
     towerPrice: towerData.towerPrice,
+    sellpPriceRate: towerData.sellPriceRate,
     upgradeAttackPower: towerData.upgradeAttackPower,
+    upgradePrice: towerData.upgradePrice,
     lastAttack: timeStamp,
   };
   towers[userId].push(tower);

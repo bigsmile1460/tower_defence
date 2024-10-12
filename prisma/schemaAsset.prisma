@@ -53,7 +53,9 @@ model tower {
   attackRange Int @map("attackRange")
   attackType attackType @map("attackType")
   towerPrice Int @map("towerPrice")
+  sellPriceRate Float @map("sellPriceRate")
   upgradeAttackPower Int @map("upgradeAttackPower")
+  upgradePrice Int @map("upgradePrice")
 
   @@map("Tower")
 }
