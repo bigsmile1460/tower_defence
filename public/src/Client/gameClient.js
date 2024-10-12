@@ -56,7 +56,7 @@ class GameClient {
     this.buyRangeTowerButton.style.fontSize = "16px";
     this.buyRangeTowerButton.style.cursor = "pointer";
     document.body.appendChild(this.buyRangeTowerButton);
-    this.buySingleTowerButton.addEventListener("click", () => {
+    this.buyRangeTowerButton.addEventListener("click", () => {
       UserSocket.GetInstance().SendEvent(9, {
         towerId: 2,
         timeStamp: Date.now(),
@@ -72,7 +72,7 @@ class GameClient {
     this.buyHealTowerButton.style.fontSize = "16px";
     this.buyHealTowerButton.style.cursor = "pointer";
     document.body.appendChild(this.buyHealTowerButton);
-    this.buySingleTowerButton.addEventListener("click", () => {
+    this.buyHealTowerButton.addEventListener("click", () => {
       UserSocket.GetInstance().SendEvent(9, {
         towerId: 3,
         timeStamp: Date.now(),

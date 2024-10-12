@@ -36,7 +36,7 @@ class UserSocket {
         setLocalStorage("userGold", data.userGold);
         return;
       }
-      //console.log(data);
+      console.log(data);
     });
   }
   // 서버에 패킷 전송

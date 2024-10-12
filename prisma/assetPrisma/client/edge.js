@@ -147,7 +147,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\user\\Desktop\\TowerDefence\\TowerDefence\\prisma\\assetPrisma\\client",
+      "value": "C:\\Users\\appla\\Desktop\\GitHub\\TowerDefence\\prisma\\assetPrisma\\client",
       "fromEnvVar": null
     },
     "config": {
@@ -161,7 +161,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\user\\Desktop\\TowerDefence\\TowerDefence\\prisma\\schemaAsset.prisma",
+    "sourceFilePath": "C:\\Users\\appla\\Desktop\\GitHub\\TowerDefence\\prisma\\schemaAsset.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -175,6 +175,7 @@ const config = {
     "db"
   ],
   "activeProvider": "mysql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
