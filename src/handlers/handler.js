@@ -34,11 +34,13 @@ export const handlerEvent = async (io, socket, data) => {
       decodedAccessToken.email
     );
 
-    if (response.data) {
-      socket.emit("event", { handlerId: 1, payload: response });
-    } else {
-      socket.emit("event", { handlerId: 2, payload: response });
-    }
+    // if (response.data) {
+    //   socket.emit("event", { handlerId: 1, payload: response });
+    // } else {
+    //   socket.emit("event", { handlerId: 2, payload: response });
+    // }
+
+    socket.emit("response", response);
   } catch (error) {
     console.log("Handler 변환 중 에러 발생", error);
   }
