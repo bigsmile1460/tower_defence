@@ -35,16 +35,21 @@ class stagesOperator {
   nextStage(userId) {
     const stage = this.getStage(userId);
 
-    stage.stageId++;
-    stage.gold += 1000;
-    stage.inhibitorHp += 200;
+    stage.stageInfo.stageId++;
+    stage.stageInfo.gold += 1000;
+    stage.stageInfo.inhibitorHp += 200;
+  }
+
+  clearStage(userId) {
+    const stageIndex = stages.indexOf((element) => {
+      return element.userId === userId;
+    });
+
+    stages.splice(stageIndex, 1);
   }
 
   async stageStart(userId) {
     const users = await prismaUser.user.findMany({
-      where: {
-        email: userId,
-      },
       orderBy: {
         highScore: "desc",
       },
@@ -52,7 +57,9 @@ class stagesOperator {
 
     await this.createStage(userId);
 
-    return users[0].highScore;
+    const stage = this.getStage(userId);
+
+    return [stage, users[0].highScore];
   }
 
   stageChange(startGameTime, elpsedTime, userId) {
@@ -70,9 +77,14 @@ class stagesOperator {
     if (stage.inhibitorHp > stage.inhibitorHpLimit) {
       stage.inhibitorHp = stage.inhibitorHpLimit;
     }
+
+    const newStage = this.getStage(userId);
+
+    return newStage;
   }
 
   async stageEnd(userId, score) {
+    console.log(`스테이지 종료 끝`, stages);
     const user = await prismaUser.user.findFirst({
       where: {
         email: userId,
@@ -86,7 +98,7 @@ class stagesOperator {
     if (score > user.highScore) {
       await prismaUser.user.update({
         where: {
-          email: user.userId,
+          id: user.id,
         },
         data: {
           highScore: score,
