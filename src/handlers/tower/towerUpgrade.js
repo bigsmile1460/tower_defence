@@ -1,14 +1,22 @@
-import towerUpgradeOperator from "../../operator/towerUpgradeOperator.js";
+import {
+  servertowerUpgrade,
+  towerUpgradeGoldCheck,
+} from "../../operator/towerUpgradeOperator.js";
 
 // 타워 업그레이드
-export const towerAttack = (io, socket, payload, userId) => {
+export const towerUpgrade = (io, socket, payload, userId) => {
   try {
-    // 타워 업그레이드 검증 함수
-    towerUpgradeOperator.towerUpgradeCheck(payload, userId);
-    console.log("타워 강화 처리 성공");
+    // 골드 체크 및 차감
+    if (towerUpgradeGoldCheck(userId, payload)) {
+      return { status: "success", Message: "골드 부족" };
+    }
 
-    return { status: "success", Message: "타워 공격 성공!" };
+    // 타워 업그레이드 및 프론트엔드로 전달
+    servertowerUpgrade(userId, payload, socket);
+
+    return { status: "success", Message: "타워 업그레이드 성공!" };
   } catch (error) {
-    console.log("타워 공격 정보 처리 중 에러 발생", error);
+    console.log("타워 업그레이드 정보 처리 중 에러 발생", error);
+    return { status: "success", Message: "타워 업그레이드 실패!" };
   }
 };
