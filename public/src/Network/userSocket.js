@@ -1,4 +1,5 @@
 import GameClient from "../Client/gameClient.js";
+import { handlerEvent } from "../clientHandler/handler.js";
 import { setLocalStorage } from "../Local/localStorage.js";
 class UserSocket {
   static gInstance = null;
@@ -21,6 +22,8 @@ class UserSocket {
     });
     // 연결 이벤트 할당
     this.socket.on("connection", (data) => {});
+    // 이벤트 핸들러
+    this.socket.on("event", (data) => handlerEvent(data));
     // 응답 패킷 이벤트 할당
     this.socket.on("response", (data) => {
       if (data.startStage) {
@@ -36,7 +39,7 @@ class UserSocket {
         setLocalStorage("userGold", data.userGold);
         return;
       }
-      //console.log(data);
+      console.log(data);
     });
   }
   // 서버에 패킷 전송

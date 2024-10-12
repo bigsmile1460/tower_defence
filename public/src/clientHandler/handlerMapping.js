@@ -1,5 +1,6 @@
 import { loadData, response } from "./loadData.js";
 import { towerBuy } from "./towers/buyTower.js";
+import { towerUpgrade } from "./towers/upgradeTower.js";
 
 const handlerMapping = {
   // 1: gameStart,
@@ -9,7 +10,7 @@ const handlerMapping = {
   // 5: spawnSpecial,
   // 6: spawnNormal,
   // 7: towerAttack,
-  // 8: towerUpdate,
+  8: towerUpgrade,
   9: towerBuy,
   // 10: towerSell,
   11: response,

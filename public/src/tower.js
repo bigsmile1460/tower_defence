@@ -14,6 +14,8 @@ export class Tower {
     this.attackRange = towerData.attackRange; // 타워 사거리
     this.lastAttack = lastAttack; // 타워의 마지막 공격 시간
     this.attackType = towerData.attackType; // 타워 공격 유형
+    this.towerPrice = towerData.towerPrice; // 타워 가격
+    this.upgradeAttackPower = towerData.upgradeAttackPower; // 타워 강화 수치
     this.level = 1; // 타워 레벨
     this.beamDuration = 0; // 남은 광선 지속 시간
     this.target = null; // 타워 광선의 목표
@@ -142,23 +144,10 @@ export class Tower {
     });
   }
 
-  upgradeTower(userGold) {
-    // 돈이 부족한 경우 함수 종료
-    if (userGold < this.upgradeCost) {
-      return alert("돈이 부족합니다");
-    }
-
-    let gold = userGold - this.upgradeCost;
+  upgradeTower() {
     this.attackPower += this.upgradeAttackPower;
     this.level += 1;
-
-    // 업그레이드 성공 시 서버에 결과 전달
-    UserSocket.GetInstance().SendEvent(8, {
-      userGold: userGold,
-      attackPower: this.attackPower,
-    });
-
-    return gold;
+    // 소리라도 넣어볼까?
   }
 
   buttonMake() {
@@ -173,7 +162,7 @@ export class Tower {
     upgradeButton.style.cursor = "pointer";
     document.body.appendChild(upgradeButton);
     upgradeButton.addEventListener("click", () => {
-      alert("강화하고 싶쥐?!");
+      UserSocket.GetInstance().SendEvent(8, this.id);
     });
 
     // 판매 버튼

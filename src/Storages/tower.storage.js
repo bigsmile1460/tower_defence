@@ -12,9 +12,15 @@ export const getTowers = (userId) => {
 };
 
 // 특정 유저의 특정 타워 조회
-export const getTower = (userId, tower) => {
-  const towers = towers[userId];
-  return towers[userId].find((data) => data.id === tower.id);
+export const getTower = (userId, id) => {
+  const servertower = towers[userId].find((data) => data.id === id);
+  return servertower;
+};
+
+export const upgradeTower = (userId, id) => {
+  let servertowers = towers[userId].find((data) => data.id === id);
+  servertowers.attackPower += servertowers.upgradeAttackPower;
+  return servertowers;
 };
 
 // 타워 추가

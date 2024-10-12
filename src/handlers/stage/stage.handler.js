@@ -1,4 +1,5 @@
 import stageOperator from "../../operator/stageOperator.js";
+import { createTowers } from "../../Storages/tower.storage.js";
 
 let startGameTime = 0; // 시작 시간 검증용 변수
 
@@ -7,8 +8,11 @@ export const stageStart = async (io, socket, payload, userId) => {
   try {
     startGameTime = payload.startTime;
     stageOperator.clearStage(userId);
-    // 시작시 스테이지 생성
+    // 시작 시 스테이지(스토리지) 생성
     const [stage, highScore] = await stageOperator.stageStart(userId);
+
+    // 시작 시 타워(스토리지) 생성
+    createTowers(userId); // 최성원 추가
 
     return { status: "success", startStage: stage, highScore: highScore };
   } catch (err) {

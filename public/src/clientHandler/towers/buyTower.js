@@ -3,11 +3,13 @@ import { Tower } from "../../tower.js";
 
 export const towerBuy = (payload) => {
   const tower = new Tower(
-    GameClient.player.x,
-    GameClient.player.y,
+    GameClient.GetInstance().player.x,
+    GameClient.GetInstance().player.y,
     payload.id,
     payload.towerData,
     payload.lastAttack
   );
-  GameClient.towers.push(tower);
+  tower.buttonMake();
+  GameClient.GetInstance().userGold -= tower.towerPrice;
+  GameClient.GetInstance().towers.push(tower);
 };
