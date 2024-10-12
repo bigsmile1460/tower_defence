@@ -1,5 +1,4 @@
 import UserSocket from "../Network/userSocket.js";
-import { Tower } from "../tower.js";
 import pathManager from "../path.js";
 import { Monster } from "../monster.js";
 import { Inhibitor } from "../base.js";
@@ -52,21 +51,13 @@ class GameClient {
     this.buySingleTowerButton.style.padding = "10px 20px";
     this.buySingleTowerButton.style.fontSize = "16px";
     this.buySingleTowerButton.style.cursor = "pointer";
-
+    document.body.appendChild(this.buySingleTowerButton);
     this.buySingleTowerButton.addEventListener("click", () => {
-      console.log(getLocalStorage("towerInfo"));
-      if (this.userGold > getLocalStorage("towerInfo")[0].towerPrice) {
-        this.userGold -= getLocalStorage("towerInfo")[0].towerPrice;
-      }
-      const newTower = new Tower(this.player.x, this.player.y, 0, 1);
-      this.towers.push(newTower);
       UserSocket.GetInstance().SendEvent(9, {
-        tower: newTower,
-        gold: this.userGold,
+        towerId: 1,
+        timeStamp: Date.now(),
       });
     });
-
-    document.body.appendChild(this.buySingleTowerButton);
 
     this.buyRangeTowerButton = document.createElement("button");
     this.buyRangeTowerButton.textContent = "범위 공격 타워 구입";
@@ -76,20 +67,13 @@ class GameClient {
     this.buyRangeTowerButton.style.padding = "10px 20px";
     this.buyRangeTowerButton.style.fontSize = "16px";
     this.buyRangeTowerButton.style.cursor = "pointer";
-
-    this.buyRangeTowerButton.addEventListener("click", () => {
-      if (this.userGold > getLocalStorage("towerInfo")[1].towerPrice) {
-        this.userGold -= getLocalStorage("towerInfo")[1].towerPrice;
-      }
-      const newTower = new Tower(this.player.x, this.player.y, 0, 2);
-      this.towers.push(newTower);
+    document.body.appendChild(this.buyRangeTowerButton);
+    this.buySingleTowerButton.addEventListener("click", () => {
       UserSocket.GetInstance().SendEvent(9, {
-        tower: newTower,
-        gold: this.userGold,
+        towerId: 2,
+        timeStamp: Date.now(),
       });
     });
-
-    document.body.appendChild(this.buyRangeTowerButton);
 
     this.buyHealTowerButton = document.createElement("button");
     this.buyHealTowerButton.textContent = "힐 타워 구입";
@@ -99,20 +83,13 @@ class GameClient {
     this.buyHealTowerButton.style.padding = "10px 20px";
     this.buyHealTowerButton.style.fontSize = "16px";
     this.buyHealTowerButton.style.cursor = "pointer";
-
-    this.buyHealTowerButton.addEventListener("click", () => {
-      if (this.userGold > getLocalStorage("towerInfo")[2].towerPrice) {
-        this.userGold -= getLocalStorage("towerInfo")[2].towerPrice;
-      }
-      const newTower = new Tower(this.player.x, this.player.y, 0, 3);
-      this.towers.push(newTower);
+    document.body.appendChild(this.buyHealTowerButton);
+    this.buySingleTowerButton.addEventListener("click", () => {
       UserSocket.GetInstance().SendEvent(9, {
-        tower: newTower,
-        gold: this.userGold,
+        towerId: 3,
+        timeStamp: Date.now(),
       });
     });
-
-    document.body.appendChild(this.buyHealTowerButton);
   }
 
   InitMap() {
@@ -132,18 +109,6 @@ class GameClient {
     // this.PlaceInitialTowers();
     this.placeinhibitor();
   }
-
-  // PlaceInitialTowers() {
-  //   for (let i = 0; i < this.numOfInitialTowers; i++) {
-  //     const { x, y } = this.path.getRandomPositionNearPath(
-  //       200,
-  //       this.monsterPath
-  //     );
-  //     const tower = new Tower(x, y, this.towerCost);
-  //     this.towers.push(tower);
-  //     tower.draw(this.ctx, this.towerImage);
-  //   }
-  // }
 
   placeinhibitor() {
     const lastPoint = this.monsterPath[this.monsterPath.length - 1];
