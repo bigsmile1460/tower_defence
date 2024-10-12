@@ -1,6 +1,6 @@
 import { towerAttack } from "./tower/towerAttack.js";
 import { stageChange, stageEnd, stageStart } from "./stage/stage.handler.js";
-import { spawnNormal } from "./monster/spawnNormal.js";
+import { monsterCycle, spawnNormal } from "./monster/spawnNormal.js";
 
 const handlerMapping = {
   1: stageStart,
@@ -13,6 +13,7 @@ const handlerMapping = {
   //   8: towerUpgrade,
   //   9: towerBuy,
   //   10: towerSell,
+  11: monsterCycle
 };
 
 export default handlerMapping;
