@@ -1,15 +1,48 @@
+import { prismaAsset } from "../lib/utils/prisma/index.js";
+
 // 스테이지에 대한 휘발성 메모리 저장
-export let stages = [];
+export const stages = [];
 
-// 자 근데 스테이지 정보를 만든다고하면...
-// DB에 등록된 스테이지 정보 X
-// 그런 것도 없이 1 ~ 스테이지를 createStage로 휘발성 메모리로 찍어내야만 한다.
+export async function createStage(userId) {
+    const { startGold, monsterCountLimit, inhibitorHp, inhibitorHpLimit } =
+      await prismaAsset.initGame.findFirst({
+        where: {
+          id: 1,
+        },
+      });
+    stages.push({
+      userId: userId,
+      stageInfo: {
+        stageId: 1, // 스테이지 레벨
+        gold: startGold, // 클리어시 획득 골드
+        score: 0, // 현재 점수
+        inhibitorHp: inhibitorHp, // 몬스터 갯수 제한
+        inhibitorHpLimit: inhibitorHpLimit, // 억제기 Hp
+        monsterCountLimit: monsterCountLimit, // 억제기 최대 HP 제한
+      },
+    });
+  }
 
-// 스테이지에 넣을 정보들
-// 1. stageId - 스테이지 레벨
-// 2. gold - 클리어시 획득 골드
-// 3. score - 현재 점수
-// 4. monsterCount - 몬스터 수
-// 5. monsterCountLimit - 몬스터 갯수 제한
-// 6. inhibitorHp - 억제기 Hp
-// 6. inhibitorHpLimit - 억제기 Hp 제한
+  export function getStage(userId) {
+    const stage = stages.find((stage) => {
+      return stage.userId === userId;
+    });
+    return stage;
+  }
+
+  export function nextStage(userId) {
+    const stage = getStage(userId);
+
+    stage.stageInfo.stageId++;
+    stage.stageInfo.gold += 1000;
+    stage.stageInfo.inhibitorHp += 200;
+  }
+
+  export function clearStage(userId) {
+    const stageIndex = stages.indexOf((element) => {
+      return element.userId === userId;
+    });
+
+    stages.splice(stageIndex, 1);
+  }
+

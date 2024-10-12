@@ -18,7 +18,7 @@ class GameClient {
     this.monsterSpawnInterval = 1000; // 몬스터 스폰시간
     this.monsters = []; // 몬스터 저장 배열
     this.towers = []; // 타워 저장 배열
-    this.score = 2000; // 현재 플레이어의 스코어
+    this.score = 3000; // 현재 플레이어의 스코어
     this.highScore = 0; // 현재 서버 최고 스코어
     this.backgroundImage = null; // 배경 이미지
     this.towerImage = null; // 타워 이미지
@@ -140,8 +140,8 @@ class GameClient {
 
     this.inhibitor.draw(this.ctx, this.inhibitorImage);
     this.elpsedTime++;
-    // 몬스터 300마리 이상 존재시 게임오버
-    if (this.monsters.length > 300) {
+    // 몬스터 10마리 이상 존재시 게임오버
+    if (this.monsters.length > 4) {
       UserSocket.GetInstance().SendEvent(3, { score: this.score });
       alert(`게임 오버`);
     }
