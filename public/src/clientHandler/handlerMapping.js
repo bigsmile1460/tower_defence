@@ -2,6 +2,8 @@ import { loadData, response } from "./loadData.js";
 import { towerBuy } from "./towers/buyTower.js";
 import { towerSell } from "./towers/sellTower.js";
 import { towerUpgrade } from "./towers/upgradeTower.js";
+import { stageStart } from "./stages/stageStart.js";
+import { stageChange } from "./stages/stageChange.js";
 
 const handlerMapping = {
   1: gameStart,
