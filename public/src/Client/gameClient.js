@@ -88,12 +88,12 @@ class GameClient {
   SetStageInfo(stages) {
     this.stages = stages;
     this.userGold += stages.stageInfo.gold;
-    this.inhibitorHp += stages.stageInfo.inhibitorHp;
+    this.inhibitorHp = this.inhibitor.setHp(stages.stageInfo.inhibitorHp);
   }
+
   placeinhibitor() {
     const lastPoint = this.monsterPath[this.monsterPath.length - 1];
     this.inhibitor = new Inhibitor(lastPoint.x, lastPoint.y, this.inhibitorHp);
-    //this.inhibitor.draw(this.ctx, this.inhibitorImage);
   }
   SpawnMonster() {
     this.monsters.push(
@@ -137,6 +137,7 @@ class GameClient {
     );
     this.path.drawPath(this.monsterPath);
     this.player.draw();
+
     this.inhibitor.draw(this.ctx, this.inhibitorImage);
     this.elpsedTime++;
     // 몬스터 300마리 이상 존재시 게임오버
@@ -144,6 +145,7 @@ class GameClient {
       UserSocket.GetInstance().SendEvent(3, { score: this.score });
       alert(`게임 오버`);
     }
+
     // 일정 시간이 지날 경우 스테이지 변경
     if ((this.elpsedTime - this.startTime) % 500 === 0) {
       UserSocket.GetInstance().SendEvent(2, {
@@ -179,7 +181,7 @@ class GameClient {
         if (isDestroyed) {
           /* 게임 오버 */
           alert("게임 오버. 스파르타 본부를 지키지 못했다...ㅠㅠ");
-          UserSocket.GetInstance().SendEvent(3, { score: this.score });
+          //UserSocket.GetInstance().SendEvent(3, { score: this.score });
           location.reload();
         }
         monster.draw(this.ctx);

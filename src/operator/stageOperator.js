@@ -84,7 +84,6 @@ class stagesOperator {
   }
 
   async stageEnd(userId, score) {
-    console.log(`스테이지 종료 끝`, stages);
     const user = await prismaUser.user.findFirst({
       where: {
         email: userId,

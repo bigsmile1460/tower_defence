@@ -1,3 +1,5 @@
+import GameClient from "./Client/gameClient.js";
+
 export class Inhibitor {
   constructor(x, y, maxHp) {
     // 생성자 안에서 기지의 속성을 정의한다고 생각하시면 됩니다!
@@ -20,7 +22,18 @@ export class Inhibitor {
 
     ctx.font = "16px Arial";
     ctx.fillStyle = "white";
-    ctx.fillText(`억제기 HP: ${this.hp}/${this.maxHp}`, this.x - this.width, this.y - this.height / 2 - 10 );
+    ctx.fillText(
+      `억제기 HP: ${this.hp}/${this.maxHp}`,
+      this.x - this.width,
+      this.y - this.height / 2 - 10
+    );
+  }
+
+  setHp(value) {
+    if (value < GameClient.GetInstance().stages.stageInfo.inhibitorHpLimit) {
+      this.hp = value;
+      this.maxHp = value;
+    }
   }
 
   takeDamage(amount) {
