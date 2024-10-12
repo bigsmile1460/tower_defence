@@ -1,26 +1,20 @@
-import { getLocalStorage } from "./Local/localStorage.js";
 import UserSocket from "./Network/userSocket.js";
 
 export class Tower {
-  constructor(x, y, id, towerId) {
+  constructor(x, y, id, towerData, lastAttack) {
     // 생성자 안에서 타워들의 속성을 정의한다고 생각하시면 됩니다!
     this.id = id; // 타워id(인 게임에서 타워의 고유 아이디)
-    this.towerId = towerId; // DB상의 타워id
     this.x = x; // 타워 이미지 x 좌표
     this.y = y; // 타워 이미지 y 좌표
     this.width = 78; // 타워 이미지 가로 길이 (이미지 파일 길이에 따라 변경 필요하며 세로 길이와 비율을 맞춰주셔야 합니다!)
     this.height = 150; // 타워 이미지 세로 길이
-    this.attackPower = getLocalStorage("towerInfo")[towerId - 1].attackPower; // 타워 공격력
-    this.attackSpeed = getLocalStorage("towerInfo")[towerId - 1].attackSpeed; // 타워 공격 속도 (단위 (ms))
-    this.attackRange = getLocalStorage("towerInfo")[towerId - 1].attackRange; // 타워 사거리
-    this.lastAttack =
-      Date.now() - getLocalStorage("towerInfo")[towerId - 1].attackSpeed; // 타워의 마지막 공격 시간
-    this.attackType = getLocalStorage("towerInfo")[towerId - 1].attackType; // 타워 공격 유형
+    this.name = towerData.towerName;
+    this.attackPower = towerData.attackPower; // 타워 공격력
+    this.attackSpeed = towerData.attackSpeed; // 타워 공격 속도 (단위 (ms))
+    this.attackRange = towerData.attackRange; // 타워 사거리
+    this.lastAttack = lastAttack; // 타워의 마지막 공격 시간
+    this.attackType = towerData.attackType; // 타워 공격 유형
     this.level = 1; // 타워 레벨
-    this.cost = getLocalStorage("towerInfo")[towerId - 1].towerPrice; // 타워 구입 비용
-    this.upgradeCost = getLocalStorage("towerInfo")[towerId - 1].towerPrice / 2; // 타워 강화 비용
-    this.upgradeAttackPower =
-      getLocalStorage("towerInfo")[towerId - 1].attackRange; // 타워 강화시 능력치 상승
     this.beamDuration = 0; // 남은 광선 지속 시간
     this.target = null; // 타워 광선의 목표
   }
@@ -165,5 +159,35 @@ export class Tower {
     });
 
     return gold;
+  }
+
+  buttonMake() {
+    // 업그레이드 버튼
+    const upgradeButton = document.createElement("button");
+    upgradeButton.textContent = "레벨" + (this.level + 1) + "로강화";
+    upgradeButton.style.position = "absolute";
+    upgradeButton.style.top = this.y + 300 + "px";
+    upgradeButton.style.right = 1810 - this.x + "px";
+    upgradeButton.style.padding = "50px 100";
+    upgradeButton.style.fontSize = "30";
+    upgradeButton.style.cursor = "pointer";
+    document.body.appendChild(upgradeButton);
+    upgradeButton.addEventListener("click", () => {
+      alert("강화하고 싶쥐?!");
+    });
+
+    // 판매 버튼
+    const sellButton = document.createElement("button");
+    sellButton.textContent = this.name + "판매";
+    sellButton.style.position = "absolute";
+    sellButton.style.top = this.y + 275 + "px";
+    sellButton.style.right = 1790 - this.x + "px";
+    sellButton.style.padding = "50px 100";
+    sellButton.style.fontSize = "30";
+    sellButton.style.cursor = "pointer";
+    document.body.appendChild(sellButton);
+    sellButton.addEventListener("click", () => {
+      alert("판매하고 싶쥐?!");
+    });
   }
 }

@@ -18,6 +18,9 @@ export const addMonster = (userId, monster) => {
   }
   //생성되는 몬스터에게 uuid 제공
   monster.uuid = monsterUUID;
+
+
+  
   console.log("몬스터 정보:", monster);
   monsterInfo[userId].push(monster);
   console.log("monsterInfo: ", monsterInfo);
