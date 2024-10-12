@@ -1,15 +1,20 @@
-import { towerBuyCheck } from "../../operator/towerBuyOperator.js";
-import { addtowerBuy } from "../../Storages/tower.storage.js";
+import {
+  towerBuyGoldCheck,
+  towerBuyMakeTower,
+} from "../../operator/towerBuyOperator.js";
 
 export const towerBuy = async (io, socket, payload, userId) => {
   try {
-    const towerInfo = await addtowerBuy(io, socket, payload, userId);
+    // 타워 골드 체크 및 골드 차감
+    if (await towerBuyGoldCheck(payload.towerId, userId)) {
+      return { status: "success", Message: "골드 부족" };
+    }
 
-    towerBuyCheck(payload.gold, payload.price);
+    // 타워 생성 및 생성된 타워 프론트엔드로 전달
+    towerBuyMakeTower(payload.towerId, payload.timeStamp, userId, socket);
 
-    const userGold = (payload.gold -= payload.price);
-    return { status: "succues", towerInfo: towerInfo, userGold };
+    return { status: "succues", Message: "타워 구매" };
   } catch (error) {
-    return { status: "fail", message: error };
+    return { status: "fail", Message: "타워 구매" };
   }
 };
