@@ -29,10 +29,26 @@ export class Tower {
       for (let i = 0; i < this.target.length; i++) {
         ctx.beginPath();
         ctx.moveTo(this.x + this.width / 2, this.y + this.height / 2);
-        ctx.lineTo(
-          this.target[i].x + this.target[i].width / 2,
-          this.target[i].y + this.target[i].height / 2
-        );
+        switch (this.attackType) {
+          case "singleAttack":
+            ctx.lineTo(
+              this.target[i].x + this.target[i].width / 2,
+              this.target[i].y + this.target[i].height / 2
+            );
+            break;
+          case "multiAttack":
+            ctx.lineTo(
+              this.target[i].x + this.target[i].width / 2,
+              this.target[i].y + this.target[i].height / 2
+            );
+            break;
+          case "heal":
+            ctx.lineTo(
+              this.target[i].x - 100 + this.target[i].width / 2,
+              this.target[i].y - 100 + this.target[i].height / 2
+            );
+            break;
+        }
         switch (this.attackType) {
           case "singleAttack":
             ctx.strokeStyle = "red";

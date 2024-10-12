@@ -43,7 +43,7 @@ export const stageChange = async (io, socket, payload, userId) => {
       },
     });
 
-    return { status: "success"};
+    return { status: "success" };
   } catch (err) {
     return { status: "fail", message: err };
   }
