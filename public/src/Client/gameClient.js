@@ -14,8 +14,6 @@ class GameClient {
     this.inhibitorHp = 0; // 억제기 체력
     this.towerCost = 0; // 타워 구입시 가격
     this.numOfInitialTowers = 0; // 게임 시작시 타워 자동 생성 -> 없어도 됨
-    this.monsterLevel = 1; // 몬스터 레벨
-    this.monsterSpawnInterval = 1000; // 몬스터 스폰시간
     this.monsters = []; // 몬스터 저장 배열
     this.towers = []; // 타워 저장 배열
     this.score = 3000; // 현재 플레이어의 스코어
@@ -29,8 +27,7 @@ class GameClient {
     this.monsterPath = null; // 몬스터가 지나가는 경로
     this.path = null; // 경로
 
-    this.startTime = 0; // 게임 시작 시간
-    this.elpsedTime = 0; // 게임 종료 시간
+ 
     this.buySingleTowerButton = document.createElement("button");
     this.buySingleTowerButton.textContent = "단일 공격 타워 구입";
     this.buySingleTowerButton.style.position = "absolute";
@@ -94,11 +91,7 @@ class GameClient {
     const lastPoint = this.monsterPath[this.monsterPath.length - 1];
     this.inhibitor = new Inhibitor(lastPoint.x, lastPoint.y, this.inhibitorHp);
   }
-  spawnMonster() {
-    this.monsters.push(
-      new Monster(this.monsterPath, this.monsterImages, this.monsterLevel)
-    );
-  }
+
   loadGameImages(infos) {
     this.backgroundImage = infos.backgroundImage;
     this.towerImage = infos.towerImage;
@@ -118,8 +111,6 @@ class GameClient {
     this.userGold += stages.stageInfo.gold;
     this.inhibitorHp = stages.stageInfo.inhibitorHp;
     this.highScore = highScore ? highScore : this.highScore;
-    this.startTime = Date.now();
-    this.elpsedTime = Date.now();
     this.path = new pathManager(this.canvas, this.ctx, this.pathImage, 60, 60);
     this.monsterPath = this.path.generateRandomMonsterPath();
     this.path.drawPath(this.monsterPath);
@@ -139,7 +130,7 @@ class GameClient {
     this.player.move();
 
     this.inhibitor.draw(this.ctx, this.inhibitorImage);
-    this.elpsedTime++;
+
 
     this.ctx.font = "25px Times New Roman";
     this.ctx.fillStyle = "skyblue";
@@ -156,6 +147,7 @@ class GameClient {
         200
       ); // 현재 스테이지 표시
     }
+
     this.towers.forEach((tower) => {
       tower.draw(this.ctx, this.towerImage);
       tower.singleAttack(this.monsters); // 단일 공격

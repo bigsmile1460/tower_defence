@@ -29,9 +29,7 @@ async function gameStart() {
     ),
   ]).then(() => {
     UserSocket.getInstance().Connect();
-    UserSocket.getInstance().SendEvent(1, {
-      startTime: Date.now(),
-    });
+    UserSocket.getInstance().SendEvent(1, {});
     gameClient.loadGameImages({
       backgroundImage: backgroundImage,
       towerImage: towerImage,
@@ -39,10 +37,5 @@ async function gameStart() {
       pathImage: pathImage,
       monsterImages: monsterImages,
     });
-
-    // 몬스터 생성 주기
-    setInterval(() => {
-      gameClient.spawnMonster();
-    }, gameClient.monsterSpawnInterval);
   });
 }
