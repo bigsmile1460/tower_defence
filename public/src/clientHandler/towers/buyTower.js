@@ -12,5 +12,4 @@ export const towerBuy = (payload) => {
   tower.buttonMake();
   GameClient.GetInstance().userGold -= tower.towerPrice;
   GameClient.GetInstance().towers.push(tower);
-  console.log("tower: ", tower);
 };

@@ -1,4 +1,4 @@
-import { loadData, response } from "./loadData.js";
+import { response } from "./loadData.js";
 import { towerBuy } from "./towers/buyTower.js";
 import { towerSell } from "./towers/sellTower.js";
 import { towerUpgrade } from "./towers/upgradeTower.js";

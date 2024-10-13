@@ -1,5 +1,5 @@
 import { handlerEvent } from "../clientHandler/handler.js";
-import { setLocalStorage } from "../Local/localStorage.js";
+
 class UserSocket {
   static gInstance = null;
   // 스테이지 정보들 저장
@@ -26,11 +26,6 @@ class UserSocket {
     this.socket.on("event", (data) => handlerEvent(data));
     // 응답 패킷 이벤트 할당
     this.socket.on("response", (data) => {
-      if (data.towerInfo) {
-        setLocalStorage("towerInfo", data.towerInfo);
-        setLocalStorage("userGold", data.userGold);
-        return;
-      }
       console.log(data);
     });
   }

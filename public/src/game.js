@@ -28,7 +28,6 @@ async function GameStart() {
       (img) => new Promise((resolve) => (img.onload = resolve))
     ),
   ]).then(() => {
-    //clearLocalStorage();
     UserSocket.GetInstance().Connect();
     UserSocket.GetInstance().SendEvent(1, {
       startTime: Date.now(),
