@@ -20,27 +20,33 @@ export const getMonster = (stageId) => {
 export const getMonsterInfo = async (stage) => {
   return await getMonster(stage);
 };
-
+export let intervalId; //몬스터 스폰
 //몬스터 생성
 export const spawnStart = async (socket, userId) => {
   //필요 정보 : 유저 고유값(토큰이용), 스테이지 정보
   const stageInfo = getStage(userId).stageInfo;
+  console.log("stageInfo:", stageInfo);
 
   let nowStage = stageInfo.stageId; //초기 스테이지
   //스테이지 정보에 따라 스폰 몬스터 결정
   const getMonsterInfo = await getMonster(nowStage);
   let interval = getMonsterInfo[0].cycle; // 몬스터 스폰 주기
-  let intervalId; //몬스터 스폰
-
-  // if (stageInfo.monsterAmountLimit <= getMonsterLength(userId)) {
-  //   stageOperator.stageEnd(userId);
-  // }
+  // let intervalId; //몬스터 스폰
 
   //몬스터 스폰 시작
   function startInterval() {
     intervalId = setInterval(() => {
-      //몬스터 객체 생성
-      // addMonster(userId, getMonsterInfo[0]);
+      //서버에 몬스터 객체 생성
+      const monsterData = addMonster(userId, getMonsterInfo[0]);
+
+      //클라이언트에 스테이지 종료 전달
+      if (stageInfo.monsterCountLimit <= getMonsterLength(userId)) {
+        stageOperator.stageEnd(socket, userId);
+      }
+      //클라이언트에 몬스터 객체 전달
+      else {
+        socket.emit("event", { handlerId: 6, payload: { monsterData } });
+      }
       //다음 스테이지로 넘어감 - getStage로 스테이지 정보와 현재 스폰되는 스테이지 비교
       if (nowStage !== getStage(userId)) {
         nowStage = getStage(userId); //현재 스테이지 조회
@@ -74,6 +80,10 @@ export const spawnStart = async (socket, userId) => {
   return true;
 };
 
-export const spawnEnd = () => {
+//todo: 
+// export
+
+export const spawnEnd = (intervalId) => {
   clearInterval(intervalId); // 몬스터 스폰 중지
 };
+

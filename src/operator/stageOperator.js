@@ -5,6 +5,7 @@ import {
   getUserScore,
   nextStage,
 } from "../Storages/stage.storage.js";
+import { intervalId } from "./monsterOperator.js";
 
 export let stageChangeInterval = null;
 
@@ -49,8 +50,8 @@ class stagesOperator {
   }
 
   // 스테이지 종료
-  async stageEnd(userId) {
-
+  async stageEnd(socket, userId) {
+    clearInterval(intervalId);
     clearInterval(stageChangeInterval);
     // 유저 정보 조회
     const user = await prismaUser.user.findFirst({
