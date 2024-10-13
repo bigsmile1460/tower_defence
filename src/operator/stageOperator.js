@@ -1,8 +1,13 @@
 import { prismaUser } from "../lib/utils/prisma/index.js";
-import { createStage, getStage, nextStage, getUserGold, setUserGold } from "../Storages/stage.storage.js";
+import {
+  createStage,
+  getStage,
+  getUserGold,
+  nextStage,
+  setUserGold,
+} from "../Storages/stage.storage.js";
 
-class stagesOperator {   
-
+class stagesOperator {
   async stageStart(userId) {
     const users = await prismaUser.user.findMany({
       orderBy: {
@@ -17,15 +22,21 @@ class stagesOperator {
     return [stage, users[0].highScore];
   }
 
-  stageChange(startGameTime, elpsedTime, userId) {
+  stageChange(startGameTime, elpsedTime, userGold, userId) {
     const stage = getStage(userId);
 
     if (
-      (elpsedTime - startGameTime) % 500 <= -10 &&
-      (elpsedTime - startGameTime) % 500 >= 10
+      (elpsedTime - startGameTime) % 1500 <= -10 &&
+      (elpsedTime - startGameTime) % 1500 >= 10
     ) {
       throw new Error(`스테이지 변경 시간 불일치`);
     }
+
+    if (getUserGold(userId) != userGold) {
+      throw new Error(`유저 골드 조작이 의심됨`);
+    }
+
+    setUserGold(userId, userGold);
 
     nextStage(userId);
 
@@ -34,9 +45,9 @@ class stagesOperator {
     }
 
     const newStage = getStage(userId);
-    
+
     return newStage;
- }
+  }
 
   async stageEnd(userId, score) {
     const user = await prismaUser.user.findFirst({
