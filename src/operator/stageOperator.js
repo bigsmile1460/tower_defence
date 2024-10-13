@@ -1,4 +1,4 @@
-import { prismaAsset, prismaUser } from "../lib/utils/prisma/index.js";
+import { prismaUser } from "../lib/utils/prisma/index.js";
 import {
   createStage,
   getStage,
@@ -31,13 +31,14 @@ class stagesOperator {
     }
 
     // 쿨 타임마다 스테이지 변경 함수 실행
-    setInterval(() => {
+    const stageChangeInterval = setInterval(() => {
       this.stageChange(socket, userId);
     }, stageChangeTime);
   }
 
   // 스테이지 변경
   async stageChange(socket, userId) {
+    console.log(`스테이지 변경 체크`);
     // 스테이지 변경
     await nextStage(userId);
 
@@ -48,6 +49,7 @@ class stagesOperator {
 
   // 스테이지 종료
   async stageEnd(userId) {
+    clearInterval(stageChangeInterval);
     // 유저 정보 조회
     const user = await prismaUser.user.findFirst({
       where: {
@@ -74,7 +76,7 @@ class stagesOperator {
     }
 
     // 클라이언트에 게임 종료 알림
-    socket.emit("event", { handlerId: 3, payload: { score: score } });
+    socket.emit("event", { handlerId: 3 });
   }
 }
 
