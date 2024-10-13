@@ -20,10 +20,10 @@ usersRouter.post("/SignUp", async (req, res, next) => {
     return res.status(404).json({ message: "이메일을 입력해주세요" });
   }
 
-  const emailRule = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  if (!emailRule.test(email)) {
-    return res.status(404).json({ message: "이메일 형식에 맞게 입력해주세요" });
-  }
+  // const emailRule = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  // if (!emailRule.test(email)) {
+  //   return res.status(404).json({ message: "이메일 형식에 맞게 입력해주세요" });
+  // }
 
   if (password.length === 0) {
     return res.status(404).json({ message: "비밀번호를 입력해주세요" });
@@ -49,16 +49,16 @@ usersRouter.post("/SignUp", async (req, res, next) => {
 });
 
 usersRouter.post("/SignIn", async (req, res, next) => {
-  const { email, password } = req.body;
+  const { email, password } = req.body;  
 
   if (email.length === 0) {
     return res.status(404).json({ message: "이메일을 입력해주세요" });
   }
 
-  const emailRule = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  if (!emailRule.test(email)) {
-    return res.status(404).json({ message: "이메일 형식에 맞게 입력해주세요" });
-  }
+  // const emailRule = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  // if (!emailRule.test(email)) {
+  //   return res.status(404).json({ message: "이메일 형식에 맞게 입력해주세요" });
+  // }
 
   if (password.length === 0) {
     return res.status(404).json({ message: "비밀번호를 입력해주세요" });
