@@ -6,6 +6,8 @@ import {
   nextStage,
 } from "../Storages/stage.storage.js";
 
+export let stageChangeInterval = null;
+
 class stagesOperator {
   // 스테이지 시작
   async stageStart(userId) {
@@ -31,14 +33,13 @@ class stagesOperator {
     }
 
     // 쿨 타임마다 스테이지 변경 함수 실행
-    const stageChangeInterval = setInterval(() => {
+    stageChangeInterval = setInterval(() => {
       this.stageChange(socket, userId);
     }, stageChangeTime);
   }
 
   // 스테이지 변경
   async stageChange(socket, userId) {
-    console.log(`스테이지 변경 체크`);
     // 스테이지 변경
     await nextStage(userId);
 
@@ -49,6 +50,7 @@ class stagesOperator {
 
   // 스테이지 종료
   async stageEnd(userId) {
+
     clearInterval(stageChangeInterval);
     // 유저 정보 조회
     const user = await prismaUser.user.findFirst({
