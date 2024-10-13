@@ -1,6 +1,6 @@
 // 몬스터에 대한 휘발성 메모리 저장
 import { v4 as uuidv4 } from "uuid";
-
+import { getStage } from ""
 const monsterInfo = {};
 
 //몬스터 정보
@@ -16,11 +16,9 @@ export const addMonster = (userId, monster) => {
   if (!monsterInfo[userId]) {
     monsterInfo[userId] = [];
   }
-  //생성되는 몬스터에게 uuid 제공
+  //생성되는 몬스터에게 객체 고유값 uuid 제공
   monster.uuid = monsterUUID;
 
-
-  
   console.log("몬스터 정보:", monster);
   monsterInfo[userId].push(monster);
   console.log("monsterInfo: ", monsterInfo);
@@ -31,10 +29,11 @@ export const addMonster = (userId, monster) => {
 //     return monsterInfo[userId] || []
 // }
 
-//몬스터 변동사항
+//몬스터 변동사항 - 타워가 몬스터 공격 시
 export const updateMonster = (userId, monsterUUID, attack) => {
   //uuid값이 일치하는 몬스터한테 공격 실행
-  monsterInfo[userId].monsterUUID = monsterInfo[userId][hp] - attack;
+  if (monsterInfo[userId])
+  monsterInfo[userId].monsterUUID
 
   //몬스터 hp 값이 0 이하가 되어 죽었을 경우
   if (monsterInfo[userId][hp] <= 0) {
