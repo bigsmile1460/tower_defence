@@ -156,6 +156,7 @@ class GameClient {
         200
       ); // 현재 스테이지 표시
     }
+
     this.towers.forEach((tower) => {
       tower.draw(this.ctx, this.towerImage);
       tower.singleAttack(this.monsters); // 단일 공격

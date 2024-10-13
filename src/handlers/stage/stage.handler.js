@@ -14,7 +14,7 @@ export const stageStart = async (socket, payload, userId) => {
     // 시작 시 타워(스토리지) 생성
     createTowers(userId); // 최성원 추가
 
-    spawnNormal(userId);
+    spawnNormal(socket, userId);
 
     // 스테이지 변경함수 시작
     await stageOperator.stageChangeData(socket, userId);
@@ -28,7 +28,7 @@ export const stageStart = async (socket, payload, userId) => {
       },
     });
 
-    return { status: "success", message: `스테이지 시작 중 에러 발생` };
+    return { status: "success" };
   } catch (error) {
     console.log(error.message, error);
     return { status: "fail", message: `스테이지 시작 중 에러 발생` };

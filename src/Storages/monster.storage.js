@@ -13,7 +13,7 @@ export const addMonster = (userId, monster) => {
   const monsterUUID = uuidv4();
   const monsterId = getMonster(userId);
   //유저의 몬스터 관리 공간 생성
-  
+
   //생성되는 몬스터에게 객체 고유값 uuid 제공
   monster.uuid = monsterUUID;
   monsterInfo[userId].push(monster);
@@ -21,8 +21,7 @@ export const addMonster = (userId, monster) => {
 
 export const getMonsters = (userId) => {
   return monsterInfo[userId];
-}
-
+};
 
 // 몬스터 객체 정보
 export const getMonsterLength = (userId) => {

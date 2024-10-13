@@ -1,10 +1,12 @@
 import { prismaAsset } from "../lib/utils/prisma/index.js";
-import { addMonster } from "../Storages/monster.storage.js";
+import { addMonster, getMonsterLength } from "../Storages/monster.storage.js";
 import {
   getStage,
   getInhibitorStatus,
   setInhibitorStatus,
 } from "../Storages/stage.storage.js";
+import stageOperator from "./stageOperator.js";
+
 //기능 구현 후 class로 변경 예정
 
 //몬스터 정보 호출
@@ -20,14 +22,19 @@ export const getMonsterInfo = async (stage) => {
 };
 
 //몬스터 생성
-export const spawnStart = async (userId) => {
+export const spawnStart = async (socket, userId) => {
   //필요 정보 : 유저 고유값(토큰이용), 스테이지 정보
+  const stageInfo = getStage(userId).stageInfo;
 
-  let nowStage = getStage(userId).stageInfo.stageId; //초기 스테이지
+  let nowStage = stageInfo.stageId; //초기 스테이지
   //스테이지 정보에 따라 스폰 몬스터 결정
   const getMonsterInfo = await getMonster(nowStage);
   let interval = getMonsterInfo[0].cycle; // 몬스터 스폰 주기
   let intervalId; //몬스터 스폰
+
+  // if (stageInfo.monsterAmountLimit <= getMonsterLength(userId)) {
+  //   stageOperator.stageEnd(userId);
+  // }
 
   //몬스터 스폰 시작
   function startInterval() {
