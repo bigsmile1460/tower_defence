@@ -22,7 +22,7 @@ export async function createStage(userId) {
       },
     });
   }
-
+  
   export function getStage(userId) {
     const stage = stages.find((stage) => {
       return stage.userId === userId;
@@ -46,3 +46,18 @@ export async function createStage(userId) {
     stages.splice(stageIndex, 1);
   }
 
+  export function getUserGold(userId) {
+    return getStage(userId).stageInfo.gold;
+  }
+
+  export function setUserGold(userId, gold) {
+    getStage(userId).stageInfo.gold += gold;
+  }
+
+  export function getUserScore(userId) {
+    return getStage(userId).stageInfo.score;
+  }
+
+  export function setUserScore(userId, score) {
+    getStage(userId).stageInfo.score += score;
+  }

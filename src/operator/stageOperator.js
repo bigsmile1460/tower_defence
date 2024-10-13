@@ -1,5 +1,5 @@
 import { prismaUser } from "../lib/utils/prisma/index.js";
-import { createStage, getStage, nextStage } from "../Storages/stage.storage.js";
+import { createStage, getStage, nextStage, getUserGold, setUserGold } from "../Storages/stage.storage.js";
 
 class stagesOperator {   
 
@@ -34,9 +34,9 @@ class stagesOperator {
     }
 
     const newStage = getStage(userId);
-
+    
     return newStage;
-  }
+ }
 
   async stageEnd(userId, score) {
     const user = await prismaUser.user.findFirst({
