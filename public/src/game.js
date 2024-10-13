@@ -3,7 +3,7 @@ import UserSocket from "./Network/userSocket.js";
 let gameClient = GameClient.getInstance();
 const NUM_OF_MONSTERS = 5;
 const backgroundImage = new Image();
-backgroundImage.src = "images/bg.webp";
+backgroundImage.src = "images/game_background_1.png";
 const towerImage = new Image();
 towerImage.src = "images/tower.png";
 const inhibitorImage = new Image();
