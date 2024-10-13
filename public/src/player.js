@@ -12,6 +12,11 @@ class Player {
     this.x = this.canvas.width / 2;
     this.y = this.canvas.height / 2;
 
+    this.dirX = 0;
+    this.dirY = 0;
+
+    this.speed = 10;
+
     // 키보드 설정
     // 등록된 이벤트가 있는 경우 삭제하고 다시 등록
     window.removeEventListener("keydown", this.keydown);
@@ -29,19 +34,34 @@ class Player {
   keydown = (event) => {
     switch (event.code) {
       case "KeyS":
-        this.y += 10;
+        this.dirY = 1;
+        //this.y += 10;
         break;
       case "KeyW":
-        this.y -= 10;
+        this.dirY = -1;
+        //this.y -= 10;
         break;
       case "KeyA":
-        this.x -= 10;
+        this.dirX = -1;
+        //this.x -= 10;
         break;
       case "KeyD":
-        this.x += 10;
+        this.dirX = 1;
+        //this.x += 10;
         break;
-    }
+    }    
   };
+
+  keyup = (event) =>{
+    this.dirX=0;
+    this.dirY=0;
+  }
+
+  move()
+  {
+    this.x += this.dirX * this.speed;
+    this.y += this.dirY * this.speed;
+  }
 
   draw() {
     this.ctx.drawImage(this.image, this.x, this.y, this.width, this.height);

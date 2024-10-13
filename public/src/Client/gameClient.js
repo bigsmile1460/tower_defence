@@ -136,6 +136,7 @@ class GameClient {
     );
     this.path.drawPath(this.monsterPath);
     this.player.draw();
+    this.player.move();
 
     this.inhibitor.draw(this.ctx, this.inhibitorImage);
     this.elpsedTime++;
