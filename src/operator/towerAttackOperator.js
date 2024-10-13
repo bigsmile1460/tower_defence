@@ -1,11 +1,16 @@
+import { allMonster, getMonsters } from "../Storages/monster.storage.js";
 import { getTower } from "../Storages/tower.storage.js";
 
 class towerAttackOperator {
   // 타워 공격 검증
   towerAttackCheck(payload, userId) {
+    // 서버의 타워 데이터 조회
+    const serverTower = getTower(userId, payload.id);
+    if (!serverTower) {
+      throw new Error(`존재하지 않는 타워 id 요청 입니다.`);
+    }
+
     // 타워 공격 간격과 타워 공격 스피드 비교
-    return;
-    let serverTower = getTower(userId, payload.id);
     const attackInterval = payload.lastAttack - serverTower.lastAttack;
     if (attackInterval < payload.attackSpeed) {
       throw new Error(
@@ -15,15 +20,22 @@ class towerAttackOperator {
       );
     }
 
+    return;
     // 공격 타입이 singleAttack인 경우
-    const serverMonsters = getMonsters(userId);
-    if (payload.attackType === "singleAttack") {
+    const serverMonsters = getMonsters(userId); // 아직 몬스터 값이 안들어옴
+    if (serverTower.attackType === "singleAttack") {
       const hitMonster = 0;
+      // 몬스터 수가 다를 경우
+      if (payload.monsters.length !== serverMonsters.length) {
+        throw new Error(
+          `몬스터 수가 다릅니다. 서버 정보: ${payload.monsters.length} 클라 정보: ${serverMonsters.length}`
+        );
+      }
       for (let i = 0; i < payload.monsters.length; i++) {
-        // 몬스터 정보가 조작된 경우
+        // 몬스터 체력이 다를 경우
         if (payload.monsters[i].id !== serverMonsters[i].id) {
           throw new Error(
-            `몬스터 정보가 조작되었습니다. 서버 정보: ${serverMonsters[i]} 클라 정보: ${payload.monsters[i]}`
+            `몬스터 체력이 조작되었습니다. 서버 정보: ${serverMonsters[i]} 클라 정보: ${payload.monsters[i]}`
           );
         }
 
@@ -53,7 +65,7 @@ class towerAttackOperator {
     }
 
     // 공격 타입이 multiAttack인 경우
-    else if (payload.attackType === "multiAttack") {
+    else if (serverTower.attackType === "multiAttack") {
       for (let i = 0; i < monsters.length; i++) {
         // 몬스터 정보가 조작된 경우
         if (payload.monsters[i].id !== serverMonsters[i].id) {
@@ -80,7 +92,7 @@ class towerAttackOperator {
     }
 
     // 공격 타입이 heal인 경우
-    else if (payload.attackType === "heal") {
+    else if (serverTower.attackType === "heal") {
       const serverInhiitor = getInhibitor(userId);
       if (payload.inhibitorHp > serverInhiitor.hp + payload.attackPower) {
         throw new Error(
@@ -96,7 +108,9 @@ class towerAttackOperator {
         );
       }
     } else {
-      throw new Error(`타워의 공격 타입이 잘못되었습니다: ${tower.attackType}`);
+      throw new Error(
+        `타워의 공격 타입이 잘못되었습니다: ${serverTower.attackType}`
+      );
     }
 
     // 타워의 마지막 공격 시간 업데이트

@@ -23,7 +23,7 @@ export const addMonster = (userId, monster) => {
 
 export const getMonsters = (userId) => {
   return monsterInfo[userId];
-}
+};
 
 // 몬스터 객체 정보
 export const getMonsterLength = (userId) => {
