@@ -1,6 +1,6 @@
 // 몬스터에 대한 휘발성 메모리 저장
 import { v4 as uuidv4 } from "uuid";
-const monsterInfo = {};
+const monsterInfo = [];
 
 //몬스터 정보
 //플레이어ID(토큰이용), 체력, 공격력, 이동속도, 점수, 골드, 스테이지, UUID(객체정보),
@@ -13,9 +13,7 @@ export const addMonster = (userId, monster) => {
   const monsterUUID = uuidv4();
   const monsterId = getMonster(userId);
   //유저의 몬스터 관리 공간 생성
-  if (!monsterInfo[userId]) {
-    monsterInfo[userId] = [];
-  }
+  
   //생성되는 몬스터에게 객체 고유값 uuid 제공
   monster.uuid = monsterUUID;
 
@@ -25,6 +23,7 @@ export const addMonster = (userId, monster) => {
 
 // 몬스터 객체 정보
 export const getMonster = (userId) => {
+  return 0;
   console.log("monsterInfo[userId]:", monsterInfo);
   if (monsterInfo[userId].length) {
     return monsterInfo[userId].length;
