@@ -2,7 +2,7 @@ import express from "express";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 import { prismaUser } from "../lib/utils/prisma/index.js";
-import { CreateAccessToken } from "../lib/utils/token/tokenCreate.js";
+import { createAccessToken } from "../lib/utils/token/tokenCreate.js";
 
 const usersRouter = express.Router();
 dotenv.config();
@@ -80,7 +80,7 @@ usersRouter.post("/SignIn", async (req, res, next) => {
     return res.status(404).json({ message: `비밀번호가 일치하지 않습니다.` });
   }
 
-  const s2cAccessToken = CreateAccessToken(email);
+  const s2cAccessToken = createAccessToken(email);
   res.header("authorization", s2cAccessToken);
 
   return res

@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-export function CreateAccessToken(email) {
+export function createAccessToken(email) {
     const accessToken = jwt.sign(
         { email: email },
         process.env.ACCESS_TOKEN_SECRET_KEY,
@@ -13,7 +13,7 @@ export function CreateAccessToken(email) {
     return process.env.TOKEN_TYPE + accessToken;
 }
 
-export function ValidateToken(token, secretkey) {
+export function validateToken(token, secretkey) {
     try {
         const payload = jwt.verify(token, secretkey);
         return payload;

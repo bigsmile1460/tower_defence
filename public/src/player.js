@@ -41,19 +41,6 @@ class Player {
         this.x += 10;
         break;
     }
-    // if (event.code === "KeyS") {
-    //   this.y += 10;
-    //   //console.log('press');
-    // } else if (event.code === "KeyW") {
-    //   this.y -= 10;
-    //   //console.log('press');
-    // } else if (event.code === "KeyA") {
-    //   this.x -= 10;
-    //   //console.log('press');
-    // } else if (event.code === "KeyD") {
-    //   this.x += 10;
-    //   //console.log('press');
-    // }
   };
 
   draw() {

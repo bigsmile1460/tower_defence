@@ -1,6 +1,6 @@
 import GameClient from "./Client/gameClient.js";
 import UserSocket from "./Network/userSocket.js";
-let gameClient = GameClient.GetInstance();
+let gameClient = GameClient.getInstance();
 const NUM_OF_MONSTERS = 5;
 const backgroundImage = new Image();
 backgroundImage.src = "images/bg.webp";
@@ -28,11 +28,11 @@ async function GameStart() {
       (img) => new Promise((resolve) => (img.onload = resolve))
     ),
   ]).then(() => {
-    UserSocket.GetInstance().Connect();
-    UserSocket.GetInstance().SendEvent(1, {
+    UserSocket.getInstance().Connect();
+    UserSocket.getInstance().SendEvent(1, {
       startTime: Date.now(),
     });
-    gameClient.LoadGameImages({
+    gameClient.loadGameImages({
       backgroundImage: backgroundImage,
       towerImage: towerImage,
       inhibitorImage: inhibitorImage,
@@ -40,10 +40,10 @@ async function GameStart() {
       monsterImages: monsterImages,
     });
     //몬스터 생성 호출, todo: 임시로 호출만 테스트. 추후 변경예정
-    UserSocket.GetInstance().SendEvent(6, {});
+    UserSocket.getInstance().SendEvent(6, {});
     // 몬스터 생성 주기
     setInterval(() => {
-      gameClient.SpawnMonster();
+      gameClient.spawnMonster();
     }, gameClient.monsterSpawnInterval);
   });
 }

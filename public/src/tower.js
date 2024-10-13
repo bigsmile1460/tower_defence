@@ -102,7 +102,7 @@ export class Tower {
 
     // 공격 성고 시 서버에 공격 결과 전달
     this.lastAttack = Date.now();
-    UserSocket.GetInstance().SendEvent(7, {
+    UserSocket.getInstance().SendEvent(7, {
       id: this.id,
       towerId: this.towerId,
       lastAttack: this.lastAttack,
@@ -143,7 +143,7 @@ export class Tower {
 
     // 공격 성고 시 서버에 공격 결과 전달
     this.lastAttack = Date.now();
-    UserSocket.GetInstance().SendEvent(7, {
+    UserSocket.getInstance().SendEvent(7, {
       id: this.id,
       towerId: this.towerId,
       lastAttack: this.lastAttack,
@@ -168,7 +168,7 @@ export class Tower {
 
     // 공격 성고 시 서버에 공격 결과 전달
     this.lastAttack = Date.now();
-    UserSocket.GetInstance().SendEvent(7, {
+    UserSocket.getInstance().SendEvent(7, {
       id: this.id,
       towerId: this.towerId,
       lastAttack: this.lastAttack,
@@ -196,7 +196,7 @@ export class Tower {
     upgradeButton.addEventListener("click", () => {
       console.log(this.level);
       upgradeButton.textContent = this.name + this.level + "강화 버튼";
-      UserSocket.GetInstance().SendEvent(8, this.id);
+      UserSocket.getInstance().SendEvent(8, this.id);
     });
     this.upgradeButton = upgradeButton;
 
@@ -211,7 +211,7 @@ export class Tower {
     sellButton.style.cursor = "pointer";
     document.body.appendChild(sellButton);
     sellButton.addEventListener("click", () => {
-      UserSocket.GetInstance().SendEvent(10, this.id);
+      UserSocket.getInstance().SendEvent(10, this.id);
     });
     this.sellButton = sellButton;
   }
