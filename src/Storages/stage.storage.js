@@ -5,11 +5,15 @@ export const stages = [];
 
 export async function createStage(userId) {
   const {
-    startGold,
+    gold,
     towerAmountLimit,
+    monsterCount,
     monsterCountLimit,
     inhibitorHp,
     inhibitorHpLimit,
+    inhibitorInterval,
+    inhibitorStatus,
+    stageChangeInterval
   } = await prismaAsset.initGame.findFirst({
     where: {
       id: 1,
@@ -19,15 +23,16 @@ export async function createStage(userId) {
     userId: userId,
     stageInfo: {
       stageId: 1, // 스테이지 레벨
-      gold: startGold, // 유저가 가진 골드
+      gold: gold, // 유저가 가진 골드
       score: 0, // 현재 점수
       towerAmountLimit: towerAmountLimit, // 타워 최대 개수
       inhibitorHp: inhibitorHp, // 억제기 Hp
       inhibitorHpLimit: inhibitorHpLimit, // 억제기 최대 HP 제한
-      inhibitorStatus: "normal", // 억제기 상태 ( normal , broken , replace)
-      inhibitorInterval: 5000, // 억제기 재생 시간
-      monsterCount: 0, // 몬스터 수
+      inhibitorStatus: inhibitorStatus, // 억제기 상태 ( normal , broken , replace)
+      inhibitorInterval: inhibitorInterval, // 억제기 재생 시간
+      monsterCount: monsterCount, // 몬스터 수
       monsterCountLimit: monsterCountLimit, // 몬스터 제한(제한 오버시 게임 종료)
+      stageChangeInterval: stageChangeInterval,
     },
   });
 }
@@ -39,11 +44,17 @@ export function getStage(userId) {
   return stage;
 }
 
-export function nextStage(userId) {
+export async function nextStage(userId) {
   const stage = getStage(userId);
 
+  const {gold} = await prismaAsset.initGame.findFirst({
+    where: {
+      id: 1,
+    }
+  })
+
   stage.stageInfo.stageId++;
-  stage.stageInfo.gold += 1000;
+  stage.stageInfo.gold += gold;
 }
 
 export function clearStage(userId) {
@@ -91,7 +102,6 @@ export function getInhibitorStatus(userId) {
 }
 
 export function setInhibitorStatus(userId, status) {
-  // true -> false ,  false -> true 변경을 하는 것
   getStage(userId).stageInfo.inhibitorStatus = status;
 }
 

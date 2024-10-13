@@ -22,11 +22,15 @@ enum attackType {
 
 model initGame {
   id Int @id @default(autoincrement()) @map("Id")
-  startGold Int @map("startGold")
+  gold Int @map("gold")
   towerAmountLimit Int @default(6) @map("towerAmountLimit")
-  monsterCountLimit Int @default(200) @map("monsterCountLimit")
   inhibitorHp Int @map("inhibitorHp")
   inhibitorHpLimit Int @default(1000) @map("inhibitorHpLimit")
+  inhibitorStatus String @default("normal") @map("inhibitorStatus")
+  inhibitorInterval Int @map("inhibitorInterval")
+  monsterCount Int @default(0) @map("monsterCount")
+  monsterCountLimit Int @default(200) @map("monsterCountLimit")
+  stageChangeInterval Int @map("stageChangeInterval")
 
   @@map("InitGame")
 }
