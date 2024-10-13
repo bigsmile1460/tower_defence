@@ -1,11 +1,11 @@
-import { spwanStart, getMonsterInfo } from "../../operator/monsterOperator.js";
+import { spawnStart, getMonsterInfo } from "../../operator/monsterOperator.js";
 
 export const spawnNormal = async (socket, payload, userId) => {
   try {
 
     console.log("userId:", userId)
     //몬스터 스폰 시작
-    spwanStart(socket, payload, userId)
+    spawnStart(socket, payload, userId)
 
     return { status: "success", message:"몬스터 스폰"};
   } catch (error) {
