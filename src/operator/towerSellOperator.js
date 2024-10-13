@@ -1,16 +1,11 @@
-import {
-  getStage,
-  getUserGold,
-  setUserGold,
-} from "../Storages/stage.storage.js";
+import { getUserGold, setUserGold } from "../Storages/stage.storage.js";
 import { getTower } from "../Storages/tower.storage.js";
 
 // 골드 업데이트
 export const getTowerGoldCheck = (userId, id) => {
   // 골드 데이터 조회
-  console.log(getStage(userId));
   const gold = getUserGold(userId);
-  if (!gold) {
+  if (!gold && gold !== 0) {
     throw new Error(`플레이중이지 않은 userId 신청: ${userId}`);
   }
 
@@ -21,5 +16,5 @@ export const getTowerGoldCheck = (userId, id) => {
   }
 
   // 골드 가산
-  setUserGold(userId, sellTower.towerPrice * sellTower.sellPrcieRate);
+  setUserGold(userId, gold + sellTower.towerPrice * sellTower.sellPriceRate);
 };

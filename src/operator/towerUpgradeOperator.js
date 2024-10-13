@@ -5,7 +5,7 @@ import { getTower, upgradeTower } from "../Storages/tower.storage.js";
 export const towerUpgradeGoldCheck = (userId, id) => {
   // 골드 데이터 조회
   const gold = getUserGold(userId);
-  if (!gold) {
+  if (!gold && gold !== 0) {
     throw new Error(`플레이중이지 않은 userId 신청: ${userId}`);
   }
 
@@ -21,7 +21,7 @@ export const towerUpgradeGoldCheck = (userId, id) => {
   }
 
   // 골드 차감
-  setUserGold(userId, -servertower.upgradePrice);
+  setUserGold(userId, gold - servertower.upgradePrice);
 
   return false;
 };

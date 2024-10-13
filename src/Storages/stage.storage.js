@@ -61,7 +61,7 @@ export function getUserScore(userId) {
 }
 
 export function setUserScore(userId, score) {
-  getStage(userId).stageInfo.score += score;
+  getStage(userId).stageInfo.score = score;
 }
 
 export function setMonsterCount(userId, monsterCount) {
