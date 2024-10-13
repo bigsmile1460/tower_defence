@@ -127,10 +127,9 @@ class GameClient {
     );
     this.path.drawPath(this.monsterPath);
     this.player.draw();
-    this.player.move();
+    this.player.move();   
 
     this.inhibitor.draw(this.ctx, this.inhibitorImage);
-
 
     this.ctx.font = "25px Times New Roman";
     this.ctx.fillStyle = "skyblue";

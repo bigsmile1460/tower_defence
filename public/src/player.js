@@ -49,16 +49,35 @@ class Player {
         this.dirX = 1;
         //this.x += 10;
         break;
-    }    
+    }
   };
 
-  keyup = (event) =>{
-    this.dirX=0;
-    this.dirY=0;
+  keyup = (event) => {
+    this.dirX = 0;
+    this.dirY = 0;
   }
 
-  move()
-  {
+  move() {
+    if (this.x <= -20) {
+      this.x += 10;
+      return;
+    }
+
+    if (this.x >= 1880) {
+      this.x -= 10;
+      return;
+    }
+
+    if (this.y <= -20) {
+      this.y += 10;
+      return;
+    }
+
+    if (this.y >= 1030) {
+      this.y -= 10;
+      return;
+    }
+
     this.x += this.dirX * this.speed;
     this.y += this.dirY * this.speed;
   }
