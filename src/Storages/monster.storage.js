@@ -17,16 +17,12 @@ export const addMonster = (userId, monster) => {
   }
   //생성되는 몬스터에게 객체 고유값 uuid 제공
   monster.uuid = monsterUUID;
-
-  // console.log("몬스터 정보:", monster); // 최성원 잠시 지움
   monsterInfo[userId].push(monster);
-  // console.log("monsterInfo: ", monsterInfo); // 최성원 잠시 지움
 };
 
-//몬스터 정보
-// export const getMonster = (userId) => {
-//     return monsterInfo[userId] || []
-// }
+export const getMonster = (userId) => {
+  return monsterInfo[userId] || []
+}
 
 //몬스터 변동사항 - 타워가 몬스터 공격 시
 export const updateMonster = (userId, monsterUUID, attack) => {
