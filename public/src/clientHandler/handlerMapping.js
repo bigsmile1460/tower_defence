@@ -11,7 +11,7 @@ const handlerMapping = {
   3: stageEnd,
   // 4: monsterDie,
   // 5: spawnSpecial,
-  // 6: spawnNormal,
+  6: spawnNormal,
   8: towerUpgrade,
   9: towerBuy,
   10: towerSell,
