@@ -16,7 +16,7 @@ export const towerUpgrade = (io, socket, payload, userId) => {
 
     return { status: "success", Message: "타워 업그레이드 성공!" };
   } catch (error) {
-    console.log("타워 업그레이드 정보 처리 중 에러 발생", error);
+    console.log(error.message, error);
     return { status: "success", Message: "타워 업그레이드 실패!" };
   }
 };

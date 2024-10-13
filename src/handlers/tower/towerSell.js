@@ -12,7 +12,7 @@ export const towerSell = (io, socket, payload, userId) => {
 
     return { status: "success", Message: "타워 판매" };
   } catch (error) {
-    console.log("타워 판매 처리 중 에러 발생", error);
+    console.log(error.message, error);
     return { status: "fail", Message: "타워 판매" };
   }
 };

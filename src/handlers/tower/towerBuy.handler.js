@@ -15,6 +15,7 @@ export const towerBuy = async (io, socket, payload, userId) => {
 
     return { status: "succues", Message: "타워 구매" };
   } catch (error) {
+    console.log(error.message, error);
     return { status: "fail", Message: "타워 구매" };
   }
 };
