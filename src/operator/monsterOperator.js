@@ -7,9 +7,9 @@ import {
 } from "../Storages/stage.storage.js";
 //기능 구현 후 class로 변경 예정
 //몬스터 정보 호출
-export const getMonster = (stageNo) => {
+export const getMonster = (stageId) => {
   return prismaAsset.monster.findMany({
-    where: { stage: +stageNo },
+    where: { stage: +stageId },
   });
 };
 
@@ -27,12 +27,11 @@ export const spawnStart = async (userId) => {
   const getMonsterInfo = await getMonster(nowStage);
   let interval = getMonsterInfo[0].cycle; // 몬스터 스폰 주기
   let intervalId; //몬스터 스폰
-  let spawnDouble = false; //억제기 부서질때 true
 
   //몬스터 스폰 시작
   function startInterval() {
     intervalId = setInterval(() => {
-      //몬스터 객체 생성 --
+      //몬스터 객체 생성
       addMonster(userId, getMonsterInfo[0]);
       //다음 스테이지로 넘어감 - getStage로 스테이지 정보와 현재 스폰되는 스테이지 비교
       if (nowStage !== getStage(userId)) {

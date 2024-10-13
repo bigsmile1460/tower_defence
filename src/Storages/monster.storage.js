@@ -11,6 +11,7 @@ const monsterInfo = {};
 export const addMonster = (userId, monster) => {
   //몬스터 uuid 제공 - 객체 분류
   const monsterUUID = uuidv4();
+  const monsterId = getMonster(userId);
   //유저의 몬스터 관리 공간 생성
   if (!monsterInfo[userId]) {
     monsterInfo[userId] = [];
@@ -18,15 +19,19 @@ export const addMonster = (userId, monster) => {
   //생성되는 몬스터에게 객체 고유값 uuid 제공
   monster.uuid = monsterUUID;
 
-  console.log("몬스터 정보:", monster);
   monsterInfo[userId].push(monster);
   console.log("monsterInfo: ", monsterInfo);
 };
 
-//몬스터 정보
-// export const getMonster = (userId) => {
-//     return monsterInfo[userId] || []
-// }
+// 몬스터 객체 정보
+export const getMonster = (userId) => {
+  console.log("monsterInfo[userId]:", monsterInfo);
+  if (monsterInfo[userId].length) {
+    return monsterInfo[userId].length;
+  } else {
+    return 0;
+  }
+};
 
 //몬스터 변동사항 - 타워가 몬스터 공격 시
 export const updateMonster = (userId, monsterUUID, attack) => {
