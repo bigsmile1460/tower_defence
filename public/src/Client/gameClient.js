@@ -179,17 +179,12 @@ class GameClient {
     for (let i = this.monsters.length - 1; i >= 0; i--) {
       const monster = this.monsters[i];
       if (monster.hp > 0) {
-        const isDestroyed = monster.move(this.inhibitor);
-        if (isDestroyed) {
-          /* 게임 오버 */
-          alert("게임 오버. 스파르타 본부를 지키지 못했다...ㅠㅠ");
-          location.reload();
-        }
+        /* 몬스터 이동 */
+        monster.move(this.inhibitor);       
         monster.draw(this.ctx);
       } else {
         /* 몬스터가 죽었을 때 */
         this.monsters.splice(i, 1);
-        //this.userGold += 100;
       }
     }
     requestAnimationFrame(() => {
