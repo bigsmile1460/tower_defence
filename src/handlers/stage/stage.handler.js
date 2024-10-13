@@ -3,22 +3,23 @@ import { clearStage } from "../../Storages/stage.storage.js";
 import { createTowers } from "../../Storages/tower.storage.js";
 import { spawnNormal } from "../monster/spawnNormal.js";
 
-let startGameTime = 0; // 시작 시간 검증용 변수
-
 // 토큰 검증
 export const stageStart = async (socket, payload, userId) => {
   try {
-    startGameTime = payload.startTime;
     clearStage(userId);
 
     // 시작 시 스테이지(스토리지) 생성
     const [stage, highScore] = await stageOperator.stageStart(userId);
 
     // 시작 시 타워(스토리지) 생성
-    await createTowers(userId); // 최성원 추가
+    createTowers(userId); // 최성원 추가
 
     spawnNormal(userId);
 
+    // 스테이지 변경함수 시작
+    await stageOperator.stageChangeData(socket, userId);
+
+    // 클라이언트로 게임 시작 정보 전달
     socket.emit("event", {
       handlerId: 1,
       payload: {
@@ -27,46 +28,9 @@ export const stageStart = async (socket, payload, userId) => {
       },
     });
 
-    return { status: "success" };
-  } catch (err) {
+    return { status: "success", message: `스테이지 시작 중 에러 발생` };
+  } catch (error) {
+    console.log(error.message, error);
     return { status: "fail", message: `스테이지 시작 중 에러 발생` };
-  }
-};
-
-export const stageChange = async (socket, payload, userId) => {
-  try {
-    const elapsedTime = payload.elpsedTime;
-
-    const userGold = payload.userGold;
-
-    const stage = stageOperator.stageChange(
-      startGameTime,
-      elapsedTime,
-      userGold,
-      userId
-    );
-
-    socket.emit("event", {
-      handlerId: 2,
-      payload: {
-        stage,
-      },
-    });
-
-    return { status: "success" };
-  } catch (error) {
-    console.log(error.message, error);
-    return { status: "fail", message: `스테이지 변경 중 에러 발생` };
-  }
-};
-
-export const stageEnd = async (socket, payload, userId) => {
-  try {
-    stageOperator.stageEnd(userId, payload.score);
-
-    return { status: "success" };
-  } catch (error) {
-    console.log(error.message, error);
-    return { status: "fail", message: `스테이지 종료 중 에러 발생` };
   }
 };
