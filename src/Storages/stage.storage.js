@@ -86,11 +86,11 @@ export function getInhibitorHp(userId, inhibitorHp) {
   return getStage(userId).stageInfo.inhibitorHp;
 }
 
-export function getinhibitorStatus() {
+export function getInhibitorStatus(userId) {
   return getStage(userId).stageInfo.inhibitorStatus;
 }
 
-export function setinhibitorStatus(status) {
+export function setInhibitorStatus(userId, status) {
   // true -> false ,  false -> true 변경을 하는 것
   getStage(userId).stageInfo.inhibitorStatus = status;
 }

@@ -12,7 +12,7 @@ export class Monster {
     this.y = path[0].y; // 몬스터의 y 좌표 (최초 위치는 경로의 첫 번째 지점)
     this.width = 80; // 몬스터 이미지 가로 길이
     this.height = 80; // 몬스터 이미지 세로 길이
-    this.speed = 2; // 몬스터의 이동 속도
+    this.speed = 3; // 몬스터의 이동 속도
     this.image = monsterImages[this.monsterNumber]; // 몬스터 이미지
     this.level = level; // 몬스터 레벨
     this.init(level);
@@ -42,12 +42,9 @@ export class Monster {
       }
       return false;
     } else {
-      const isDestroyed = base.takeDamage(this.attackPower); // 기지에 도달하면 기지에 데미지를 입힙니다!
-      // this.hp = 0; // 몬스터는 이제 기지를 공격했으므로 자연스럽게 소멸해야 합니다.
-      this.x = this.path[0].x; // 몬스터의 x 좌표 (최초 위치는 경로의 첫 번째 지점)
-      this.y = this.path[0].y; // 몬스터의 y 좌표 (최초 위치는 경로의 첫 번째 지점)
-      this.currentIndex = 0; // 몬스터가 이동 중인 경로의 인덱스
-      return isDestroyed;
+      this.x = this.path[0].x; // 첫 시작좌표 x로 돌아가기
+      this.y = this.path[0].y; // 첫 시작좌표 y로 돌아가기
+      this.currentIndex = 0;
     }
   }
 
