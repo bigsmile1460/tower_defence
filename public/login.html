@@ -59,11 +59,13 @@
           }),
         });
 
-        const s2c_SignInResponse = await response.json();
+        const s2c_SignInResponse = await response.json();        
+        
         if (s2c_SignInResponse.status === 201) {
-          // accessToken을 가져와서 localStorage에 저장
+          // accessToken과 email을 localStorage에 저장          
           const accessToken = response.headers.get("authorization");
           localStorage.setItem("authorization", accessToken);
+          localStorage.setItem("email", email);
 
           window.location.href = "/index.html";
         }
