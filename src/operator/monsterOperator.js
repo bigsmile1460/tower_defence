@@ -6,6 +6,7 @@ import {
   setInhibitorStatus,
 } from "../Storages/stage.storage.js";
 //기능 구현 후 class로 변경 예정
+
 //몬스터 정보 호출
 export const getMonster = (stageId) => {
   return prismaAsset.monster.findMany({
