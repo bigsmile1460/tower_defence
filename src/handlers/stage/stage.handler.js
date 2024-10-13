@@ -5,7 +5,7 @@ import { createTowers } from "../../Storages/tower.storage.js";
 let startGameTime = 0; // 시작 시간 검증용 변수
 
 // 토큰 검증
-export const stageStart = async (io, socket, payload, userId) => {
+export const stageStart = async (socket, payload, userId) => {
   try {
     startGameTime = payload.startTime;
     clearStage(userId);
@@ -30,7 +30,7 @@ export const stageStart = async (io, socket, payload, userId) => {
   }
 };
 
-export const stageChange = async (io, socket, payload, userId) => {
+export const stageChange = async (socket, payload, userId) => {
   try {
     const elapsedTime = payload.elpsedTime;
 
@@ -51,17 +51,19 @@ export const stageChange = async (io, socket, payload, userId) => {
     });
 
     return { status: "success" };
-  } catch (err) {
+  } catch (error) {
+    console.log(error.message, error);
     return { status: "fail", message: `스테이지 변경 중 에러 발생` };
   }
 };
 
-export const stageEnd = async (io, socket, payload, userId) => {
+export const stageEnd = async (socket, payload, userId) => {
   try {
     stageOperator.stageEnd(userId, payload.score);
 
     return { status: "success" };
-  } catch (err) {
+  } catch (error) {
+    console.log(error.message, error);
     return { status: "fail", message: `스테이지 종료 중 에러 발생` };
   }
 };

@@ -1,7 +1,7 @@
 import towerAttackOperator from "../../operator/towerAttackOperator.js";
 
 // 타워 공격
-export const towerAttack = (io, socket, payload, userId) => {
+export const towerAttack = (socket, payload, userId) => {
   try {
     // 타워 공격 검증 함수
     towerAttackOperator.towerAttackCheck(payload, userId);

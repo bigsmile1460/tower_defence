@@ -6,7 +6,7 @@ class UserSocket {
   constructor() {
     this.socket = null;
   }
-  static GetInstance() {
+  static getInstance() {
     if (!this.gInstance) {
       this.gInstance = new UserSocket();
     }
@@ -19,9 +19,6 @@ class UserSocket {
         token: somewhere, // 토큰이 저장된 어딘가에서 가져와야 합니다!
       },
     });
-    // 연결 이벤트 할당
-    this.socket.on("connection", (data) => {});
-
     // 이벤트 핸들러
     this.socket.on("event", (data) => handlerEvent(data));
     // 응답 패킷 이벤트 할당

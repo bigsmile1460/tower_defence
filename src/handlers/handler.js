@@ -1,11 +1,11 @@
 import dotenv from "dotenv";
 import handlerMapping from "./handlerMapping.js";
-import { ValidateToken } from "../lib/utils/token/tokenCreate.js";
+import { validateToken } from "../lib/utils/token/tokenCreate.js";
 
 dotenv.config();
 
 // handlerId → handler 변환
-export const handlerEvent = async (io, socket, data) => {
+export const handlerEvent = async (socket, data) => {
   try {
     // handlerId 변환
     const handler = handlerMapping[data.handlerId];
@@ -15,7 +15,7 @@ export const handlerEvent = async (io, socket, data) => {
       socket.emit("response", { status: "fail" });
     }
 
-    const decodedAccessToken = ValidateToken(
+    const decodedAccessToken = validateToken(
       c2sAccessToken,
       process.env.ACCESS_TOKEN_SECRET_KEY
     );
@@ -33,12 +33,6 @@ export const handlerEvent = async (io, socket, data) => {
       data.payload,
       decodedAccessToken.email
     );
-
-    // if (response.data) {
-    //   socket.emit("event", { handlerId: 1, payload: response });
-    // } else {
-    //   socket.emit("event", { handlerId: 2, payload: response });
-    // }
 
     socket.emit("response", response);
   } catch (error) {

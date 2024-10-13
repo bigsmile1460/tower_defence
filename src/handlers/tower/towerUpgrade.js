@@ -4,7 +4,7 @@ import {
 } from "../../operator/towerUpgradeOperator.js";
 
 // 타워 업그레이드
-export const towerUpgrade = (io, socket, payload, userId) => {
+export const towerUpgrade = (socket, payload, userId) => {
   try {
     // 골드 체크 및 차감
     if (towerUpgradeGoldCheck(userId, payload)) {

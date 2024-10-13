@@ -41,7 +41,7 @@ class GameClient {
     this.buySingleTowerButton.style.cursor = "pointer";
     document.body.appendChild(this.buySingleTowerButton);
     this.buySingleTowerButton.addEventListener("click", () => {
-      UserSocket.GetInstance().SendEvent(9, {
+      UserSocket.getInstance().SendEvent(9, {
         towerId: 1,
         timeStamp: Date.now(),
       });
@@ -57,7 +57,7 @@ class GameClient {
     this.buyRangeTowerButton.style.cursor = "pointer";
     document.body.appendChild(this.buyRangeTowerButton);
     this.buyRangeTowerButton.addEventListener("click", () => {
-      UserSocket.GetInstance().SendEvent(9, {
+      UserSocket.getInstance().SendEvent(9, {
         towerId: 2,
         timeStamp: Date.now(),
       });
@@ -73,19 +73,19 @@ class GameClient {
     this.buyHealTowerButton.style.cursor = "pointer";
     document.body.appendChild(this.buyHealTowerButton);
     this.buyHealTowerButton.addEventListener("click", () => {
-      UserSocket.GetInstance().SendEvent(9, {
+      UserSocket.getInstance().SendEvent(9, {
         towerId: 3,
         timeStamp: Date.now(),
       });
     });
   }
-  static GetInstance() {
+  static getInstance() {
     if (!this.gInstance) {
       this.gInstance = new GameClient();
     }
     return this.gInstance;
   }
-  SetStageInfo(stages) {
+  setStageInfo(stages) {
     this.stages = stages;
     this.userGold = stages.stageInfo.gold;
   }
@@ -94,12 +94,12 @@ class GameClient {
     const lastPoint = this.monsterPath[this.monsterPath.length - 1];
     this.inhibitor = new Inhibitor(lastPoint.x, lastPoint.y, this.inhibitorHp);
   }
-  SpawnMonster() {
+  spawnMonster() {
     this.monsters.push(
       new Monster(this.monsterPath, this.monsterImages, this.monsterLevel)
     );
   }
-  LoadGameImages(infos) {
+  loadGameImages(infos) {
     this.backgroundImage = infos.backgroundImage;
     this.towerImage = infos.towerImage;
     this.inhibitorImage = infos.inhibitorImage;
@@ -113,7 +113,7 @@ class GameClient {
       this.canvas.height
     );
   }
-  GameStart(stages, highScore) {
+  gameStart(stages, highScore) {
     this.stages = stages;
     this.userGold += stages.stageInfo.gold;
     this.inhibitorHp = stages.stageInfo.inhibitorHp;
@@ -124,9 +124,9 @@ class GameClient {
     this.monsterPath = this.path.generateRandomMonsterPath();
     this.path.drawPath(this.monsterPath);
     this.placeinhibitor();
-    this.GameLoop();
+    this.gameLoop();
   }
-  async GameLoop() {
+  async gameLoop() {
     this.ctx.drawImage(
       this.backgroundImage,
       0,
@@ -142,13 +142,13 @@ class GameClient {
 
     // 몬스터 10마리 이상 존재시 게임오버
     if (this.monsters.length > this.stages.stageInfo.monsterCountLimit) {
-      UserSocket.GetInstance().SendEvent(3, { score: this.score });
+      UserSocket.getInstance().SendEvent(3, { score: this.score });
       alert(`게임 오버`);
     }
 
     // 일정 시간이 지날 경우 스테이지 변경
     if ((this.elpsedTime - this.startTime) % 1500 === 0) {
-      UserSocket.GetInstance().SendEvent(2, {
+      UserSocket.getInstance().SendEvent(2, {
         elpsedTime: this.elpsedTime,
         userGold: this.userGold,
       });
@@ -188,7 +188,7 @@ class GameClient {
       }
     }
     requestAnimationFrame(() => {
-      this.GameLoop();
+      this.gameLoop();
     });
   }
 }

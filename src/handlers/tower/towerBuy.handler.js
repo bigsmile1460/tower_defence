@@ -5,7 +5,7 @@ import {
 } from "../../operator/towerBuyOperator.js";
 
 // 타워 구매
-export const towerBuy = async (io, socket, payload, userId) => {
+export const towerBuy = async (socket, payload, userId) => {
   try {
     // 타워 개수 체크
     if (await towerBuyLimitCheck(userId)) {

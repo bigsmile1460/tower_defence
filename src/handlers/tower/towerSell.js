@@ -1,7 +1,7 @@
 import { getTowerGoldCheck } from "../../operator/towerSellOperator.js";
 import { deleteTower } from "../../Storages/tower.storage.js";
 
-export const towerSell = (io, socket, payload, userId) => {
+export const towerSell = (socket, payload, userId) => {
   try {
     // 골드 상승
     getTowerGoldCheck(userId, payload);

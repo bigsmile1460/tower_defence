@@ -19,14 +19,14 @@ export const getMonsterInfo = async (stage) => {
 };
 
 //몬스터 생성
-export const spwanStart = async (io, socket, payload, userId) => {
+export const spawnStart = async (socket, payload, userId) => {
   //필요 정보 : 유저 고유값(토큰이용), 스테이지 정보
-  let nowStage = getStage(userId); //초기 스테이지
+  let nowStage = getStage(userId).stageInfo.stageId; //초기 스테이지
   //스테이지 정보에 따라 스폰 몬스터 결정
   const getMonsterInfo = await getMonster(nowStage);
   let interval = getMonsterInfo[0].cycle; // 몬스터 스폰 주기
   let intervalId; //몬스터 스폰
-  let spwanDobble = false; //억제기 부서질때 true
+  let spawnDouble = false; //억제기 부서질때 true
 
   //몬스터 스폰 시작
   function startInterval() {
@@ -45,7 +45,7 @@ export const spwanStart = async (io, socket, payload, userId) => {
         console.log("억제기 파괴");
         interval = interval / 2; //스폰 2배로 변경
         setInhibitorStatus("normal"); //억제기 상태변화 -> "Normal"
-        spwanDobble = false;
+        spawnDouble = false;
         clearInterval(intervalId); // 몬스터 스폰 중지
         startInterval(); //몬스터 스폰 시작(재귀)
       }
@@ -65,6 +65,6 @@ export const spwanStart = async (io, socket, payload, userId) => {
   return true;
 };
 
-export const spwanEnd = () => {
+export const spawnEnd = () => {
   clearInterval(intervalId); // 몬스터 스폰 중지
 };
