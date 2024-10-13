@@ -1,3 +1,4 @@
+import { HEAL, MULTI_ATTACK, SINGLE_ATTACK } from "./constants.js";
 import UserSocket from "./Network/userSocket.js";
 
 export class Tower {
@@ -70,7 +71,7 @@ export class Tower {
 
   singleAttack(monsters) {
     // 공격 유형이 단일공격이 아닐 경우 함수 종료
-    if (this.attackType !== "singleAttack") {
+    if (this.attackType !== SINGLE_ATTACK) {
       return;
     }
 
@@ -111,7 +112,7 @@ export class Tower {
 
   multiAttack(monsters) {
     // 공격 유형이 다중공격이 아닐 경우 함수 종료
-    if (this.attackType !== "multiAttack") {
+    if (this.attackType !== MULTI_ATTACK) {
       return;
     }
 
@@ -152,7 +153,7 @@ export class Tower {
 
   heal(inhibitor) {
     // 공격 유형이 힐이 아닐 경우 함수 종료
-    if (this.attackType !== "heal") {
+    if (this.attackType !== HEAL) {
       return;
     }
 

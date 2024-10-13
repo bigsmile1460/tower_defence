@@ -41,10 +41,10 @@ export class Monster {
         this.y += (deltaY / distance) * this.speed; // 단위 벡터: deltaY / distance
       }
       return false;
-    } else {      
+    } else {
       this.x = this.path[0].x; // 첫 시작좌표 x로 돌아가기
       this.y = this.path[0].y; // 첫 시작좌표 y로 돌아가기
-      this.currentIndex = 0;   
+      this.currentIndex = 0;
     }
   }
 
