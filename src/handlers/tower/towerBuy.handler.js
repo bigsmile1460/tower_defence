@@ -7,7 +7,7 @@ export const towerBuy = async (io, socket, payload, userId) => {
   try {
     // 타워 골드 체크 및 골드 차감
     if (await towerBuyGoldCheck(payload.towerId, userId)) {
-      return { status: "success", Message: "골드 부족" };
+      return { status: "fail", Message: "골드 부족" };
     }
 
     // 타워 생성 및 생성된 타워 프론트엔드로 전달
