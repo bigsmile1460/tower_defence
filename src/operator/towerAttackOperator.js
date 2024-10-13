@@ -4,6 +4,7 @@ class towerAttackOperator {
   // 타워 공격 검증
   towerAttackCheck(payload, userId) {
     // 타워 공격 간격과 타워 공격 스피드 비교
+    return;
     let serverTower = getTower(userId, payload.id);
     const attackInterval = payload.lastAttack - serverTower.lastAttack;
     if (attackInterval < payload.attackSpeed) {

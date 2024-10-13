@@ -39,7 +39,7 @@ class stagesOperator {
   // 스테이지 변경
   async stageChange(socket, userId) {
     // 스테이지 변경
-    nextStage(userId);
+    await nextStage(userId);
 
     // 변경된 정보 전달
     const stageInfo = getStage(userId);
