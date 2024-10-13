@@ -34,7 +34,7 @@ export const pushTower = (userId, towerData, timeStamp) => {
     attackSpeed: towerData.attackSpeed,
     attackType: towerData.attackType,
     towerPrice: towerData.towerPrice,
-    sellpPriceRate: towerData.sellPriceRate,
+    sellPriceRate: towerData.sellPriceRate,
     upgradeAttackPower: towerData.upgradeAttackPower,
     upgradePrice: towerData.upgradePrice,
     lastAttack: timeStamp,

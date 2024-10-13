@@ -8,7 +8,7 @@ export const towerAttack = (io, socket, payload, userId) => {
 
     return { status: "success", Message: "타워 공격" };
   } catch (error) {
-    console.log("타워 공격 정보 처리 중 에러 발생", error);
+    console.log(error.message, error);
     return { status: "fail", Message: "타워 공격" };
   }
 };

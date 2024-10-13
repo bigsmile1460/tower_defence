@@ -8,7 +8,7 @@ export const towerUpgrade = (io, socket, payload, userId) => {
   try {
     // 골드 체크 및 차감
     if (towerUpgradeGoldCheck(userId, payload)) {
-      return { status: "success", Message: "골드 부족" };
+      return { status: "fail", Message: "골드 부족" };
     }
 
     // 타워 업그레이드 및 프론트엔드로 전달
@@ -16,7 +16,7 @@ export const towerUpgrade = (io, socket, payload, userId) => {
 
     return { status: "success", Message: "타워 업그레이드 성공!" };
   } catch (error) {
-    console.log("타워 업그레이드 정보 처리 중 에러 발생", error);
-    return { status: "success", Message: "타워 업그레이드 실패!" };
+    console.log(error.message, error);
+    return { status: "fail", Message: "타워 업그레이드 실패!" };
   }
 };

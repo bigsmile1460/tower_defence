@@ -4,21 +4,27 @@ import { prismaAsset } from "../lib/utils/prisma/index.js";
 export const stages = [];
 
 export async function createStage(userId) {
-  const { startGold, monsterCountLimit, inhibitorHp, inhibitorHpLimit } =
-    await prismaAsset.initGame.findFirst({
-      where: {
-        id: 1,
-      },
-    });
+  const {
+    startGold,
+    towerAmountLimit,
+    monsterCountLimit,
+    inhibitorHp,
+    inhibitorHpLimit,
+  } = await prismaAsset.initGame.findFirst({
+    where: {
+      id: 1,
+    },
+  });
   stages.push({
     userId: userId,
     stageInfo: {
       stageId: 1, // 스테이지 레벨
-      gold: startGold, // 클리어시 획득 골드
+      gold: startGold, // 유저가 가진 골드
       score: 0, // 현재 점수
+      towerAmountLimit: towerAmountLimit, // 타워 최대 개수
       inhibitorHp: inhibitorHp, // 억제기 Hp
       inhibitorHpLimit: inhibitorHpLimit, // 억제기 최대 HP 제한
-      isInhibitorExist: true, // 억제기 파괴 유무
+      inhibitorStatus: "normal", // 억제기 상태 ( normal , broken , replace)
       inhibitorInterval: 5000, // 억제기 재생 시간
       monsterCount: 0, // 몬스터 수
       monsterCountLimit: monsterCountLimit, // 몬스터 제한(제한 오버시 게임 종료)
@@ -80,14 +86,15 @@ export function getInhibitorHp(userId, inhibitorHp) {
   return getStage(userId).stageInfo.inhibitorHp;
 }
 
-export function getIsInhibitorExist() {
-  return getStage(userId).stageInfo.isInhibitorExist;
+export function getinhibitorStatus() {
+  return getStage(userId).stageInfo.inhibitorStatus;
 }
 
-export function setIsInhibitorExist() {
+export function setinhibitorStatus(status) {
   // true -> false ,  false -> true 변경을 하는 것
-  getStage(userId).stageInfo.isInhibitorExist = getStage(userId).stageInfo
-    .isInhibitorExist
-    ? false
-    : true;
+  getStage(userId).stageInfo.inhibitorStatus = status;
+}
+
+export function towerAmountLimit(userId) {
+  return getStage(userId).stageInfo.towerAmountLimit;
 }
