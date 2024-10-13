@@ -3,7 +3,7 @@ import pathManager from "../path.js";
 import { Monster } from "../monster.js";
 import { Inhibitor } from "../base.js";
 import Player from "../player.js";
-import { getLocalStorage } from "../Local/localStorage.js";
+
 class GameClient {
   constructor() {
     this.canvas = document.getElementById("gameCanvas");
@@ -28,7 +28,7 @@ class GameClient {
     this.NUM_OF_MONSTERS = 5;
     this.monsterPath = null; // 몬스터가 지나가는 경로
     this.path = null; // 경로
-    //this.monsterPath = null; => 중첩된 거 같아서 주석처리 했습니다.
+
     this.startTime = 0; // 게임 시작 시간
     this.elpsedTime = 0; // 게임 종료 시간
     this.buySingleTowerButton = document.createElement("button");
@@ -87,8 +87,7 @@ class GameClient {
   }
   SetStageInfo(stages) {
     this.stages = stages;
-    this.userGold += stages.stageInfo.gold;
-    this.inhibitorHp = this.inhibitor.setHp(stages.stageInfo.inhibitorHp);
+    this.userGold = stages.stageInfo.gold;
   }
 
   placeinhibitor() {
@@ -140,18 +139,21 @@ class GameClient {
 
     this.inhibitor.draw(this.ctx, this.inhibitorImage);
     this.elpsedTime++;
+
     // 몬스터 10마리 이상 존재시 게임오버
-    if (this.monsters.length > 40) {
+    if (this.monsters.length > this.stages.stageInfo.monsterCountLimit) {
       UserSocket.GetInstance().SendEvent(3, { score: this.score });
       alert(`게임 오버`);
     }
 
     // 일정 시간이 지날 경우 스테이지 변경
-    if ((this.elpsedTime - this.startTime) % 500 === 0) {
+    if ((this.elpsedTime - this.startTime) % 1500 === 0) {
       UserSocket.GetInstance().SendEvent(2, {
         elpsedTime: this.elpsedTime,
+        userGold: this.userGold,
       });
     }
+
     this.ctx.font = "25px Times New Roman";
     this.ctx.fillStyle = "skyblue";
     this.ctx.fillText(`최고 기록: ${this.highScore}`, 100, 50); // 최고 기록 표시
@@ -181,14 +183,13 @@ class GameClient {
         if (isDestroyed) {
           /* 게임 오버 */
           alert("게임 오버. 스파르타 본부를 지키지 못했다...ㅠㅠ");
-          //UserSocket.GetInstance().SendEvent(3, { score: this.score });
           location.reload();
         }
         monster.draw(this.ctx);
       } else {
         /* 몬스터가 죽었을 때 */
         this.monsters.splice(i, 1);
-        this.userGold += 100;
+        //this.userGold += 100;
       }
     }
     requestAnimationFrame(() => {
