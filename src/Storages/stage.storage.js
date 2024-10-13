@@ -91,7 +91,6 @@ export function getInhibitorStatus(userId) {
 }
 
 export function setInhibitorStatus(userId, status) {
-  // true -> false ,  false -> true 변경을 하는 것
   getStage(userId).stageInfo.inhibitorStatus = status;
 }
 

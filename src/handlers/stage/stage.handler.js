@@ -1,6 +1,7 @@
 import stageOperator from "../../operator/stageOperator.js";
 import { clearStage } from "../../Storages/stage.storage.js";
 import { createTowers } from "../../Storages/tower.storage.js";
+import { spawnNormal } from "../monster/spawnNormal.js";
 
 let startGameTime = 0; // 시작 시간 검증용 변수
 
@@ -14,7 +15,9 @@ export const stageStart = async (socket, payload, userId) => {
     const [stage, highScore] = await stageOperator.stageStart(userId);
 
     // 시작 시 타워(스토리지) 생성
-    createTowers(userId); // 최성원 추가
+    await createTowers(userId); // 최성원 추가
+
+    spawnNormal(userId);
 
     socket.emit("event", {
       handlerId: 1,
