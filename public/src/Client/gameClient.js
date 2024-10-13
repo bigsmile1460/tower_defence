@@ -140,20 +140,6 @@ class GameClient {
     this.inhibitor.draw(this.ctx, this.inhibitorImage);
     this.elpsedTime++;
 
-    // 몬스터 10마리 이상 존재시 게임오버
-    if (this.monsters.length > this.stages.stageInfo.monsterCountLimit) {
-      UserSocket.getInstance().SendEvent(3, { score: this.score });
-      alert(`게임 오버`);
-    }
-
-    // 일정 시간이 지날 경우 스테이지 변경
-    if ((this.elpsedTime - this.startTime) % 1500 === 0) {
-      UserSocket.getInstance().SendEvent(2, {
-        elpsedTime: this.elpsedTime,
-        userGold: this.userGold,
-      });
-    }
-
     this.ctx.font = "25px Times New Roman";
     this.ctx.fillStyle = "skyblue";
     this.ctx.fillText(`최고 기록: ${this.highScore}`, 100, 50); // 최고 기록 표시
@@ -180,7 +166,7 @@ class GameClient {
       const monster = this.monsters[i];
       if (monster.hp > 0) {
         /* 몬스터 이동 */
-        monster.move(this.inhibitor);       
+        monster.move(this.inhibitor);
         monster.draw(this.ctx);
       } else {
         /* 몬스터가 죽었을 때 */

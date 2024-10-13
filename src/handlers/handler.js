@@ -28,7 +28,6 @@ export const handlerEvent = async (socket, data) => {
 
     // handler 실행
     const response = await handler(
-      io,
       socket,
       data.payload,
       decodedAccessToken.email
