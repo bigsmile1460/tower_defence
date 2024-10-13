@@ -4,6 +4,7 @@ import { towerUpgrade } from "./towers/upgradeTower.js";
 import { stageStart } from "./stages/stageStart.js";
 import { stageChange } from "./stages/stageChange.js";
 import { stageEnd } from "./stages/stageEnd.js";
+import { spawnNormal } from "./monsters/spawnNormal.js";
 
 const handlerMapping = {
   1: stageStart,
