@@ -32,7 +32,7 @@ export const spwanStart = async (io, socket, payload, userId) => {
   function startInterval() {
     intervalId = setInterval(() => {
 
-      //몬스터 객체 생성
+      //몬스터 객체 생성 --
       addMonster(payload.id, getMonsterInfo[0]);
       //다음 스테이지로 넘어감 - getStage로 스테이지 정보와 현재 스폰되는 스테이지 비교
       if (nowStage !== getStage(userId)) {
