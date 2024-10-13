@@ -1,4 +1,4 @@
-import { allMonster, getMonsters } from "../Storages/monster.storage.js";
+import { getMonsters } from "../Storages/monster.storage.js";
 import { getTower } from "../Storages/tower.storage.js";
 
 class towerAttackOperator {
@@ -20,7 +20,6 @@ class towerAttackOperator {
       );
     }
 
-    return;
     // 공격 타입이 singleAttack인 경우
     const serverMonsters = getMonsters(userId); // 아직 몬스터 값이 안들어옴
     if (serverTower.attackType === "singleAttack") {
