@@ -21,10 +21,11 @@ class UserSocket {
     });
     // 연결 이벤트 할당
     this.socket.on("connection", (data) => {});
+
     // 이벤트 핸들러
     this.socket.on("event", (data) => handlerEvent(data));
     // 응답 패킷 이벤트 할당
-    this.socket.on("response", (data) => {    
+    this.socket.on("response", (data) => {
       if (data.towerInfo) {
         setLocalStorage("towerInfo", data.towerInfo);
         setLocalStorage("userGold", data.userGold);

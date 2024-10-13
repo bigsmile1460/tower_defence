@@ -26,7 +26,7 @@ export const stageStart = async (io, socket, payload, userId) => {
 
     return { status: "success" };
   } catch (err) {
-    return { status: "fail", message: err };
+    return { status: "fail", message: `스테이지 시작 중 에러 발생` };
   }
 };
 
@@ -34,7 +34,14 @@ export const stageChange = async (io, socket, payload, userId) => {
   try {
     const elapsedTime = payload.elpsedTime;
 
-    const stage = stageOperator.stageChange(startGameTime, elapsedTime, userId);
+    const userGold = payload.userGold;
+
+    const stage = stageOperator.stageChange(
+      startGameTime,
+      elapsedTime,
+      userGold,
+      userId
+    );
 
     socket.emit("event", {
       handlerId: 2,
@@ -45,7 +52,7 @@ export const stageChange = async (io, socket, payload, userId) => {
 
     return { status: "success" };
   } catch (err) {
-    return { status: "fail", message: err };
+    return { status: "fail", message: `스테이지 변경 중 에러 발생` };
   }
 };
 
@@ -55,6 +62,6 @@ export const stageEnd = async (io, socket, payload, userId) => {
 
     return { status: "success" };
   } catch (err) {
-    return { status: "fail", message: err };
+    return { status: "fail", message: `스테이지 종료 중 에러 발생` };
   }
 };
