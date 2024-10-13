@@ -6,6 +6,7 @@ import {
   setInhibitorStatus,
 } from "../Storages/stage.storage.js";
 //기능 구현 후 class로 변경 예정
+
 //몬스터 정보 호출
 export const getMonster = (stageId) => {
   return prismaAsset.monster.findMany({
@@ -32,7 +33,7 @@ export const spawnStart = async (userId) => {
   function startInterval() {
     intervalId = setInterval(() => {
       //몬스터 객체 생성
-      addMonster(userId, getMonsterInfo[0]);
+      //addMonster(userId, getMonsterInfo[0]);
       //다음 스테이지로 넘어감 - getStage로 스테이지 정보와 현재 스폰되는 스테이지 비교
       if (nowStage !== getStage(userId)) {
         nowStage = getStage(userId); //현재 스테이지 조회

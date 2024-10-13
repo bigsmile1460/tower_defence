@@ -21,13 +21,12 @@ export const addMonster = (userId, monster) => {
   monsterInfo[userId].push(monster);
 };
 
-export const getMonster = (userId) => {
-  return monsterInfo[userId] || []
+export const getMonsters = (userId) => {
+  return monsterInfo[userId];
 }
-=======
+
 // 몬스터 객체 정보
-export const getMonster = (userId) => {
-  console.log("monsterInfo[userId]:", monsterInfo);
+export const getMonsterLength = (userId) => {
   if (monsterInfo[userId].length) {
     return monsterInfo[userId].length;
   } else {

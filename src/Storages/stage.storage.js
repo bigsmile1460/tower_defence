@@ -85,7 +85,7 @@ export function setMonsterCount(userId, monsterCount) {
   getStage(userId).stageInfo.monsterCount = monsterCount;
 }
 
-export function getMonsterCount(userId, monsterCount) {
+export function getMonsterCount(userId) {
   return getStage(userId).stageInfo.monsterCount;
 }
 
@@ -93,7 +93,7 @@ export function setInhibitorHp(userId, inhibitorHp) {
   getStage(userId).stageInfo.inhibitorHp = inhibitorHp;
 }
 
-export function getInhibitorHp(userId, inhibitorHp) {
+export function getInhibitorHp(userId) {
   return getStage(userId).stageInfo.inhibitorHp;
 }
 
