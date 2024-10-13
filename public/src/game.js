@@ -16,8 +16,8 @@ for (let i = 1; i <= NUM_OF_MONSTERS; i++) {
   img.src = `images/monster${i}.png`;
   monsterImages.push(img);
 }
-GameStart();
-async function GameStart() {
+gameStart();
+async function gameStart() {
   // 이미지 로딩 완료 후 서버와 연결하고 게임 초기화
   await Promise.all([
     new Promise((resolve) => (backgroundImage.onload = resolve)),
