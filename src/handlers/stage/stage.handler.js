@@ -12,7 +12,7 @@ export const stageStart = async (socket, payload, userId) => {
     const [stage, highScore] = await stageOperator.stageStart(userId);
 
     // 시작 시 타워(스토리지) 생성
-    await createTowers(userId); // 최성원 추가
+    createTowers(userId); // 최성원 추가
 
     spawnNormal(userId);
 

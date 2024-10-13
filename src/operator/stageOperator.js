@@ -24,20 +24,14 @@ class stagesOperator {
 
   // 스테이지 변경 정보 조회
   async stageChangeData(socket, userId) {
-    // initGameDB 조회
-    const initGameDB = prismaAsset.initGame.findFirst({});
-    if (!initGameDB) {
-      throw new Error(`서버 DB에 initGame 정보가 존재하지 않습니다.`);
-    }
-
     // 스테이지 변경 쿨 타임 조회
-    const stageChangeTime = initGameDB.stageChangeTime; // 아직 쿼리 안만듬
-    if (!initGameDB) {
-      throw new Error(`initGame에 스테이지 변경 시간이 존재하지 않습니다.`);
+    const stageChangeTime = getStage(userId).stageInfo.stageChangeInterval;
+    if (!stageChangeTime) {
+      throw new Error(`스테이지 변경 시간이 존재하지 않습니다.`);
     }
 
     // 쿨 타임마다 스테이지 변경 함수 실행
-    setInterval((socket, userId) => {
+    setInterval(() => {
       this.stageChange(socket, userId);
     }, stageChangeTime);
   }
