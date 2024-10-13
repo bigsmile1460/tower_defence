@@ -3,19 +3,18 @@ import { pushTower } from "../Storages/tower.storage.js";
 
 // 골드 검사
 export const towerBuyGoldCheck = async (towerId, userId) => {
-  // 타워 데이터 가져오기
-  const towerData = await prismaAsset.tower.findFirst({
-    where: { id: towerId },
-  });
-
-  if (!towerData) {
-    throw new Error(`존재 하지 않는 towerId 신청: ${towerId}`);
-  }
-
   // stageStorage에서 골드 가저오기
   const gold = 10000;
   if (!gold) {
     throw new Error(`플레이중이지 않은 userId 신청: ${userId}`);
+  }
+
+  // 타워 데이터 가져오기
+  const towerData = await prismaAsset.tower.findFirst({
+    where: { id: towerId },
+  });
+  if (!towerData) {
+    throw new Error(`존재 하지 않는 towerId 신청: ${towerId}`);
   }
 
   // 골드 부족할 경우 return true

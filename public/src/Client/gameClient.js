@@ -141,7 +141,7 @@ class GameClient {
     this.inhibitor.draw(this.ctx, this.inhibitorImage);
     this.elpsedTime++;
     // 몬스터 10마리 이상 존재시 게임오버
-    if (this.monsters.length > 4) {
+    if (this.monsters.length > 40) {
       UserSocket.GetInstance().SendEvent(3, { score: this.score });
       alert(`게임 오버`);
     }

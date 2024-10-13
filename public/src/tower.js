@@ -14,26 +14,56 @@ export class Tower {
     this.attackRange = towerData.attackRange; // 타워 사거리
     this.lastAttack = lastAttack; // 타워의 마지막 공격 시간
     this.attackType = towerData.attackType; // 타워 공격 유형
-    this.towerPrice = towerData.towerPrice; // 타워 가격
-    this.upgradeAttackPower = towerData.upgradeAttackPower; // 타워 강화 수치
+    this.towerPrice = towerData.towerPrice; // 타워 비용 (강화에 들어간 비용 합산)
+    this.sellPriceRate = towerData.sellPriceRate; // 타워 판매 가격 비율 (판매 가격 비율 * 타워 비용 = 판매 가격)
+    this.upgradePrice = towerData.upgradePrice; // 타워 업그레이드 가격
+    this.upgradeAttackPower = towerData.upgradeAttackPower; // 강화 시 타워 능력치 상승 수치
     this.level = 1; // 타워 레벨
     this.beamDuration = 0; // 남은 광선 지속 시간
-    this.target = null; // 타워 광선의 목표
+    this.target = []; // 타워 광선의 목표
   }
 
   draw(ctx, towerImage) {
     ctx.drawImage(towerImage, this.x, this.y, this.width, this.height);
-    if (this.beamDuration > 0 && this.target) {
-      ctx.beginPath();
-      ctx.moveTo(this.x + this.width / 2, this.y + this.height / 2);
-      ctx.lineTo(
-        this.target.x + this.target.width / 2,
-        this.target.y + this.target.height / 2
-      );
-      ctx.strokeStyle = "skyblue";
-      ctx.lineWidth = 10;
-      ctx.stroke();
-      ctx.closePath();
+    if (this.beamDuration > 0 && this.target.length) {
+      for (let i = 0; i < this.target.length; i++) {
+        ctx.beginPath();
+        ctx.moveTo(this.x + this.width / 2, this.y + this.height / 2);
+        switch (this.attackType) {
+          case "singleAttack":
+            ctx.lineTo(
+              this.target[i].x + this.target[i].width / 2,
+              this.target[i].y + this.target[i].height / 2
+            );
+            break;
+          case "multiAttack":
+            ctx.lineTo(
+              this.target[i].x + this.target[i].width / 2,
+              this.target[i].y + this.target[i].height / 2
+            );
+            break;
+          case "heal":
+            ctx.lineTo(
+              this.target[i].x - 100 + this.target[i].width / 2,
+              this.target[i].y - 100 + this.target[i].height / 2
+            );
+            break;
+        }
+        switch (this.attackType) {
+          case "singleAttack":
+            ctx.strokeStyle = "red";
+            break;
+          case "multiAttack":
+            ctx.strokeStyle = "skyblue";
+            break;
+          case "heal":
+            ctx.strokeStyle = "blue";
+            break;
+        }
+        ctx.lineWidth = 10;
+        ctx.stroke();
+        ctx.closePath();
+      }
       this.beamDuration--;
     }
   }
@@ -58,7 +88,7 @@ export class Tower {
       if (distance < this.attackRange) {
         monster.hp -= this.attackPower;
         this.beamDuration = 30; // 광선 지속 시간 (30프레임)
-        this.target = monster; // 광선의 목표 설정
+        this.target = [monster]; // 광선의 목표 설정
         attack = true;
         break;
       }
@@ -92,6 +122,7 @@ export class Tower {
 
     // 생성된 순서대로 몬스터에 대한 공격여부 체크
     let attack = false;
+    this.target = [];
     for (let monster of monsters) {
       const distance = Math.sqrt(
         Math.pow(this.x - monster.x, 2) + Math.pow(this.y - monster.y, 2)
@@ -99,7 +130,7 @@ export class Tower {
       if (distance < this.attackRange) {
         monster.hp -= this.attackPower;
         this.beamDuration = 30; // 광선 지속 시간 (0.5초)
-        this.target = monster; // 광선의 목표 설정
+        this.target.push(monster); // 광선의 목표 설정
         attack = true;
       }
     }
@@ -132,7 +163,7 @@ export class Tower {
 
     inhibitor.hp = Math.min(inhibitor.hp + this.attackPower, inhibitor.maxHp);
     this.beamDuration = 30; // 광선 지속 시간 (0.5초)
-    this.target = inhibitor; // 광선의 목표 설정
+    this.target = [inhibitor]; // 광선의 목표 설정
 
     // 공격 성고 시 서버에 공격 결과 전달
     this.lastAttack = Date.now();
@@ -153,30 +184,34 @@ export class Tower {
   buttonMake() {
     // 업그레이드 버튼
     const upgradeButton = document.createElement("button");
-    upgradeButton.textContent = "레벨" + (this.level + 1) + "로강화";
+    upgradeButton.textContent = this.name + this.level + "강화 버튼";
     upgradeButton.style.position = "absolute";
-    upgradeButton.style.top = this.y + 300 + "px";
-    upgradeButton.style.right = 1810 - this.x + "px";
+    upgradeButton.style.top = this.y + 170 + "px";
+    upgradeButton.style.right = 2050 - this.x + "px";
     upgradeButton.style.padding = "50px 100";
     upgradeButton.style.fontSize = "30";
     upgradeButton.style.cursor = "pointer";
     document.body.appendChild(upgradeButton);
     upgradeButton.addEventListener("click", () => {
+      console.log(this.level);
+      upgradeButton.textContent = this.name + this.level + "강화 버튼";
       UserSocket.GetInstance().SendEvent(8, this.id);
     });
+    this.upgradeButton = upgradeButton;
 
     // 판매 버튼
     const sellButton = document.createElement("button");
-    sellButton.textContent = this.name + "판매";
+    sellButton.textContent = this.name + "판매 버튼";
     sellButton.style.position = "absolute";
-    sellButton.style.top = this.y + 275 + "px";
-    sellButton.style.right = 1790 - this.x + "px";
+    sellButton.style.top = this.y + 190 + "px";
+    sellButton.style.right = 2050 - this.x + "px";
     sellButton.style.padding = "50px 100";
     sellButton.style.fontSize = "30";
     sellButton.style.cursor = "pointer";
     document.body.appendChild(sellButton);
     sellButton.addEventListener("click", () => {
-      alert("판매하고 싶쥐?!");
+      UserSocket.GetInstance().SendEvent(10, this.id);
     });
+    this.sellButton = sellButton;
   }
 }

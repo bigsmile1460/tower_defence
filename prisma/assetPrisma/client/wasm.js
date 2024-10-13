@@ -150,7 +150,9 @@ exports.Prisma.TowerScalarFieldEnum = {
   attackRange: 'attackRange',
   attackType: 'attackType',
   towerPrice: 'towerPrice',
-  upgradeAttackPower: 'upgradeAttackPower'
+  sellPriceRate: 'sellPriceRate',
+  upgradeAttackPower: 'upgradeAttackPower',
+  upgradePrice: 'upgradePrice'
 };
 
 exports.Prisma.SortOrder = {
