@@ -1,11 +1,35 @@
 import { prismaAsset } from "../lib/utils/prisma/index.js";
-import { pushTower } from "../Storages/tower.storage.js";
+import {
+  getUserGold,
+  setUserGold,
+  towerAmountLimit,
+} from "../Storages/stage.storage.js";
+import { getTowers, pushTower } from "../Storages/tower.storage.js";
+
+// 타워 개수 검사
+export const towerBuyLimitCheck = async (userId) => {
+  // 타워 개수 조회
+  const towerNumber = getTowers(userId).length;
+  if (!towerNumber && towerNumber !== 0) {
+    throw new Error(`플레이중이지 않은 userId 신청: ${userId}`);
+  }
+
+  // 최대 제한 타워 개수 조회
+  const towerLimit = towerAmountLimit(userId);
+
+  // 타워 개수가 최대 제한을 넘어가는 지 검사
+  if (towerNumber >= towerLimit) {
+    return true;
+  }
+
+  return false;
+};
 
 // 골드 검사
 export const towerBuyGoldCheck = async (towerId, userId) => {
-  // stageStorage에서 골드 가저오기
-  const gold = 10000;
-  if (!gold) {
+  // 골드 데이터 조회
+  const gold = getUserGold(userId);
+  if (!gold && gold !== 0) {
     throw new Error(`플레이중이지 않은 userId 신청: ${userId}`);
   }
 
@@ -22,7 +46,8 @@ export const towerBuyGoldCheck = async (towerId, userId) => {
     return true;
   }
 
-  // stageStorage에서 골드 차감오기 setGold(userId, gold - towerData.towerPrice)
+  // 골드 차감
+  setUserGold(userId, gold - towerData.towerPrice);
 
   return false;
 };

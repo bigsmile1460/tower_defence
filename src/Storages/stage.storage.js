@@ -4,18 +4,24 @@ import { prismaAsset } from "../lib/utils/prisma/index.js";
 export const stages = [];
 
 export async function createStage(userId) {
-  const { startGold, monsterCountLimit, inhibitorHp, inhibitorHpLimit } =
-    await prismaAsset.initGame.findFirst({
-      where: {
-        id: 1,
-      },
-    });
+  const {
+    startGold,
+    towerAmountLimit,
+    monsterCountLimit,
+    inhibitorHp,
+    inhibitorHpLimit,
+  } = await prismaAsset.initGame.findFirst({
+    where: {
+      id: 1,
+    },
+  });
   stages.push({
     userId: userId,
     stageInfo: {
       stageId: 1, // 스테이지 레벨
       gold: startGold, // 클리어시 획득 골드
       score: 0, // 현재 점수
+      towerAmountLimit: towerAmountLimit, // 타워 최대 개수
       inhibitorHp: inhibitorHp, // 억제기 Hp
       inhibitorHpLimit: inhibitorHpLimit, // 억제기 최대 HP 제한
       isInhibitorExist: true, // 억제기 파괴 유무
@@ -90,4 +96,8 @@ export function setIsInhibitorExist() {
     .isInhibitorExist
     ? false
     : true;
+}
+
+export function towerAmountLimit(userId) {
+  return getStage(userId).stageInfo.towerAmountLimit;
 }

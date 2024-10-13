@@ -1,10 +1,11 @@
+import { getUserGold, setUserGold } from "../Storages/stage.storage.js";
 import { getTower } from "../Storages/tower.storage.js";
 
 // 골드 업데이트
 export const getTowerGoldCheck = (userId, id) => {
-  // stageStorage에서 골드 가저오기
-  const gold = 10000;
-  if (!gold) {
+  // 골드 데이터 조회
+  const gold = getUserGold(userId);
+  if (!gold && gold !== 0) {
     throw new Error(`플레이중이지 않은 userId 신청: ${userId}`);
   }
 
@@ -14,5 +15,6 @@ export const getTowerGoldCheck = (userId, id) => {
     throw new Error(`존재 하지 않는 tower.id 신청: ${id}`);
   }
 
-  // stageStorage에서 골드 더하기 setGold(userId, gold + sellTower.towerPrice)
+  // 골드 가산
+  setUserGold(userId, gold + sellTower.towerPrice * sellTower.sellPriceRate);
 };
