@@ -77,5 +77,17 @@ export function setInhibitorHp(userId, inhibitorHp) {
 }
 
 export function getInhibitorHp(userId, inhibitorHp) {
-  return getStage(userId).stageIndex.inhibitorHp;
+  return getStage(userId).stageInfo.inhibitorHp;
+}
+
+export function getIsInhibitorExist() {
+  return getStage(userId).stageInfo.isInhibitorExist;
+}
+
+export function setIsInhibitorExist() {
+  // true -> false ,  false -> true 변경을 하는 것
+  getStage(userId).stageInfo.isInhibitorExist = getStage(userId).stageInfo
+    .isInhibitorExist
+    ? false
+    : true;
 }
