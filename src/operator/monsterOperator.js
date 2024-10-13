@@ -80,10 +80,9 @@ export const spawnStart = async (socket, userId) => {
   return true;
 };
 
-//todo: 
+//todo:
 // export
 
 export const spawnEnd = (intervalId) => {
   clearInterval(intervalId); // 몬스터 스폰 중지
 };
-

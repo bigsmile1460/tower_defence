@@ -5,6 +5,7 @@ export class Monster {
       throw new Error("몬스터가 이동할 경로가 필요합니다.");
     }
 
+    this.monsterUUID = monsterData.uuid;
     this.monsterNumber = Math.floor(Math.random() * monsterImages.length); // 몬스터 번호 (1 ~ 5. 몬스터를 추가해도 숫자가 자동으로 매겨집니다!)
     this.path = path; // 몬스터가 이동할 경로
     this.currentIndex = 0; // 몬스터가 이동 중인 경로의 인덱스
@@ -21,7 +22,6 @@ export class Monster {
     this.gold = monsterData.gold;
     this.score = monsterData.score;
   }
-
 
   move(base) {
     if (this.currentIndex < this.path.length - 1) {
