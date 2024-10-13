@@ -29,13 +29,6 @@ export class Inhibitor {
     );
   }
 
-  setHp(value) {
-    if (value < GameClient.GetInstance().stages.stageInfo.inhibitorHpLimit) {
-      this.hp = value;
-      this.maxHp = value;
-    }
-  }
-
   takeDamage(amount) {
     // 기지가 데미지를 입는 메소드입니다.
     // 몬스터가 기지의 HP를 감소시키고, HP가 0 이하가 되면 게임 오버 처리를 해요!
