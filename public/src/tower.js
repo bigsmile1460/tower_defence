@@ -24,13 +24,25 @@ export class Tower {
     this.target = []; // 타워 광선의 목표
   }
 
-  draw(ctx, singletowerImage,multiAttackTowerImage,healTowerImage) {
+  draw(ctx, singletowerImage, multiAttackTowerImage, healTowerImage) {
     switch (this.attackType) {
       case SINGLE_ATTACK:
-        ctx.drawImage(singletowerImage, this.x, this.y, this.width, this.height);
+        ctx.drawImage(
+          singletowerImage,
+          this.x,
+          this.y,
+          this.width,
+          this.height
+        );
         break;
       case MULTI_ATTACK:
-        ctx.drawImage(multiAttackTowerImage, this.x, this.y, this.width, this.height);
+        ctx.drawImage(
+          multiAttackTowerImage,
+          this.x,
+          this.y,
+          this.width,
+          this.height
+        );
         break;
       case HEAL:
         ctx.drawImage(healTowerImage, this.x, this.y, this.width, this.height);
@@ -90,14 +102,15 @@ export class Tower {
       return;
     }
 
-    // 생성된 순서대로 각 몬스터에 대한 공격여부 체크 (1명이라도 공격 시 다음으로)
+    // 생성된 순서대로 각 몬스터에 대한 공격 가능 여부 체크 (1명이라도 공격 시 다음으로)
     let attack = false;
+    const monsterUUID = [];
     for (let monster of monsters) {
       const distance = Math.sqrt(
         Math.pow(this.x - monster.x, 2) + Math.pow(this.y - monster.y, 2)
       );
       if (distance < this.attackRange) {
-        monster.hp -= this.attackPower;
+        monsterUUID.push(monster.monsterUUID); // 공격 대상 담아두기
         this.beamDuration = 30; // 광선 지속 시간 (30프레임)
         this.target = [monster]; // 광선의 목표 설정
         attack = true;
@@ -110,13 +123,12 @@ export class Tower {
       return;
     }
 
-    // 공격 성고 시 서버에 공격 결과 전달
+    // 공격 신호 서버에 전달
     this.lastAttack = Date.now();
     UserSocket.getInstance().SendEvent(7, {
       id: this.id,
-      towerId: this.towerId,
       lastAttack: this.lastAttack,
-      monsters: monsters,
+      monsterUUID: monsterUUID,
     });
   }
 
@@ -133,13 +145,14 @@ export class Tower {
 
     // 생성된 순서대로 몬스터에 대한 공격여부 체크
     let attack = false;
+    const monsterUUID = [];
     this.target = [];
     for (let monster of monsters) {
       const distance = Math.sqrt(
         Math.pow(this.x - monster.x, 2) + Math.pow(this.y - monster.y, 2)
       );
       if (distance < this.attackRange) {
-        monster.hp -= this.attackPower;
+        monsterUUID.push(monster.monsterUUID); // 공격 대상 담아두기
         this.beamDuration = 30; // 광선 지속 시간 (0.5초)
         this.target.push(monster); // 광선의 목표 설정
         attack = true;
@@ -151,13 +164,12 @@ export class Tower {
       return;
     }
 
-    // 공격 성고 시 서버에 공격 결과 전달
+    // 공격 신호 서버에 전달
     this.lastAttack = Date.now();
     UserSocket.getInstance().SendEvent(7, {
       id: this.id,
-      towerId: this.towerId,
       lastAttack: this.lastAttack,
-      monsters: monsters,
+      monsterUUID: monsterUUID,
     });
   }
 
@@ -180,9 +192,7 @@ export class Tower {
     this.lastAttack = Date.now();
     UserSocket.getInstance().SendEvent(7, {
       id: this.id,
-      towerId: this.towerId,
       lastAttack: this.lastAttack,
-      inhibitor: inhibitor,
     });
   }
 

@@ -9,6 +9,7 @@ export class Inhibitor {
     this.height = 225; // 기지 이미지 세로 길이
     this.hp = maxHp; // 기지의 현재 HP
     this.maxHp = maxHp; // 기지의 최대 HP
+    this.status = "normal"; // 기지의 상태 (평범, 파괴)
   }
 
   draw(ctx, inhibitorImage) {

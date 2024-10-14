@@ -3,6 +3,7 @@ import {
   getInhibitorHp,
   getInhibitorHpLimit,
   getInhibitorStatus,
+  setInhibitorHp,
 } from "../Storages/stage.storage.js";
 import { getTower } from "../Storages/tower.storage.js";
 import { monsterDie } from "./monsterDieOperator.js";
@@ -55,59 +56,55 @@ class towerAttackOperator {
 
   // 공격 타입이 singleAttack인 경우
   singleAttackCheck(socket, payload, userId, serverTower) {
-    const serverMonsters = getMonsters(userId);
-
-    // 몬스터 수가 다를 경우
-    if (payload.monsters.length !== serverMonsters.length) {
+    // 공격 받은 몬스터가 여러 마리일 경우
+    if (payload.monsterUUID.length > 1) {
       throw new Error(
-        `몬스터 수가 다릅니다. 클라 정보: ${payload.monsters.length} 서버 정보: ${serverMonsters.length}`
+        `singleAttack 타워가 여러차례 공격하였습니다: ${payload.monstersUUID.length}회`
       );
     }
 
-    // 몬스터의 hp 감소수치와 타워의 공격력 비교 검증
-    const dieMonsterIndex = [];
-    let hitMonster = 0;
-    for (let i = 0; i < payload.monsters.length; i++) {
-      if (serverMonsters[i].hp !== payload.monsters[i].hp) {
-        // 몬스터 체력이 정상적으로 차감된 경우
-        if (
-          serverMonsters[i].hp - payload.monsters[i].hp ===
-          serverTower.attackPower
-        ) {
-          hitMonster++;
-          // 몬스터 사망 시
-          if (payload.monsters[i].hp <= 0) {
-            dieMonsterIndex.push(i);
-          }
-          serverMonsters[i].hp = payload.monsters[i].hp;
-        }
+    // 공격 받은 몬스터가 없을 경우
+    if (payload.monsterUUID.length < 1) {
+      throw new Error(`공격받은 몬스터가 없습니다.`);
+    }
 
-        // 몬스터 체력이 비정상적으로 차감된 경우
-        else {
-          throw new Error(
-            `몬스터의 체력이 조작되었습니다: ${serverMonsters[i].hp} ${
-              payload.monsters[i].hp + serverTower.attackPower
-            }`
-          );
+    // 제공 받은 몬스터 UUID를 통하여 공격받은 몬스터 조회
+    const serverMonsters = getMonsters(userId);
+    const attackedIndex = [];
+    const attackedMonster = [];
+    for (let i = 0; i < payload.monsterUUID.length; i++) {
+      for (let x = 0; x < serverMonsters.length; x++) {
+        if (serverMonsters[x].uuid === payload.monsterUUID[i]) {
+          attackedIndex.push(x);
+          attackedMonster.push(serverMonsters[x]);
+          break;
         }
-      }
-
-      // 2명 이상 공격한 경우
-      if (hitMonster > 1) {
-        throw new Error(
-          `단일 공격 타워가 여러차례 공격하였습니다. 공격횟수: ${hitMonster}`
-        );
       }
     }
 
-    // 사망한 몬스터 서버에서 삭제
+    // 공격 받은 몬스터의 체력상태 업데이트
+    const deadIndex = [];
     const deadMonster = [];
-    for (let i = 0; i < dieMonsterIndex.length; i++) {
-      deadMonster.push(serverMonsters[dieMonsterIndex[i] - i]);
-      serverMonsters.splice(dieMonsterIndex[i] - i, 1);
+    for (let i = 0; i < attackedIndex.length; i++) {
+      serverMonsters[attackedIndex[i]].hp -= serverTower.attackPower;
+      if (serverMonsters[attackedIndex[i]].hp <= 0) {
+        deadIndex.push(attackedIndex[i]);
+        deadMonster.push(serverMonsters[attackedIndex[i]]);
+      }
     }
 
-    // 삭제된 몬스터들 처리 (점수, 골드 등..)
+    // 업데이트 된 체력상태 클라이언트로 전달
+    socket.emit("event", {
+      handlerId: 13,
+      payload: { attackedMonster: attackedMonster },
+    });
+
+    // 공격받아 사망한 몬스터 서버에서 삭제
+    for (let i = 0; i < deadIndex.length; i++) {
+      serverMonsters.splice(deadIndex[i] - i, 1);
+    }
+
+    // 삭제된 몬스터 존재 시 추가 처리 (점수, 골드 등..)
     if (deadMonster.length) {
       monsterDie(socket, userId, deadMonster);
     }
@@ -115,50 +112,48 @@ class towerAttackOperator {
 
   // 공격 타입이 multiAttack인 경우
   multiAttackCheck(socket, payload, userId, serverTower) {
-    const serverMonsters = getMonsters(userId);
-
-    // 몬스터 수가 다를 경우
-    if (payload.monsters.length !== serverMonsters.length) {
-      throw new Error(
-        `몬스터 수가 다릅니다. 서버 정보: ${payload.monsters.length} 클라 정보: ${serverMonsters.length}`
-      );
+    // 공격 받은 몬스터가 없을 경우
+    if (payload.monsterUUID.length < 1) {
+      throw new Error(`공격받은 몬스터가 없습니다.`);
     }
 
-    // 몬스터의 hp 감소수치와 타워의 공격력 비교 검증
-    const dieMonsterIndex = [];
-    for (let i = 0; i < payload.monsters.length; i++) {
-      if (serverMonsters[i].hp !== payload.monsters[i].hp) {
-        // 몬스터 체력이 정상적으로 차감된 경우
-        if (
-          serverMonsters[i].hp - payload.monsters[i].hp ===
-          serverTower.attackPower
-        ) {
-          // 몬스터 사망 시
-          if (payload.monsters[i].hp <= 0) {
-            dieMonsterIndex.push(i);
-          }
-          serverMonsters[i].hp = payload.monsters[i].hp;
-        }
-
-        // 몬스터 체력이 비정상적으로 차감된 경우
-        else {
-          throw new Error(
-            `몬스터의 체력이 조작되었습니다. ${serverMonsters[i].hp} ${
-              payload.monsters[i].hp + serverTower.attackPower
-            } )`
-          );
+    // 제공 받은 몬스터 UUID를 통하여 공격받은 몬스터 조회
+    const serverMonsters = getMonsters(userId);
+    const attackedIndex = [];
+    const attackedMonster = [];
+    for (let i = 0; i < payload.monsterUUID.length; i++) {
+      for (let x = 0; x < serverMonsters.length; x++) {
+        if (serverMonsters[x].uuid === payload.monsterUUID[i]) {
+          attackedIndex.push(x);
+          attackedMonster.push(serverMonsters[x]);
+          break;
         }
       }
     }
 
-    // 사망한 몬스터 서버에서 삭제
+    // 공격 받은 몬스터의 체력상태 업데이트
+    const deadIndex = [];
     const deadMonster = [];
-    for (let i = 0; i < dieMonsterIndex.length; i++) {
-      deadMonster.push(serverMonsters[dieMonsterIndex[i] - i]);
-      serverMonsters.splice(dieMonsterIndex[i] - i, 1);
+    for (let i = 0; i < attackedIndex.length; i++) {
+      serverMonsters[attackedIndex[i]].hp -= serverTower.attackPower;
+      if (serverMonsters[attackedIndex[i]].hp <= 0) {
+        deadIndex.push(attackedIndex[i]);
+        deadMonster.push(serverMonsters[attackedIndex[i]]);
+      }
     }
 
-    // 삭제된 몬스터들 처리 (점수, 골드 등..)
+    // 업데이트 된 체력상태 클라이언트로 전달
+    socket.emit("event", {
+      handlerId: 13,
+      payload: { attackedMonster: attackedMonster },
+    });
+
+    // 공격받아 사망한 몬스터 서버에서 삭제
+    for (let i = 0; i < deadIndex.length; i++) {
+      serverMonsters.splice(deadIndex[i] - i, 1);
+    }
+
+    // 삭제된 몬스터 존재 시 추가 처리 (점수, 골드 등..)
     if (deadMonster.length) {
       monsterDie(socket, userId, deadMonster);
     }
@@ -169,28 +164,20 @@ class towerAttackOperator {
     const serverInhibitorHp = getInhibitorHp(userId);
     const serverInhibitorstatus = getInhibitorStatus(userId);
 
-    // 억제기가 파괴상태일 경우
+    // 억제기가 파괴상태일 경우 (무의미한 로직 생략)
     if (serverInhibitorstatus === "broken") {
       serverTower.lastAttack = payload.lastAttack;
       return;
     }
 
-    // 힐량이 공격력보다 높을 경우
-    if (payload.inhibitorHp > serverInhibitorHp + serverTower.attackPower) {
-      throw new Error(
-        `타워의 힐량이 조작되었습니다: 힐 수치: ${
-          serverTower.attackPower
-        } 증가된 체력: ${payload.inhibitorHp - serverInhibitorHp}`
-      );
-    }
+    // 현재 체력 + 힐량 vs 최대체력 중 낮은값 구하기
+    const updateInhibitorHp = Math.min(
+      serverInhibitorHp + serverTower.attackPower,
+      getInhibitorHpLimit(userId)
+    );
 
-    // 억제기 체력이 최대체력을 넘을 경우
-    const serverInhiitorLimit = getInhibitorHpLimit(userId);
-    if (payload.inhibitorHp > serverInhiitorLimit) {
-      throw new Error(
-        `억제기의 체력이 최대치를 능가하였습니다. 최대 체력: ${serverInhiitorLimit}  클라이언트 체력: ${payload.inhibitorHp}`
-      );
-    }
+    // 억제기 체력 상태 업데이트
+    setInhibitorHp(userId, updateInhibitorHp);
   }
 }
 
