@@ -153,8 +153,10 @@ class GameClient {
     this.ctx.fillText(`점수: ${this.score}`, 100, 100); // 현재 스코어 표시
     this.ctx.fillStyle = "yellow";
     this.ctx.fillText(`골드: ${this.userGold}`, 100, 150); // 골드 표시
+    this.ctx.fillStyle = "red";
+    this.ctx.fillText(`몬스터 수: ${this.monsters.length}`, 100, 250); // 몬스터수 표시
     if (this.stages) {
-      this.ctx.fillStyle = "red";
+      this.ctx.fillStyle = "green";
       this.ctx.fillText(
         `현재 스테이지: ${this.stages.stageInfo.stageId}`,
         100,
