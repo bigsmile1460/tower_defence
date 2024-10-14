@@ -1,10 +1,7 @@
 import stageOperator from "../../operator/stageOperator.js";
 import { clearMonsters } from "../../Storages/monster.storage.js";
 import { clearStage } from "../../Storages/stage.storage.js";
-import {
-  clearTower,
-  createTowers,
-} from "../../Storages/tower.storage.js";
+import { clearTower, createTowers } from "../../Storages/tower.storage.js";
 import { spawnNormal } from "../monster/spawnNormal.js";
 
 // 토큰 검증
