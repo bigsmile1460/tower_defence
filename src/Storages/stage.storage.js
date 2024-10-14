@@ -28,7 +28,7 @@ export async function createStage(userId) {
       towerAmountLimit: towerAmountLimit, // 타워 최대 개수
       inhibitorHp: inhibitorHp, // 억제기 Hp
       inhibitorHpLimit: inhibitorHpLimit, // 억제기 최대 HP 제한
-      inhibitorStatus: inhibitorStatus, // 억제기 상태 ( normal , broken , replace)
+      inhibitorStatus: inhibitorStatus, // 억제기 상태 ( normal , broken )
       inhibitorInterval: inhibitorInterval, // 억제기 재생 시간
       monsterCount: monsterCount, // 몬스터 수
       monsterCountLimit: monsterCountLimit, // 몬스터 제한(제한 오버시 게임 종료)
