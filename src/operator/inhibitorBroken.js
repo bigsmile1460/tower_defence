@@ -5,7 +5,7 @@ import {
   setInhibitorStatus,
 } from "../Storages/stage.storage.js";
 
-// 억제기 파괴
+// 억제기 파괴 / 재생성
 export const inhibitorBroken = (socket, userId) => {
   // 억제기 상태 파괴로 변경
   setInhibitorStatus(userId, "broken");

@@ -1,5 +1,3 @@
-import GameClient from "./Client/gameClient.js";
-
 export class Inhibitor {
   constructor(x, y, maxHp) {
     // 생성자 안에서 기지의 속성을 정의한다고 생각하시면 됩니다!
@@ -22,10 +20,18 @@ export class Inhibitor {
     );
     ctx.font = "16px Arial";
     ctx.fillStyle = "white";
-    ctx.fillText(
-      `억제기 HP: ${this.hp}/${this.maxHp}`,
-      this.x - this.width,
-      this.y - this.height / 2 - 10
-    );
+    if (this.status === "normal") {
+      ctx.fillText(
+        `억제기 HP: ${this.hp}/${this.maxHp}`,
+        this.x - this.width,
+        this.y - this.height / 2 - 10
+      );
+    } else {
+      ctx.fillText(
+        `억제기 재생성 중`,
+        this.x - this.width,
+        this.y - this.height / 2 - 10
+      );
+    }
   }
 }
