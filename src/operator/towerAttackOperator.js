@@ -178,6 +178,12 @@ class towerAttackOperator {
 
     // 억제기 체력 상태 업데이트
     setInhibitorHp(userId, updateInhibitorHp);
+
+    // 클라이언트로 업데이트된 체력 상태 전달
+    socket.emit("event", {
+      handlerId: 11,
+      payload: { inhibitorHp: updateInhibitorHp },
+    });
   }
 }
 
