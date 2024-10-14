@@ -51,7 +51,7 @@ class stagesOperator {
 
   // 스테이지 종료
   async stageEnd(socket, userId) {
-    clearInterval(intervalId);
+    clearInterval(intervalId[userId]);
     clearInterval(stageChangeInterval);
     // 유저 정보 조회
     const user = await prismaUser.user.findFirst({
