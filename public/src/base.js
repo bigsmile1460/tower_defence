@@ -12,7 +12,16 @@ export class Inhibitor {
     this.status = "normal"; // 기지의 상태 (평범, 파괴)
   }
 
-  draw(ctx, inhibitorImage) {
+  draw(ctx, inhibitorImage,brokenInhibitorImage) {
+    if(this.hp <= 0 ) {
+      ctx.drawImage(
+        brokenInhibitorImage,
+        this.x - this.width,
+        this.y - this.height / 2,
+        this.width,
+        this.height
+      );
+    } else {
     ctx.drawImage(
       inhibitorImage,
       this.x - this.width,
@@ -20,6 +29,7 @@ export class Inhibitor {
       this.width,
       this.height
     );
+  }
     ctx.font = "16px Arial";
     ctx.fillStyle = "white";
     ctx.fillText(

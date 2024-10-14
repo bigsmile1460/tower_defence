@@ -12,6 +12,8 @@ const healTowerImage = new Image();
 healTowerImage.src = "images/healTower.png";
 const inhibitorImage = new Image();
 inhibitorImage.src = "images/base.png";
+const brokenInhibitorImage = new Image();
+brokenInhibitorImage.src = "images/brokenBase.png";
 const pathImage = new Image();
 pathImage.src = "images/path.png";
 const monsterImages = [];
@@ -29,6 +31,7 @@ async function gameStart() {
     new Promise((resolve) => (multiAttackTowerImage.onload = resolve)),
     new Promise((resolve) => (healTowerImage.onload = resolve)),
     new Promise((resolve) => (inhibitorImage.onload = resolve)),
+    new Promise((resolve) => (brokenInhibitorImage.onload = resolve)),
     new Promise((resolve) => (pathImage.onload = resolve)),
     ...monsterImages.map(
       (img) => new Promise((resolve) => (img.onload = resolve))
@@ -44,6 +47,7 @@ async function gameStart() {
       inhibitorImage: inhibitorImage,
       pathImage: pathImage,
       monsterImages: monsterImages,
+      brokenInhibitorImage : brokenInhibitorImage,
     });
   });
 }
