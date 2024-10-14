@@ -117,7 +117,7 @@ class GameClient {
     const audio = new Audio("../../sounds/bgm.mp3");
     audio.play();
     audio.loop = true; // 반복재생
-    audio.volume = 0.4; // 음량 설정
+    audio.volume = 0.35; // 음량 설정
     this.stages = stages;
     this.userGold += stages.stageInfo.gold;
     this.inhibitorHp = stages.stageInfo.inhibitorHp;

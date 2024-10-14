@@ -10,8 +10,8 @@ export const towerSell = (payload) => {
   GameClient.getInstance().towers[towerIndex].sellButton.remove();
   GameClient.getInstance().towers.splice(towerIndex, 1);
   GameClient.getInstance().userGold += sellPrcie;
-  const audio = new Audio("../../../sounds/buy.mp3");  
+  const audio = new Audio("../../../sounds/buy.mp3");
   audio.play();
   audio.loop = false; // 반복재생안함
-  audio.volume = 0.4; // 음량 설정 
+  audio.volume = 0.3; // 음량 설정
 };
