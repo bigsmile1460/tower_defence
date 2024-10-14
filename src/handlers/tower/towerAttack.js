@@ -4,7 +4,7 @@ import towerAttackOperator from "../../operator/towerAttackOperator.js";
 export const towerAttack = (socket, payload, userId) => {
   try {
     // 타워 공격 검증 함수
-    towerAttackOperator.towerAttackCheck(payload, userId);
+    towerAttackOperator.towerAttackCheck(socket, payload, userId);
 
     return { status: "success", Message: "타워 공격" };
   } catch (error) {

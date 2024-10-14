@@ -13,7 +13,7 @@ export async function createStage(userId) {
     inhibitorHpLimit,
     inhibitorInterval,
     inhibitorStatus,
-    stageChangeInterval
+    stageChangeInterval,
   } = await prismaAsset.initGame.findFirst({
     where: {
       id: 1,
@@ -47,11 +47,11 @@ export function getStage(userId) {
 export async function nextStage(userId) {
   const stage = getStage(userId);
 
-  const {gold} = await prismaAsset.initGame.findFirst({
+  const { gold } = await prismaAsset.initGame.findFirst({
     where: {
       id: 1,
-    }
-  })
+    },
+  });
 
   stage.stageInfo.stageId++;
   stage.stageInfo.gold += gold;
@@ -95,6 +95,10 @@ export function setInhibitorHp(userId, inhibitorHp) {
 
 export function getInhibitorHp(userId) {
   return getStage(userId).stageInfo.inhibitorHp;
+}
+
+export function getInhibitorHpLimit(userId) {
+  return getStage(userId).stageInfo.inhibitorHpLimit;
 }
 
 export function getInhibitorStatus(userId) {

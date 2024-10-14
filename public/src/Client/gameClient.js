@@ -27,7 +27,6 @@ class GameClient {
     this.monsterPath = null; // 몬스터가 지나가는 경로
     this.path = null; // 경로
 
- 
     this.buySingleTowerButton = document.createElement("button");
     this.buySingleTowerButton.textContent = "단일 공격 타워 구입";
     this.buySingleTowerButton.style.position = "absolute";
@@ -156,14 +155,10 @@ class GameClient {
     this.inhibitor.draw(this.ctx, this.inhibitorImage);
     for (let i = this.monsters.length - 1; i >= 0; i--) {
       const monster = this.monsters[i];
-      if (monster.hp > 0) {
-        /* 몬스터 이동 */
-        monster.move(this.inhibitor);
-        monster.draw(this.ctx);
-      } else {
-        /* 몬스터가 죽었을 때 */
-        this.monsters.splice(i, 1);
-      }
+
+      /* 몬스터 이동 */
+      monster.move(this.inhibitor);
+      monster.draw(this.ctx);
     }
     requestAnimationFrame(() => {
       this.gameLoop();

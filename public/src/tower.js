@@ -194,7 +194,6 @@ export class Tower {
     upgradeButton.style.cursor = "pointer";
     document.body.appendChild(upgradeButton);
     upgradeButton.addEventListener("click", () => {
-      console.log(this.level);
       upgradeButton.textContent = this.name + this.level + "강화 버튼";
       UserSocket.getInstance().SendEvent(8, this.id);
     });

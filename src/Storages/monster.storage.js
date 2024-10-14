@@ -16,11 +16,11 @@ export const addMonster = (userId, monster) => {
   const monsterUUID = uuidv4();
 
   //생성되는 몬스터에게 객체 고유값 uuid 제공
-  monster.uuid = monsterUUID;
-  monsterInfo[userId].push(monster);
+  const newMonster = { ...monster, uuid: monsterUUID };
+  monsterInfo[userId].push(newMonster);
 
   // console.log("몬스터 객체 확인:", monsterInfo)
-  return monster
+  return newMonster;
 };
 
 export const getMonsters = (userId) => {
