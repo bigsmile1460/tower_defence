@@ -22,18 +22,25 @@ export const inhibitorBroken = async (socket, userId) => {
 
   // 일정 시간 후 억제기 상태 normal로 회복
   const restorTime = getinhibitorInterval(userId);
+  const inhibitorMaxHp = getInhibitorHpLimit(userId);
   setTimeout(() => {
     setInhibitorStatus(userId, "normal");
-    const inhibitorMaxHp = getInhibitorHpLimit(userId);
     setInhibitorHp(userId, inhibitorMaxHp);
 
     // 클라이언트로 억제기 회복 소식 전달
-    socket.emit("event", { handlerId: 12, payload: { status: "normal" } });
+    socket.emit("event", {
+      handlerId: 12,
+      payload: { status: "normal", inhibitorHp: inhibitorMaxHp },
+    });
   }, restorTime);
 
   // 클라이언트로 억제기 파괴 소식 전달
   socket.emit("event", {
     handlerId: 12,
-    payload: { status: "broken", specialMonster: specialMonster },
+    payload: {
+      status: "broken",
+      specialMonster: specialMonster,
+      inhibitorHp: inhibitorMaxHp,
+    },
   });
 };

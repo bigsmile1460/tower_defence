@@ -5,6 +5,7 @@ import { Monster } from "../../monster.js";
 export const inhibitorStatusUpdate = (payload) => {
   GameClient.getInstance().inhibitor.status = payload.status;
   GameClient.getInstance().inhibitor.hp = payload.inhibitorHp;
+  GameClient.getInstance().inhibitor.maxHp = payload.inhibitorHp;
 
   // 억제기 파괴 시 특수 억제기 몬스터 출현
   if (GameClient.getInstance(payload).inhibitor.status === "broken") {

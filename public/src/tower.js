@@ -1,3 +1,4 @@
+import GameClient from "./Client/gameClient.js";
 import { HEAL, MULTI_ATTACK, SINGLE_ATTACK } from "./constants.js";
 import UserSocket from "./Network/userSocket.js";
 
@@ -165,16 +166,16 @@ export class Tower {
       }
     }
 
+    // 공격 범위 안에 적이 없어서 공격 실패 시 함수 종료
+    if (!attack) {
+      return;
+    }
+
     // 사운드 재생
     const audio = new Audio("../../sounds/muitiTower.mp3");
     audio.play();
     audio.loop = false; // 반복재생
     audio.volume = 0.15; // 음량 설정
-
-    // 공격 범위 안에 적이 없어서 공격 실패 시 함수 종료
-    if (!attack) {
-      return;
-    }
 
     // 공격 신호 서버에 전달
     this.lastAttack = Date.now();
@@ -225,15 +226,17 @@ export class Tower {
     const upgradeButton = document.createElement("button");
     upgradeButton.textContent = this.name + this.level + "강화 버튼";
     upgradeButton.style.position = "absolute";
-    upgradeButton.style.top = this.y + 170 + "px";
+    upgradeButton.style.top = this.y + 160 + "px";
     upgradeButton.style.right = 2050 - this.x + "px";
     upgradeButton.style.padding = "50px 100";
     upgradeButton.style.fontSize = "30";
     upgradeButton.style.cursor = "pointer";
     document.body.appendChild(upgradeButton);
     upgradeButton.addEventListener("click", () => {
-      upgradeButton.textContent = this.name + (this.level + 1) + "강화 버튼";
       UserSocket.getInstance().SendEvent(8, this.id);
+      if (GameClient.getInstance().userGold >= this.upgradePrice) {
+        upgradeButton.textContent = this.name + (this.level + 1) + "강화 버튼";
+      }
     });
     this.upgradeButton = upgradeButton;
 
