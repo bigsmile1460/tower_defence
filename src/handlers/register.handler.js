@@ -7,7 +7,7 @@ const registerHandler = (io) => {
     io.on("connection", async (socket) => {
       socket.on("event", (data) => handlerEvent(socket, data));
       socket.on("disconnect", () => {
-        clearInterval(stageChangeInterval);
+        clearInterval(stageChangeInterval[users[socket.id]]);
         clearInterval(intervalId[users[socket.id]]);
       });
     });
