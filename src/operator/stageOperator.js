@@ -7,7 +7,7 @@ import {
 } from "../Storages/stage.storage.js";
 import { intervalId, isStageClear } from "./monsterOperator.js";
 
-export let stageChangeInterval = null;
+export let stageChangeInterval = [];
 
 class stagesOperator {
   // 스테이지 시작
@@ -34,7 +34,7 @@ class stagesOperator {
     }
 
     // 쿨 타임마다 스테이지 변경 함수 실행
-    stageChangeInterval = setInterval(() => {
+    stageChangeInterval[userId] = setInterval(() => {
       this.stageChange(socket, userId);
     }, stageChangeTime);
   }
@@ -52,7 +52,7 @@ class stagesOperator {
   // 스테이지 종료
   async stageEnd(socket, userId) {
     clearInterval(intervalId[userId]);
-    clearInterval(stageChangeInterval);
+    clearInterval(stageChangeInterval[userId]);
 
     // 유저 정보 조회
     const user = await prismaUser.user.findFirst({
