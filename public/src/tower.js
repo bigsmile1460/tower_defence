@@ -24,26 +24,36 @@ export class Tower {
     this.target = []; // 타워 광선의 목표
   }
 
-  draw(ctx, towerImage) {
-    ctx.drawImage(towerImage, this.x, this.y, this.width, this.height);
+  draw(ctx, singletowerImage,multiAttackTowerImage,healTowerImage) {
+    switch (this.attackType) {
+      case SINGLE_ATTACK:
+        ctx.drawImage(singletowerImage, this.x, this.y, this.width, this.height);
+        break;
+      case MULTI_ATTACK:
+        ctx.drawImage(multiAttackTowerImage, this.x, this.y, this.width, this.height);
+        break;
+      case HEAL:
+        ctx.drawImage(healTowerImage, this.x, this.y, this.width, this.height);
+        break;
+    }
     if (this.beamDuration > 0 && this.target.length) {
       for (let i = 0; i < this.target.length; i++) {
         ctx.beginPath();
         ctx.moveTo(this.x + this.width / 2, this.y + this.height / 2);
         switch (this.attackType) {
-          case "singleAttack":
+          case SINGLE_ATTACK:
             ctx.lineTo(
               this.target[i].x + this.target[i].width / 2,
               this.target[i].y + this.target[i].height / 2
             );
             break;
-          case "multiAttack":
+          case MULTI_ATTACK:
             ctx.lineTo(
               this.target[i].x + this.target[i].width / 2,
               this.target[i].y + this.target[i].height / 2
             );
             break;
-          case "heal":
+          case HEAL:
             ctx.lineTo(
               this.target[i].x - 100 + this.target[i].width / 2,
               this.target[i].y - 100 + this.target[i].height / 2
@@ -51,13 +61,13 @@ export class Tower {
             break;
         }
         switch (this.attackType) {
-          case "singleAttack":
+          case SINGLE_ATTACK:
             ctx.strokeStyle = "red";
             break;
-          case "multiAttack":
+          case MULTI_ATTACK:
             ctx.strokeStyle = "skyblue";
             break;
-          case "heal":
+          case HEAL:
             ctx.strokeStyle = "blue";
             break;
         }
