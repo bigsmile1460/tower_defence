@@ -106,4 +106,29 @@ usersRouter.post("/SignIn", async (req, res, next) => {
     .json({ status: 201, message: `${email}로 로그인 성공` });
 });
 
+usersRouter.post("/SignOut", async (req, res, next) => {
+  const { email } = req.body;  
+
+  const LogOutReqUser = await prismaUser.user.findFirst({
+    where: {
+      email: email,
+    },
+  });
+
+  if (!LogOutReqUser) {
+    return res
+      .status(404)
+      .json({ message: `${email}은 존재하지 않는 이메일입니다.` });
+  }
+
+  await prismaUser.user.update({
+    data: {
+      isLogin: false
+    },
+    where: {
+      id: LogOutReqUser.id
+    }
+  })
+});
+
 export default usersRouter;
