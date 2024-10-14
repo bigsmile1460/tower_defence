@@ -5,8 +5,6 @@ export const spawnNormal = async (socket, userId) => {
     spawnStart(socket, userId);    
 };
 
-<<<<<<< Updated upstream
-=======
 //몬스터 생성 주기 제공
 export const monsterCycle = async (socket, payload, userId) => {
   try {    
@@ -18,4 +16,3 @@ export const monsterCycle = async (socket, payload, userId) => {
     return { status: "fail", message: "몬스터 주기" };
   }
 };
->>>>>>> Stashed changes

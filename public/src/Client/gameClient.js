@@ -39,6 +39,7 @@ class GameClient {
     this.buySingleTowerButton.style.cursor = "pointer";
     document.body.appendChild(this.buySingleTowerButton);
     this.buySingleTowerButton.addEventListener("click", () => {
+      
       UserSocket.getInstance().SendEvent(9, {
         towerId: 1,
         timeStamp: Date.now(),
@@ -110,6 +111,10 @@ class GameClient {
     );
   }
   gameStart(stages, highScore) {
+    const audio = new Audio("../../sounds/bgm.mp3"); 
+    audio.play();
+    audio.loop = true; // 반복재생
+    audio.volume = 0.4; // 음량 설정 
     this.stages = stages;
     this.userGold += stages.stageInfo.gold;
     this.inhibitorHp = stages.stageInfo.inhibitorHp;
@@ -119,6 +124,7 @@ class GameClient {
     this.path.drawPath(this.monsterPath);
     this.placeinhibitor();
     this.gameLoop();
+    
   }
   async gameLoop() {
     this.ctx.drawImage(
