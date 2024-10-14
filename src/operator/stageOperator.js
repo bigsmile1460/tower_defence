@@ -5,7 +5,7 @@ import {
   getUserScore,
   nextStage,
 } from "../Storages/stage.storage.js";
-import { intervalId } from "./monsterOperator.js";
+import { intervalId, isStageClear } from "./monsterOperator.js";
 
 export let stageChangeInterval = null;
 
@@ -53,6 +53,7 @@ class stagesOperator {
   async stageEnd(socket, userId) {
     clearInterval(intervalId[userId]);
     clearInterval(stageChangeInterval);
+
     // 유저 정보 조회
     const user = await prismaUser.user.findFirst({
       where: {
@@ -78,8 +79,16 @@ class stagesOperator {
       });
     }
 
+    if (isStageClear) {
+      socket.emit("event", {
+        handlerId: 3,
+        payload: { clear: `스테이지 클리어!` },
+      });
+    } else {
+      socket.emit("event", { handlerId: 3, payload: {} });
+    }
+
     // 클라이언트에 게임 종료 알림
-    socket.emit("event", { handlerId: 3 });
   }
 }
 

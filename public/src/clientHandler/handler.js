@@ -2,7 +2,7 @@ import handlerMapping from "./handlerMapping.js";
 
 export const handlerEvent = async (data) => {
   try {
-    // handlerId 변환
+
     const handler = handlerMapping[data.handlerId];
     // handler 실행
 
