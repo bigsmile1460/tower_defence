@@ -101,10 +101,6 @@ export class Tower {
     if (this.lastAttack + this.attackSpeed > Date.now()) {
       return;
     }
-    const audio = new Audio("../../sounds/singleTower.mp3");
-    audio.play();
-    audio.loop = false; // 반복재생
-    audio.volume = 0.3; // 음량 설정
 
     // 생성된 순서대로 각 몬스터에 대한 공격 가능 여부 체크 (1명이라도 공격 시 다음으로)
     let attack = false;
@@ -121,6 +117,12 @@ export class Tower {
         break;
       }
     }
+
+    // 사운드 재생
+    const audio = new Audio("../../sounds/singleTower.mp3");
+    audio.play();
+    audio.loop = false; // 반복재생
+    audio.volume = 0.3; // 음량 설정
 
     // 공격 범위 안에 적이 없어서 공격 실패 시 함수 종료
     if (!attack) {
@@ -146,10 +148,6 @@ export class Tower {
     if (this.lastAttack + this.attackSpeed > Date.now()) {
       return;
     }
-    const audio = new Audio("../../sounds/muitiTower.mp3");
-    audio.play();
-    audio.loop = false; // 반복재생
-    audio.volume = 0.25; // 음량 설정
 
     // 생성된 순서대로 몬스터에 대한 공격여부 체크
     let attack = false;
@@ -166,6 +164,12 @@ export class Tower {
         attack = true;
       }
     }
+
+    // 사운드 재생
+    const audio = new Audio("../../sounds/muitiTower.mp3");
+    audio.play();
+    audio.loop = false; // 반복재생
+    audio.volume = 0.25; // 음량 설정
 
     // 공격 범위 안에 적이 없어서 공격 실패 시 함수 종료
     if (!attack) {
@@ -191,6 +195,8 @@ export class Tower {
     if (this.lastAttack + this.attackSpeed > Date.now()) {
       return;
     }
+
+    // 사운드 재생
     const audio = new Audio("../../sounds/healTower.mp3");
     audio.play();
     audio.loop = false; // 반복재생
