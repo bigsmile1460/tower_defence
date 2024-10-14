@@ -40,6 +40,7 @@ usersRouter.post("/SignUp", async (req, res, next) => {
       password: hashedPassword,
       email: email,
       highScore: 0,
+      isLogin: false
     },
   });
 
@@ -49,7 +50,7 @@ usersRouter.post("/SignUp", async (req, res, next) => {
 });
 
 usersRouter.post("/SignIn", async (req, res, next) => {
-  const { email, password } = req.body;  
+  const { email, password } = req.body;
 
   if (email.length === 0) {
     return res.status(404).json({ message: "이메일을 입력해주세요" });
@@ -69,6 +70,17 @@ usersRouter.post("/SignIn", async (req, res, next) => {
       email: email,
     },
   });
+
+  if (LoginReqUser.isLogin == false) {    
+    await prismaUser.user.update({
+      data: {
+        isLogin: true
+      },
+      where: {
+        id:LoginReqUser.id
+      }     
+    })
+  }
 
   if (!LoginReqUser) {
     return res

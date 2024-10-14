@@ -19,10 +19,11 @@ class GameClient {
     this.score = 3000; // 현재 플레이어의 스코어
     this.highScore = 0; // 현재 서버 최고 스코어
     this.backgroundImage = null; // 배경 이미지
-    this.healTowerImage = null;
-    this.singletowerImage = null;
-    this.multiAttackTowerImage = null; // 타워 이미지
+    this.healTowerImage = null; //힐 타워 이미지
+    this.singletowerImage = null;// 단일공격 타워 이미지
+    this.multiAttackTowerImage = null; // 범위공격 타워 이미지
     this.inhibitorImage = null; // 억제기 이미지
+    this.brokenInhibitorImage = null; // 부서진 억제기 이미지
     this.pathImage = null; // 경로 이미지
     this.monsterImages = []; // 몬스터 이미지
     this.NUM_OF_MONSTERS = 5;
@@ -39,6 +40,7 @@ class GameClient {
     this.buySingleTowerButton.style.cursor = "pointer";
     document.body.appendChild(this.buySingleTowerButton);
     this.buySingleTowerButton.addEventListener("click", () => {
+      
       UserSocket.getInstance().SendEvent(9, {
         towerId: 1,
         timeStamp: Date.now(),
@@ -99,6 +101,7 @@ class GameClient {
     this.singletowerImage = infos.singletowerImage;
     this.multiAttackTowerImage = infos.multiAttackTowerImage;
     this.inhibitorImage = infos.inhibitorImage;
+    this.brokenInhibitorImage =infos.brokenInhibitorImage
     this.pathImage = infos.pathImage;
     this.monsterImages = infos.monsterImages;
     this.ctx.drawImage(
@@ -110,6 +113,10 @@ class GameClient {
     );
   }
   gameStart(stages, highScore) {
+    const audio = new Audio("../../sounds/bgm.mp3"); 
+    audio.play();
+    audio.loop = true; // 반복재생
+    audio.volume = 0.4; // 음량 설정 
     this.stages = stages;
     this.userGold += stages.stageInfo.gold;
     this.inhibitorHp = stages.stageInfo.inhibitorHp;
@@ -119,6 +126,7 @@ class GameClient {
     this.path.drawPath(this.monsterPath);
     this.placeinhibitor();
     this.gameLoop();
+    
   }
   async gameLoop() {
     this.ctx.drawImage(
@@ -132,7 +140,7 @@ class GameClient {
     this.player.draw();
     this.player.move();
 
-    this.inhibitor.draw(this.ctx, this.inhibitorImage);
+    this.inhibitor.draw(this.ctx, this.inhibitorImage,this.brokenInhibitorImage);
 
     this.ctx.font = "25px Times New Roman";
     this.ctx.fillStyle = "skyblue";
@@ -161,7 +169,7 @@ class GameClient {
       tower.multiAttack(this.monsters); // 다중 공격
       tower.heal(this.inhibitor); // 힐
     });
-    this.inhibitor.draw(this.ctx, this.inhibitorImage);
+    this.inhibitor.draw(this.ctx, this.inhibitorImage,this.brokenInhibitorImage);
     for (let i = this.monsters.length - 1; i >= 0; i--) {
       const monster = this.monsters[i];
 
