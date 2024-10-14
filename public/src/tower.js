@@ -101,6 +101,10 @@ export class Tower {
     if (this.lastAttack + this.attackSpeed > Date.now()) {
       return;
     }
+    const audio = new Audio("../../sounds/singleTower.mp3");
+    audio.play();
+    audio.loop = false; // 반복재생
+    audio.volume = 0.3; // 음량 설정
 
     // 생성된 순서대로 각 몬스터에 대한 공격 가능 여부 체크 (1명이라도 공격 시 다음으로)
     let attack = false;
@@ -142,6 +146,10 @@ export class Tower {
     if (this.lastAttack + this.attackSpeed > Date.now()) {
       return;
     }
+    const audio = new Audio("../../sounds/muitiTower.mp3");
+    audio.play();
+    audio.loop = false; // 반복재생
+    audio.volume = 0.25; // 음량 설정
 
     // 생성된 순서대로 몬스터에 대한 공격여부 체크
     let attack = false;
@@ -183,6 +191,10 @@ export class Tower {
     if (this.lastAttack + this.attackSpeed > Date.now()) {
       return;
     }
+    const audio = new Audio("../../sounds/healTower.mp3");
+    audio.play();
+    audio.loop = false; // 반복재생
+    audio.volume = 0.2; // 음량 설정
 
     inhibitor.hp = Math.min(inhibitor.hp + this.attackPower, inhibitor.maxHp);
     this.beamDuration = 30; // 광선 지속 시간 (0.5초)
