@@ -19,6 +19,7 @@ model user {
   highScore Int @map("highScore")
   password String @map("password")
   email String @map("email")
+  isLogin Boolean @map("isLogin")
  
   @@map("User")
 }
