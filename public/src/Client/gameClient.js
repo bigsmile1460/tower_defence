@@ -32,7 +32,7 @@ class GameClient {
     this.path = null; // 경로
 
     this.buySingleTowerButton = document.createElement("button");
-    this.buySingleTowerButton.textContent = "단일 공격 타워 구입";
+    this.buySingleTowerButton.textContent = "원거리 타워 구입";
     this.buySingleTowerButton.style.position = "absolute";
     this.buySingleTowerButton.style.top = "10px";
     this.buySingleTowerButton.style.right = "10px";
@@ -48,7 +48,7 @@ class GameClient {
     });
 
     this.buyRangeTowerButton = document.createElement("button");
-    this.buyRangeTowerButton.textContent = "범위 공격 타워 구입";
+    this.buyRangeTowerButton.textContent = "화염 타워 구입";
     this.buyRangeTowerButton.style.position = "absolute";
     this.buyRangeTowerButton.style.top = "60px";
     this.buyRangeTowerButton.style.right = "10px";
@@ -64,7 +64,7 @@ class GameClient {
     });
 
     this.buyHealTowerButton = document.createElement("button");
-    this.buyHealTowerButton.textContent = "힐 타워 구입";
+    this.buyHealTowerButton.textContent = "치유 타워 구입";
     this.buyHealTowerButton.style.position = "absolute";
     this.buyHealTowerButton.style.top = "110px";
     this.buyHealTowerButton.style.right = "10px";
