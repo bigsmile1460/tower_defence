@@ -32,20 +32,6 @@ export const getMonsterLength = (userId) => {
   return (monsterInfo[userId] && monsterInfo[userId].length) || 0;
 };
 
-//몬스터 변동사항 - 타워가 몬스터 공격 시
-// export const attackedMonster = (userId, monsterUUID, attack) => {
-//   const monsters = monsterInfo[userId];
-//   if (!monsters) return;
-
-//   const monster = monsters.find(monster => monster.uuid === monsterUUID);
-
-//   if (monster) {
-//     // 몬스터에게 공격 적용
-//     monster.hp -= attack;
-
-//     // 몬스터의 체력이 0 이하일 경우 삭제
-//     if (monster.hp <= 0) {
-//       monsterInfo[userId] = monsters.filter(monster => monster.uuid !== monsterUUID);
-//     }
-//   }
-// };
+export const clearMonsters = (userId) => {
+  delete monsterInfo[userId];
+};

@@ -44,8 +44,13 @@ export const pushTower = (userId, towerData, timeStamp) => {
   return tower;
 };
 
-// 타워 삭제
+// 타워 제거
 export const deleteTower = (userId, tower) => {
   const towerIndex = towers[userId].findIndex((data) => data.id === tower.id);
   return towers[userId].splice(towerIndex, 1);
+};
+
+// 타워 초기화
+export const clearTower = (userId) => {
+  delete towers[userId];
 };

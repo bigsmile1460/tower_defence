@@ -1,12 +1,15 @@
 import stageOperator from "../../operator/stageOperator.js";
+import { clearMonsters } from "../../Storages/monster.storage.js";
 import { clearStage } from "../../Storages/stage.storage.js";
-import { createTowers } from "../../Storages/tower.storage.js";
+import { clearTower, createTowers } from "../../Storages/tower.storage.js";
 import { spawnNormal } from "../monster/spawnNormal.js";
 
 // 토큰 검증
 export const stageStart = async (socket, payload, userId) => {
   try {
     clearStage(userId);
+    clearMonsters(userId);
+    clearTower(userId);
 
     // 시작 시 스테이지(스토리지) 생성
     const [stage, highScore] = await stageOperator.stageStart(userId);
