@@ -14,6 +14,8 @@ const inhibitorImage = new Image();
 inhibitorImage.src = "images/base.png";
 const brokenInhibitorImage = new Image();
 brokenInhibitorImage.src = "images/brokenBase.png";
+const specialMonsterImages = new Image();
+specialMonsterImages.src = "images/brokenBase.png";
 const pathImage = new Image();
 pathImage.src = "images/path.png";
 const monsterImages = [];
@@ -22,6 +24,7 @@ for (let i = 1; i <= NUM_OF_MONSTERS; i++) {
   img.src = `images/monster${i}.png`;
   monsterImages.push(img);
 }
+
 gameStart();
 async function gameStart() {
   // 이미지 로딩 완료 후 서버와 연결하고 게임 초기화
@@ -33,6 +36,7 @@ async function gameStart() {
     new Promise((resolve) => (inhibitorImage.onload = resolve)),
     new Promise((resolve) => (brokenInhibitorImage.onload = resolve)),
     new Promise((resolve) => (pathImage.onload = resolve)),
+    new Promise((resolve) => (specialMonsterImages.onload = resolve)),
     ...monsterImages.map(
       (img) => new Promise((resolve) => (img.onload = resolve))
     ),
@@ -41,13 +45,14 @@ async function gameStart() {
     UserSocket.getInstance().SendEvent(1, {});
     gameClient.loadGameImages({
       backgroundImage: backgroundImage,
-      healTowerImage:healTowerImage,
-      singletowerImage:singletowerImage,
-      multiAttackTowerImage:multiAttackTowerImage,
+      healTowerImage: healTowerImage,
+      singletowerImage: singletowerImage,
+      multiAttackTowerImage: multiAttackTowerImage,
       inhibitorImage: inhibitorImage,
       pathImage: pathImage,
       monsterImages: monsterImages,
-      brokenInhibitorImage : brokenInhibitorImage,
+      specialMonsterImages: specialMonsterImages,
+      brokenInhibitorImage: brokenInhibitorImage,
     });
   });
 }

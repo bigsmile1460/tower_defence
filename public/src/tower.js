@@ -123,6 +123,12 @@ export class Tower {
       return;
     }
 
+    // 사운드 재생
+    const audio = new Audio("../../sounds/singleTower.mp3");
+    audio.play();
+    audio.loop = false; // 반복재생
+    audio.volume = 0.15; // 음량 설정
+
     // 공격 신호 서버에 전달
     this.lastAttack = Date.now();
     UserSocket.getInstance().SendEvent(7, {
@@ -159,6 +165,12 @@ export class Tower {
       }
     }
 
+    // 사운드 재생
+    const audio = new Audio("../../sounds/muitiTower.mp3");
+    audio.play();
+    audio.loop = false; // 반복재생
+    audio.volume = 0.1; // 음량 설정
+
     // 공격 범위 안에 적이 없어서 공격 실패 시 함수 종료
     if (!attack) {
       return;
@@ -183,6 +195,12 @@ export class Tower {
     if (this.lastAttack + this.attackSpeed > Date.now()) {
       return;
     }
+
+    // 사운드 재생
+    const audio = new Audio("../../sounds/healTower.mp3");
+    audio.play();
+    audio.loop = false; // 반복재생
+    audio.volume = 0.1; // 음량 설정
 
     inhibitor.hp = Math.min(inhibitor.hp + this.attackPower, inhibitor.maxHp);
     this.beamDuration = 30; // 광선 지속 시간 (0.5초)

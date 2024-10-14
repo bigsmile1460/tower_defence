@@ -146,6 +146,17 @@ exports.Prisma.MonsterScalarFieldEnum = {
   cycle: 'cycle'
 };
 
+exports.Prisma.SpecialMonsterScalarFieldEnum = {
+  id: 'id',
+  hp: 'hp',
+  attack: 'attack',
+  speed: 'speed',
+  score: 'score',
+  gold: 'gold',
+  stage: 'stage',
+  cycle: 'cycle'
+};
+
 exports.Prisma.TowerScalarFieldEnum = {
   id: 'id',
   towerName: 'towerName',
@@ -163,6 +174,11 @@ exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
 };
+
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
 exports.attackType = exports.$Enums.attackType = {
   singleAttack: 'singleAttack',
   multiAttack: 'multiAttack',
@@ -172,6 +188,7 @@ exports.attackType = exports.$Enums.attackType = {
 exports.Prisma.ModelName = {
   initGame: 'initGame',
   monster: 'monster',
+  specialMonster: 'specialMonster',
   tower: 'tower'
 };
 
