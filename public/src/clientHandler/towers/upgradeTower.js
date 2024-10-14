@@ -4,6 +4,7 @@ export const towerUpgrade = (payload) => {
   let tower = GameClient.getInstance().towers.find((x) => x.id === payload);
   tower.attackPower += tower.upgradeAttackPower;
   tower.towerPrice += tower.upgradePrice;
+  tower.upgradePrice += tower.upgradeAddPrice;
   tower.level += 1;
 
   GameClient.getInstance().userGold -= tower.upgradePrice;

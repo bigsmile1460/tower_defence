@@ -3931,6 +3931,7 @@ export namespace Prisma {
     sellPriceRate: number | null
     upgradeAttackPower: number | null
     upgradePrice: number | null
+    upgradeAddPrice: number | null
   }
 
   export type TowerSumAggregateOutputType = {
@@ -3942,6 +3943,7 @@ export namespace Prisma {
     sellPriceRate: number | null
     upgradeAttackPower: number | null
     upgradePrice: number | null
+    upgradeAddPrice: number | null
   }
 
   export type TowerMinAggregateOutputType = {
@@ -3955,6 +3957,7 @@ export namespace Prisma {
     sellPriceRate: number | null
     upgradeAttackPower: number | null
     upgradePrice: number | null
+    upgradeAddPrice: number | null
   }
 
   export type TowerMaxAggregateOutputType = {
@@ -3968,6 +3971,7 @@ export namespace Prisma {
     sellPriceRate: number | null
     upgradeAttackPower: number | null
     upgradePrice: number | null
+    upgradeAddPrice: number | null
   }
 
   export type TowerCountAggregateOutputType = {
@@ -3981,6 +3985,7 @@ export namespace Prisma {
     sellPriceRate: number
     upgradeAttackPower: number
     upgradePrice: number
+    upgradeAddPrice: number
     _all: number
   }
 
@@ -3994,6 +3999,7 @@ export namespace Prisma {
     sellPriceRate?: true
     upgradeAttackPower?: true
     upgradePrice?: true
+    upgradeAddPrice?: true
   }
 
   export type TowerSumAggregateInputType = {
@@ -4005,6 +4011,7 @@ export namespace Prisma {
     sellPriceRate?: true
     upgradeAttackPower?: true
     upgradePrice?: true
+    upgradeAddPrice?: true
   }
 
   export type TowerMinAggregateInputType = {
@@ -4018,6 +4025,7 @@ export namespace Prisma {
     sellPriceRate?: true
     upgradeAttackPower?: true
     upgradePrice?: true
+    upgradeAddPrice?: true
   }
 
   export type TowerMaxAggregateInputType = {
@@ -4031,6 +4039,7 @@ export namespace Prisma {
     sellPriceRate?: true
     upgradeAttackPower?: true
     upgradePrice?: true
+    upgradeAddPrice?: true
   }
 
   export type TowerCountAggregateInputType = {
@@ -4044,6 +4053,7 @@ export namespace Prisma {
     sellPriceRate?: true
     upgradeAttackPower?: true
     upgradePrice?: true
+    upgradeAddPrice?: true
     _all?: true
   }
 
@@ -4144,6 +4154,7 @@ export namespace Prisma {
     sellPriceRate: number
     upgradeAttackPower: number
     upgradePrice: number
+    upgradeAddPrice: number
     _count: TowerCountAggregateOutputType | null
     _avg: TowerAvgAggregateOutputType | null
     _sum: TowerSumAggregateOutputType | null
@@ -4176,6 +4187,7 @@ export namespace Prisma {
     sellPriceRate?: boolean
     upgradeAttackPower?: boolean
     upgradePrice?: boolean
+    upgradeAddPrice?: boolean
   }, ExtArgs["result"]["tower"]>
 
 
@@ -4190,6 +4202,7 @@ export namespace Prisma {
     sellPriceRate?: boolean
     upgradeAttackPower?: boolean
     upgradePrice?: boolean
+    upgradeAddPrice?: boolean
   }
 
 
@@ -4207,6 +4220,7 @@ export namespace Prisma {
       sellPriceRate: number
       upgradeAttackPower: number
       upgradePrice: number
+      upgradeAddPrice: number
     }, ExtArgs["result"]["tower"]>
     composites: {}
   }
@@ -4586,6 +4600,7 @@ export namespace Prisma {
     readonly sellPriceRate: FieldRef<"tower", 'Float'>
     readonly upgradeAttackPower: FieldRef<"tower", 'Int'>
     readonly upgradePrice: FieldRef<"tower", 'Int'>
+    readonly upgradeAddPrice: FieldRef<"tower", 'Int'>
   }
     
 
@@ -4927,7 +4942,8 @@ export namespace Prisma {
     towerPrice: 'towerPrice',
     sellPriceRate: 'sellPriceRate',
     upgradeAttackPower: 'upgradeAttackPower',
-    upgradePrice: 'upgradePrice'
+    upgradePrice: 'upgradePrice',
+    upgradeAddPrice: 'upgradeAddPrice'
   };
 
   export type TowerScalarFieldEnum = (typeof TowerScalarFieldEnum)[keyof typeof TowerScalarFieldEnum]
@@ -5216,6 +5232,7 @@ export namespace Prisma {
     sellPriceRate?: FloatFilter<"tower"> | number
     upgradeAttackPower?: IntFilter<"tower"> | number
     upgradePrice?: IntFilter<"tower"> | number
+    upgradeAddPrice?: IntFilter<"tower"> | number
   }
 
   export type towerOrderByWithRelationInput = {
@@ -5229,6 +5246,7 @@ export namespace Prisma {
     sellPriceRate?: SortOrder
     upgradeAttackPower?: SortOrder
     upgradePrice?: SortOrder
+    upgradeAddPrice?: SortOrder
   }
 
   export type towerWhereUniqueInput = Prisma.AtLeast<{
@@ -5245,6 +5263,7 @@ export namespace Prisma {
     sellPriceRate?: FloatFilter<"tower"> | number
     upgradeAttackPower?: IntFilter<"tower"> | number
     upgradePrice?: IntFilter<"tower"> | number
+    upgradeAddPrice?: IntFilter<"tower"> | number
   }, "id">
 
   export type towerOrderByWithAggregationInput = {
@@ -5258,6 +5277,7 @@ export namespace Prisma {
     sellPriceRate?: SortOrder
     upgradeAttackPower?: SortOrder
     upgradePrice?: SortOrder
+    upgradeAddPrice?: SortOrder
     _count?: towerCountOrderByAggregateInput
     _avg?: towerAvgOrderByAggregateInput
     _max?: towerMaxOrderByAggregateInput
@@ -5279,6 +5299,7 @@ export namespace Prisma {
     sellPriceRate?: FloatWithAggregatesFilter<"tower"> | number
     upgradeAttackPower?: IntWithAggregatesFilter<"tower"> | number
     upgradePrice?: IntWithAggregatesFilter<"tower"> | number
+    upgradeAddPrice?: IntWithAggregatesFilter<"tower"> | number
   }
 
   export type initGameCreateInput = {
@@ -5527,6 +5548,7 @@ export namespace Prisma {
     sellPriceRate: number
     upgradeAttackPower: number
     upgradePrice: number
+    upgradeAddPrice: number
   }
 
   export type towerUncheckedCreateInput = {
@@ -5540,6 +5562,7 @@ export namespace Prisma {
     sellPriceRate: number
     upgradeAttackPower: number
     upgradePrice: number
+    upgradeAddPrice: number
   }
 
   export type towerUpdateInput = {
@@ -5552,6 +5575,7 @@ export namespace Prisma {
     sellPriceRate?: FloatFieldUpdateOperationsInput | number
     upgradeAttackPower?: IntFieldUpdateOperationsInput | number
     upgradePrice?: IntFieldUpdateOperationsInput | number
+    upgradeAddPrice?: IntFieldUpdateOperationsInput | number
   }
 
   export type towerUncheckedUpdateInput = {
@@ -5565,6 +5589,7 @@ export namespace Prisma {
     sellPriceRate?: FloatFieldUpdateOperationsInput | number
     upgradeAttackPower?: IntFieldUpdateOperationsInput | number
     upgradePrice?: IntFieldUpdateOperationsInput | number
+    upgradeAddPrice?: IntFieldUpdateOperationsInput | number
   }
 
   export type towerCreateManyInput = {
@@ -5578,6 +5603,7 @@ export namespace Prisma {
     sellPriceRate: number
     upgradeAttackPower: number
     upgradePrice: number
+    upgradeAddPrice: number
   }
 
   export type towerUpdateManyMutationInput = {
@@ -5590,6 +5616,7 @@ export namespace Prisma {
     sellPriceRate?: FloatFieldUpdateOperationsInput | number
     upgradeAttackPower?: IntFieldUpdateOperationsInput | number
     upgradePrice?: IntFieldUpdateOperationsInput | number
+    upgradeAddPrice?: IntFieldUpdateOperationsInput | number
   }
 
   export type towerUncheckedUpdateManyInput = {
@@ -5603,6 +5630,7 @@ export namespace Prisma {
     sellPriceRate?: FloatFieldUpdateOperationsInput | number
     upgradeAttackPower?: IntFieldUpdateOperationsInput | number
     upgradePrice?: IntFieldUpdateOperationsInput | number
+    upgradeAddPrice?: IntFieldUpdateOperationsInput | number
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -5897,6 +5925,7 @@ export namespace Prisma {
     sellPriceRate?: SortOrder
     upgradeAttackPower?: SortOrder
     upgradePrice?: SortOrder
+    upgradeAddPrice?: SortOrder
   }
 
   export type towerAvgOrderByAggregateInput = {
@@ -5908,6 +5937,7 @@ export namespace Prisma {
     sellPriceRate?: SortOrder
     upgradeAttackPower?: SortOrder
     upgradePrice?: SortOrder
+    upgradeAddPrice?: SortOrder
   }
 
   export type towerMaxOrderByAggregateInput = {
@@ -5921,6 +5951,7 @@ export namespace Prisma {
     sellPriceRate?: SortOrder
     upgradeAttackPower?: SortOrder
     upgradePrice?: SortOrder
+    upgradeAddPrice?: SortOrder
   }
 
   export type towerMinOrderByAggregateInput = {
@@ -5934,6 +5965,7 @@ export namespace Prisma {
     sellPriceRate?: SortOrder
     upgradeAttackPower?: SortOrder
     upgradePrice?: SortOrder
+    upgradeAddPrice?: SortOrder
   }
 
   export type towerSumOrderByAggregateInput = {
@@ -5945,6 +5977,7 @@ export namespace Prisma {
     sellPriceRate?: SortOrder
     upgradeAttackPower?: SortOrder
     upgradePrice?: SortOrder
+    upgradeAddPrice?: SortOrder
   }
 
   export type EnumattackTypeWithAggregatesFilter<$PrismaModel = never> = {

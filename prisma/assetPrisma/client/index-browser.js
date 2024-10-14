@@ -167,7 +167,8 @@ exports.Prisma.TowerScalarFieldEnum = {
   towerPrice: 'towerPrice',
   sellPriceRate: 'sellPriceRate',
   upgradeAttackPower: 'upgradeAttackPower',
-  upgradePrice: 'upgradePrice'
+  upgradePrice: 'upgradePrice',
+  upgradeAddPrice: 'upgradeAddPrice'
 };
 
 exports.Prisma.SortOrder = {

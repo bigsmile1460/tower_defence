@@ -1,4 +1,5 @@
 -- 1~ 10 라운드
+
 INSERT INTO Monster ( hp, attack, speed, score, gold, stage, cycle)
 values (75,50,3,10,30,1,500);
 INSERT INTO Monster ( hp, attack, speed, score, gold, stage, cycle)

@@ -72,6 +72,7 @@ model tower {
   sellPriceRate      Float      @map("sellPriceRate")
   upgradeAttackPower Int        @map("upgradeAttackPower")
   upgradePrice       Int        @map("upgradePrice")
+  upgradeAddPrice    Int        @map("upgradeAddPrice")
 
   @@map("Tower")
 }
