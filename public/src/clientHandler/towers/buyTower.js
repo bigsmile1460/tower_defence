@@ -16,5 +16,5 @@ export const towerBuy = (payload) => {
   const audio = new Audio("../../../sounds/buy.mp3");
   audio.play();
   audio.loop = false; // 반복재생
-  audio.volume = 0.4; // 음량 설정
+  audio.volume = 0.3; // 음량 설정
 };

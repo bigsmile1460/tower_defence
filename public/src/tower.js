@@ -169,7 +169,7 @@ export class Tower {
     const audio = new Audio("../../sounds/muitiTower.mp3");
     audio.play();
     audio.loop = false; // 반복재생
-    audio.volume = 0.1; // 음량 설정
+    audio.volume = 0.15; // 음량 설정
 
     // 공격 범위 안에 적이 없어서 공격 실패 시 함수 종료
     if (!attack) {
