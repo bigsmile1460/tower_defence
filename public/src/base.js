@@ -19,7 +19,6 @@ export class Inhibitor {
       this.width,
       this.height
     );
-
     ctx.font = "16px Arial";
     ctx.fillStyle = "white";
     ctx.fillText(

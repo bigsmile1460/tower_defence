@@ -1,3 +1,5 @@
+import UserSocket from "./Network/userSocket.js";
+
 export class Monster {
   constructor(path, monsterImages, monsterData) {
     // 생성자 안에서 몬스터의 속성을 정의한다고 생각하시면 됩니다!
@@ -41,6 +43,8 @@ export class Monster {
       }
       return false;
     } else {
+      // 몬스터가 억제기 공격
+      UserSocket.getInstance().SendEvent(6, { monsterUUID: this.monsterUUID });
       this.x = this.path[0].x; // 첫 시작좌표 x로 돌아가기
       this.y = this.path[0].y; // 첫 시작좌표 y로 돌아가기
       this.currentIndex = 0;
