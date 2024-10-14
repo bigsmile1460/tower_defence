@@ -30,6 +30,9 @@ class GameClient {
     this.NUM_OF_MONSTERS = 5;
     this.monsterPath = null; // 몬스터가 지나가는 경로
     this.path = null; // 경로
+    this.audioVolume = 4; // 배경 오디오 소리 크기
+    this.effectVolume = 4; // 효과음 소리 크기
+    this.audio = null;
 
     this.buySingleTowerButton = document.createElement("button");
     this.buySingleTowerButton.textContent = "원거리 타워 구입";
@@ -78,6 +81,90 @@ class GameClient {
         timeStamp: Date.now(),
       });
     });
+
+    this.volumeUpeBtuuon = document.createElement("button");
+    this.volumeUpeBtuuon.textContent = "배경 소리 +5";
+    this.volumeUpeBtuuon.style.position = "absolute";
+    this.volumeUpeBtuuon.style.top = "200px";
+    this.volumeUpeBtuuon.style.right = "10px";
+    this.volumeUpeBtuuon.style.padding = "10px 20px";
+    this.volumeUpeBtuuon.style.fontSize = "16px";
+    this.volumeUpeBtuuon.style.cursor = "pointer";
+    document.body.appendChild(this.volumeUpeBtuuon);
+    this.volumeUpeBtuuon.addEventListener("click", () => {
+      if (this.audioVolume < 20) {
+        this.audioVolume++;
+        this.audio.volume = 0.05 * this.audioVolume;
+        this.showVolume.textContent = "배경 음악: " + this.audioVolume * 5;
+      }
+    });
+
+    this.volumeDowneBtuuon = document.createElement("button");
+    this.volumeDowneBtuuon.textContent = "배경 소리 -5";
+    this.volumeDowneBtuuon.style.position = "absolute";
+    this.volumeDowneBtuuon.style.top = "250px";
+    this.volumeDowneBtuuon.style.right = "10px";
+    this.volumeDowneBtuuon.style.padding = "10px 20px";
+    this.volumeDowneBtuuon.style.fontSize = "16px";
+    this.volumeDowneBtuuon.style.cursor = "pointer";
+    document.body.appendChild(this.volumeDowneBtuuon);
+    this.volumeDowneBtuuon.addEventListener("click", () => {
+      if (this.audioVolume > 0) {
+        this.audioVolume--;
+        this.audio.volume = 0.05 * this.audioVolume;
+        this.showVolume.textContent = "배경 음악: " + this.audioVolume * 5;
+      }
+    });
+
+    this.showVolume = document.createElement("button");
+    this.showVolume.textContent = "배경 음악: " + this.audioVolume * 5;
+    this.showVolume.style.position = "absolute";
+    this.showVolume.style.top = "300px";
+    this.showVolume.style.right = "10px";
+    this.showVolume.style.padding = "10px 20px";
+    this.showVolume.style.fontSize = "16px";
+    document.body.appendChild(this.showVolume);
+
+    this.effectVolumeUpBtuuon = document.createElement("button");
+    this.effectVolumeUpBtuuon.textContent = "효과음 +5";
+    this.effectVolumeUpBtuuon.style.position = "absolute";
+    this.effectVolumeUpBtuuon.style.top = "380px";
+    this.effectVolumeUpBtuuon.style.right = "10px";
+    this.effectVolumeUpBtuuon.style.padding = "10px 20px";
+    this.effectVolumeUpBtuuon.style.fontSize = "16px";
+    this.effectVolumeUpBtuuon.style.cursor = "pointer";
+    document.body.appendChild(this.effectVolumeUpBtuuon);
+    this.effectVolumeUpBtuuon.addEventListener("click", () => {
+      if (this.effectVolume < 20) {
+        this.effectVolume++;
+        this.showEffectVolume.textContent = "효과음: " + this.effectVolume * 5;
+      }
+    });
+
+    this.effectVolumeDownBtuuon = document.createElement("button");
+    this.effectVolumeDownBtuuon.textContent = "효과음 -5";
+    this.effectVolumeDownBtuuon.style.position = "absolute";
+    this.effectVolumeDownBtuuon.style.top = "430px";
+    this.effectVolumeDownBtuuon.style.right = "10px";
+    this.effectVolumeDownBtuuon.style.padding = "10px 20px";
+    this.effectVolumeDownBtuuon.style.fontSize = "16px";
+    this.effectVolumeDownBtuuon.style.cursor = "pointer";
+    document.body.appendChild(this.effectVolumeDownBtuuon);
+    this.effectVolumeDownBtuuon.addEventListener("click", () => {
+      if (this.effectVolume > 0) {
+        this.effectVolume--;
+        this.showEffectVolume.textContent = "효과음: " + this.effectVolume * 5;
+      }
+    });
+
+    this.showEffectVolume = document.createElement("button");
+    this.showEffectVolume.textContent = "효과음: " + this.effectVolume * 5;
+    this.showEffectVolume.style.position = "absolute";
+    this.showEffectVolume.style.top = "480px";
+    this.showEffectVolume.style.right = "10px";
+    this.showEffectVolume.style.padding = "10px 20px";
+    this.showEffectVolume.style.fontSize = "16px";
+    document.body.appendChild(this.showEffectVolume);
   }
   static getInstance() {
     if (!this.gInstance) {
@@ -118,6 +205,7 @@ class GameClient {
     audio.play();
     audio.loop = true; // 반복재생
     audio.volume = 0.35; // 음량 설정
+    this.audio = audio;
     this.stages = stages;
     this.userGold += stages.stageInfo.gold;
     this.inhibitorHp = stages.stageInfo.inhibitorHp;
