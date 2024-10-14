@@ -74,31 +74,33 @@
 
     // 플레이 버튼 클릭
     document.getElementById("playButton").addEventListener("click", async () => {
-      // const accessToken = localStorage.getItem("authorization");
-      // if (accessToken !== null) {
-      //   document.querySelector(".button-container").style.display = "none";
-      //   document.getElementById("gameCanvas").style.display = "block";
+      const accessToken = localStorage.getItem("authorization");
+      if (accessToken !== null) {
+        const response = await fetch("/TowerDefence/GamePlay", {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: accessToken
+          }
+        });        
+        
+        const s2cGamePlayResponse = await response.json();
+        if (s2cGamePlayResponse.status === 201) {
+          document.querySelector(".button-container").style.display = "none";
+          document.getElementById("gameCanvas").style.display = "block";
 
-      //   const response = await fetch("/TowerDefence/GamePlay", {
-      //     method: "post",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //       authorization: accessToken
-      //     }
-      //   });
+          import("./src/game.js");
+        }
+        else if (s2cGamePlayResponse.status === 401) {          
+          window.location.href = "/index.html";
 
-      //   const s2cGamePlayResponse = await response.json();
-      //   if (s2cGamePlayResponse.status === 201) {
-      //     import("./src/game.js");
-      //   }
-      // }
-      // else {
-      //   alert("로그인 하고 게임 플레이를 누르세요");        
-      // }
+          alert(s2cGamePlayResponse.message);
+        }
 
-      document.querySelector(".button-container").style.display = "none";
-      document.getElementById("gameCanvas").style.display = "block";
-      import("./src/game.js");
+      }
+      else {
+        alert("로그인 하고 게임 플레이를 누르세요");
+      }
     });
   </script>
 </body>
