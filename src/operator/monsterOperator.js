@@ -22,10 +22,10 @@ export const getMonsterInfo = async (stage) => {
 };
 export let intervalId; //몬스터 스폰
 //몬스터 생성
+
 export const spawnStart = async (socket, userId) => {
   //필요 정보 : 유저 고유값(토큰이용), 스테이지 정보
   const stageInfo = getStage(userId).stageInfo;
-  console.log("stageInfo:", stageInfo);
 
   let nowStage = stageInfo.stageId; //초기 스테이지
   //스테이지 정보에 따라 스폰 몬스터 결정
