@@ -7,6 +7,7 @@ import { stageEnd } from "./stages/stageEnd.js";
 import { spawnNormal } from "./monsters/spawnNormal.js";
 import { monsterDie } from "./monsters/dieMonster.js";
 import { monsterAttack } from "./monsters/monsterAttack.js";
+import { inhibitorBroken } from "./inhibitor/inhibitorBroken.js";
 
 const handlerMapping = {
   1: stageStart,
@@ -19,6 +20,7 @@ const handlerMapping = {
   9: towerBuy,
   10: towerSell,
   11: monsterAttack,
+  12: inhibitorBroken,
 };
 
 export default handlerMapping;
