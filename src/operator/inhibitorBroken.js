@@ -1,4 +1,5 @@
 import { prismaAsset } from "../lib/utils/prisma/index.js";
+import { addMonster } from "../Storages/monster.storage.js";
 import {
   getInhibitorHpLimit,
   getinhibitorInterval,
@@ -13,9 +14,9 @@ export const inhibitorBroken = async (socket, userId) => {
   setInhibitorStatus(userId, "broken");
 
   // 현재 스테이지에 맞는 특수 몬스터 생성
-  const stageId = getStage(userId).stageId;
+  const stageId = getStage(userId).stageInfo.stageId;
   const specialMonsterData = await prismaAsset.specialMonster.findFirst({
-    where: { stageId: stageId },
+    where: { stage: stageId },
   });
   const specialMonster = addMonster(userId, specialMonsterData);
 
