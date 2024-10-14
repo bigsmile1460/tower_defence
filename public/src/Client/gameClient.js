@@ -11,7 +11,7 @@ class GameClient {
     this.player = new Player(this.ctx, 60, 60); // 플레이어
     this.userGold = 0; // 유저 돈
     this.inhibitor = null; // 억제기
-    this.inhibitorHp = 0; // 억제기 체력
+    this.inhibitorHp = 0; // 억제기 생성시 최대 체력
     this.towerCost = 0; // 타워 구입시 가격
     this.numOfInitialTowers = 0; // 게임 시작시 타워 자동 생성 -> 없어도 됨
     this.monsters = []; // 몬스터 저장 배열
