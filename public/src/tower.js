@@ -20,6 +20,7 @@ export class Tower {
     this.sellPriceRate = towerData.sellPriceRate; // 타워 판매 가격 비율 (판매 가격 비율 * 타워 비용 = 판매 가격)
     this.upgradePrice = towerData.upgradePrice; // 타워 업그레이드 가격
     this.upgradeAttackPower = towerData.upgradeAttackPower; // 강화 시 타워 능력치 상승 수치
+    this.upgradeAddPrice = towerData.upgradeAddPrice; // 타워 업그레이드 시 다음 업그레이드 가격 증가
     this.level = 1; // 타워 레벨
     this.beamDuration = 0; // 남은 광선 지속 시간
     this.target = []; // 타워 광선의 목표
@@ -224,7 +225,7 @@ export class Tower {
   buttonMake() {
     // 업그레이드 버튼
     const upgradeButton = document.createElement("button");
-    upgradeButton.textContent = this.name + this.level + "강화 버튼";
+    upgradeButton.textContent = "강화 비용" + this.upgradePrice + "원";
     upgradeButton.style.position = "absolute";
     upgradeButton.style.top = this.y + 160 + "px";
     upgradeButton.style.right = 2050 - this.x + "px";
@@ -235,14 +236,18 @@ export class Tower {
     upgradeButton.addEventListener("click", () => {
       UserSocket.getInstance().SendEvent(8, this.id);
       if (GameClient.getInstance().userGold >= this.upgradePrice) {
-        upgradeButton.textContent = this.name + (this.level + 1) + "강화 버튼";
+        upgradeButton.textContent =
+          "강화 비용" +
+          (Number(this.upgradeAddPrice) + Number(this.upgradePrice)) +
+          "원";
+        sellButton.textContent = "LV" + (this.level + 1) + this.name + "판매";
       }
     });
     this.upgradeButton = upgradeButton;
 
     // 판매 버튼
     const sellButton = document.createElement("button");
-    sellButton.textContent = this.name + "판매 버튼";
+    sellButton.textContent = "LV" + this.level + this.name + "판매";
     sellButton.style.position = "absolute";
     sellButton.style.top = this.y + 190 + "px";
     sellButton.style.right = 2050 - this.x + "px";

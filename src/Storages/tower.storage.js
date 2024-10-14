@@ -22,6 +22,7 @@ export const upgradeTower = (userId, id) => {
   let servertowers = towers[userId].find((data) => data.id === id);
   servertowers.attackPower += servertowers.upgradeAttackPower;
   servertowers.towerPrice += servertowers.upgradePrice;
+  servertowers.upgradePrice += servertowers.upgradeAddPrice;
   return servertowers;
 };
 
@@ -37,6 +38,7 @@ export const pushTower = (userId, towerData, timeStamp) => {
     sellPriceRate: towerData.sellPriceRate,
     upgradeAttackPower: towerData.upgradeAttackPower,
     upgradePrice: towerData.upgradePrice,
+    upgradeAddPrice: towerData.upgradeAddPrice,
     lastAttack: timeStamp,
   };
   towers[userId].push(tower);
