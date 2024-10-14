@@ -9,7 +9,6 @@ import stageOperator from "./stageOperator.js";
 
 //기능 구현 후 class로 변경 예정
 
-
 export let intervalId; //몬스터 스폰
 
 //몬스터 정보 호출
@@ -28,6 +27,9 @@ export const spawnStart = async (socket, userId) => {
   //스테이지 정보에 따라 스폰 몬스터 결정
   let getMonsterInfo = await getMonster(nowStage);
   let interval = getMonsterInfo[0].cycle; // 몬스터 스폰 주기
+  // ------------------------ 최성원 수정 ---------------------------- //
+  let intervalStatus = "normal"; // 몬스터 스폰에 적용된 interval 상태
+  // ------------------------ 최성원 수정 ---------------------------- //
   // let intervalId; //몬스터 스폰
 
   //몬스터 스폰 시작
@@ -54,24 +56,39 @@ export const spawnStart = async (socket, userId) => {
         } else {
           //스테이지 클리어
           clearInterval(intervalId); // 몬스터 스폰 중지
-          socket.emit("event", { handlerId: 3, payload: "축하드립니다. 게임을 클리어하셨습니다." });
+          socket.emit("event", {
+            handlerId: 3,
+            payload: "축하드립니다. 게임을 클리어하셨습니다.",
+          });
         }
       }
       //억제기 파괴되었을 때 몬스터 스폰 2배
-      if (getInhibitorStatus(userId) === "broken") { 
+      if (getInhibitorStatus(userId) === "broken") {
         // Inhibitor ==="파괴"
-        console.log("억제기 파괴");
-        interval = interval / 2; //스폰 2배로 변경
-        setInhibitorStatus(userId, "normal"); //억제기 상태변화 -> "normal"
+        // ------------------------ 최성원 수정 ---------------------------- //
+        // console.log("억제기 파괴");
+        // interval = interval / 2; //스폰 2배로 변경
+        // setInhibitorStatus(userId, "normal"); //억제기 상태변화 -> "normal"
+        if (intervalStatus !== "broken") {
+          interval /= 2;
+          intervalStatus = "broken";
+        }
+        // ------------------------ 최성원 수정 ---------------------------- //
         clearInterval(intervalId); // 몬스터 스폰 중지
         startInterval(); //몬스터 스폰 시작(재귀)
       }
       //억제기 재생성 시 몬스터 스폰 정상화
-      if (getInhibitorStatus(userId) === "replace") { 
+      if (getInhibitorStatus(userId) === "noraml") {
         //재생성
-        console.log("억제기 복구");
-        interval = interval * 2; //스폰 1배로 변경
-        setInhibitorStatus(userId, "normal"); //억제기 상태변화
+        // ------------------------ 최성원 수정 ---------------------------- //
+        // console.log("억제기 복구");
+        // interval = interval * 2; //스폰 1배로 변경
+        // setInhibitorStatus(userId, "normal"); //억제기 상태변화
+        if (intervalStatus !== "normal") {
+          interval *= 2;
+          intervalStatus = "normal";
+        }
+        // ------------------------ 최성원 수정 ---------------------------- //
         clearInterval(intervalId); // 몬스터 스폰 중지
         startInterval(); //몬스터 스폰 시작(재귀)
       }
@@ -82,7 +99,6 @@ export const spawnStart = async (socket, userId) => {
 
   return true;
 };
-
 
 export const spawnEnd = (intervalId) => {
   clearInterval(intervalId); // 몬스터 스폰 중지

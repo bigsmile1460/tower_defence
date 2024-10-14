@@ -112,3 +112,7 @@ export function setInhibitorStatus(userId, status) {
 export function towerAmountLimit(userId) {
   return getStage(userId).stageInfo.towerAmountLimit;
 }
+
+export function getinhibitorInterval(userId) {
+  return getStage(userId).stageInfo.inhibitorInterval;
+}

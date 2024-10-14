@@ -6,6 +6,7 @@ import {
 } from "../Storages/stage.storage.js";
 import { inhibitorBroken } from "./inhibitorBroken.js";
 
+// 몬스터가 억제기 공격
 export const monsterAttackCheck = (socket, payload, userId) => {
   // 전달받은 uuid의 몬스터 공격력 조회
   const serverMonsters = getMonsters(userId);
@@ -19,10 +20,7 @@ export const monsterAttackCheck = (socket, payload, userId) => {
   setInhibitorHp(userId, updateInhibitorHp);
 
   // 억제기 파괴 여부 검사
-  if (
-    updateInhibitorHp <= 0 &&
-    (getInhibitorStatus !== "broken" || getInhibitorStatus !== "brokend")
-  ) {
+  if (updateInhibitorHp <= 0 && getInhibitorStatus(userId) !== "broken") {
     // 억제기 파괴 함수 호출
     inhibitorBroken(socket, userId);
   }

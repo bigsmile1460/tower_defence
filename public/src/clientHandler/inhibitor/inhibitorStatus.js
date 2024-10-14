@@ -1,6 +1,6 @@
 import GameClient from "../../Client/gameClient.js";
 
-export const inhibitorBroken = (payload) => {
-  console.log(payload);
+export const inhibitorStatusUpdate = (payload) => {
   GameClient.getInstance().inhibitor.status = payload.status;
+  console.log(GameClient.getInstance().inhibitor.status);
 };
