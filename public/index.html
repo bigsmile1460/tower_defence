@@ -66,10 +66,24 @@
     });
 
     // 로그아웃 버튼 클릭
-    document.getElementById("logOutButton").addEventListener("click", () => {
-      window.location.href = "index.html";
+    document.getElementById("logOutButton").addEventListener("click", async () => {
+      const accessToken = localStorage.getItem("authorization");
+      const email = localStorage.getItem("email");      
+
       localStorage.removeItem("email");
-      localStorage.removeItem("authorization");
+      localStorage.removeItem("authorization");      
+
+      window.location.href = "index.html";
+
+      const response = await fetch("/TowerDefence/SignOut", {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json"          
+        },
+        body: JSON.stringify({
+          email
+        })
+      });                      
     })
 
     // 플레이 버튼 클릭
@@ -82,8 +96,8 @@
             "Content-Type": "application/json",
             authorization: accessToken
           }
-        });        
-        
+        });
+
         const s2cGamePlayResponse = await response.json();
         if (s2cGamePlayResponse.status === 201) {
           document.querySelector(".button-container").style.display = "none";
@@ -91,7 +105,7 @@
 
           import("./src/game.js");
         }
-        else if (s2cGamePlayResponse.status === 401) {          
+        else if (s2cGamePlayResponse.status === 401) {
           window.location.href = "/index.html";
 
           alert(s2cGamePlayResponse.message);
