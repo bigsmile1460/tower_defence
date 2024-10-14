@@ -35,22 +35,26 @@
     </style>
   </head>
   <body>
-    <div class="form-container"></div>
+    <div class="form-container">
+      <div>
+        <h1 style="color: white" id="loginId"></h1>
+      </div>
 
-    <div>
-      <h1 style="color: white" id="loginId"></h1>
-    </div>
+      <img src="./images/stageEnd2.png" />
+      <h1 style="color: red">몬스터에 흠씬 두들겨 맞고 죽었습니다.</h1>
 
-    <h1 style="color: red">게임 종료</h1>
-
-    <div>
-      <button id="back">뒤로가기</button>
+      <br />
+      <div>
+        <button id="back">뒤로가기</button>
+      </div>
     </div>
 
     <script>
       const loginEmail = localStorage.getItem("email");
       if (loginEmail !== null) {
-        document.getElementById("loginId").innerHTML = `${loginEmail}님`;
+        document.getElementById(
+          "loginId"
+        ).innerHTML = `${loginEmail}님의 게임 결과`;
       }
 
       document.getElementById("back").addEventListener("click", () => {

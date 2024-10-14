@@ -82,10 +82,10 @@ class stagesOperator {
     if (isStageClear) {
       socket.emit("event", {
         handlerId: 3,
-        payload: { clear: `스테이지 클리어!` },
+        payload: { clear: `clear` },
       });
     } else {
-      socket.emit("event", { handlerId: 3, payload: {} });
+      socket.emit("event", { handlerId: 3, payload: { clear: `end` } });
     }
 
     // 클라이언트에 게임 종료 알림
