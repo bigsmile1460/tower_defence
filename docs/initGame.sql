@@ -1,1 +1,1 @@
-INSERT INTO InitGame VALUES (1, 2000, 6, 2000, 10000,'normal'3000, , 2000 ,50)
+INSERT INTO InitGame VALUES (1, 2000, 6, 1000, 1000, 'normal' , 3000, 0 , 50 ,1000, 10, 'false')

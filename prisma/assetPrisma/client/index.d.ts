@@ -24,6 +24,11 @@ export type initGame = $Result.DefaultSelection<Prisma.$initGamePayload>
  */
 export type monster = $Result.DefaultSelection<Prisma.$monsterPayload>
 /**
+ * Model specialMonster
+ * 
+ */
+export type specialMonster = $Result.DefaultSelection<Prisma.$specialMonsterPayload>
+/**
  * Model tower
  * 
  */
@@ -189,6 +194,16 @@ export class PrismaClient<
     * ```
     */
   get monster(): Prisma.monsterDelegate<ExtArgs>;
+
+  /**
+   * `prisma.specialMonster`: Exposes CRUD operations for the **specialMonster** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SpecialMonsters
+    * const specialMonsters = await prisma.specialMonster.findMany()
+    * ```
+    */
+  get specialMonster(): Prisma.specialMonsterDelegate<ExtArgs>;
 
   /**
    * `prisma.tower`: Exposes CRUD operations for the **tower** model.
@@ -642,6 +657,7 @@ export namespace Prisma {
   export const ModelName: {
     initGame: 'initGame',
     monster: 'monster',
+    specialMonster: 'specialMonster',
     tower: 'tower'
   };
 
@@ -658,7 +674,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "initGame" | "monster" | "tower"
+      modelProps: "initGame" | "monster" | "specialMonster" | "tower"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -791,6 +807,72 @@ export namespace Prisma {
           count: {
             args: Prisma.monsterCountArgs<ExtArgs>
             result: $Utils.Optional<MonsterCountAggregateOutputType> | number
+          }
+        }
+      }
+      specialMonster: {
+        payload: Prisma.$specialMonsterPayload<ExtArgs>
+        fields: Prisma.specialMonsterFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.specialMonsterFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$specialMonsterPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.specialMonsterFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$specialMonsterPayload>
+          }
+          findFirst: {
+            args: Prisma.specialMonsterFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$specialMonsterPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.specialMonsterFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$specialMonsterPayload>
+          }
+          findMany: {
+            args: Prisma.specialMonsterFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$specialMonsterPayload>[]
+          }
+          create: {
+            args: Prisma.specialMonsterCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$specialMonsterPayload>
+          }
+          createMany: {
+            args: Prisma.specialMonsterCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.specialMonsterDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$specialMonsterPayload>
+          }
+          update: {
+            args: Prisma.specialMonsterUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$specialMonsterPayload>
+          }
+          deleteMany: {
+            args: Prisma.specialMonsterDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.specialMonsterUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.specialMonsterUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$specialMonsterPayload>
+          }
+          aggregate: {
+            args: Prisma.SpecialMonsterAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSpecialMonster>
+          }
+          groupBy: {
+            args: Prisma.specialMonsterGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SpecialMonsterGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.specialMonsterCountArgs<ExtArgs>
+            result: $Utils.Optional<SpecialMonsterCountAggregateOutputType> | number
           }
         }
       }
@@ -2902,6 +2984,933 @@ export namespace Prisma {
 
 
   /**
+   * Model specialMonster
+   */
+
+  export type AggregateSpecialMonster = {
+    _count: SpecialMonsterCountAggregateOutputType | null
+    _avg: SpecialMonsterAvgAggregateOutputType | null
+    _sum: SpecialMonsterSumAggregateOutputType | null
+    _min: SpecialMonsterMinAggregateOutputType | null
+    _max: SpecialMonsterMaxAggregateOutputType | null
+  }
+
+  export type SpecialMonsterAvgAggregateOutputType = {
+    id: number | null
+    hp: number | null
+    attack: number | null
+    speed: number | null
+    score: number | null
+    gold: number | null
+    stage: number | null
+    cycle: number | null
+  }
+
+  export type SpecialMonsterSumAggregateOutputType = {
+    id: number | null
+    hp: number | null
+    attack: number | null
+    speed: number | null
+    score: number | null
+    gold: number | null
+    stage: number | null
+    cycle: number | null
+  }
+
+  export type SpecialMonsterMinAggregateOutputType = {
+    id: number | null
+    hp: number | null
+    attack: number | null
+    speed: number | null
+    score: number | null
+    gold: number | null
+    stage: number | null
+    cycle: number | null
+  }
+
+  export type SpecialMonsterMaxAggregateOutputType = {
+    id: number | null
+    hp: number | null
+    attack: number | null
+    speed: number | null
+    score: number | null
+    gold: number | null
+    stage: number | null
+    cycle: number | null
+  }
+
+  export type SpecialMonsterCountAggregateOutputType = {
+    id: number
+    hp: number
+    attack: number
+    speed: number
+    score: number
+    gold: number
+    stage: number
+    cycle: number
+    _all: number
+  }
+
+
+  export type SpecialMonsterAvgAggregateInputType = {
+    id?: true
+    hp?: true
+    attack?: true
+    speed?: true
+    score?: true
+    gold?: true
+    stage?: true
+    cycle?: true
+  }
+
+  export type SpecialMonsterSumAggregateInputType = {
+    id?: true
+    hp?: true
+    attack?: true
+    speed?: true
+    score?: true
+    gold?: true
+    stage?: true
+    cycle?: true
+  }
+
+  export type SpecialMonsterMinAggregateInputType = {
+    id?: true
+    hp?: true
+    attack?: true
+    speed?: true
+    score?: true
+    gold?: true
+    stage?: true
+    cycle?: true
+  }
+
+  export type SpecialMonsterMaxAggregateInputType = {
+    id?: true
+    hp?: true
+    attack?: true
+    speed?: true
+    score?: true
+    gold?: true
+    stage?: true
+    cycle?: true
+  }
+
+  export type SpecialMonsterCountAggregateInputType = {
+    id?: true
+    hp?: true
+    attack?: true
+    speed?: true
+    score?: true
+    gold?: true
+    stage?: true
+    cycle?: true
+    _all?: true
+  }
+
+  export type SpecialMonsterAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which specialMonster to aggregate.
+     */
+    where?: specialMonsterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of specialMonsters to fetch.
+     */
+    orderBy?: specialMonsterOrderByWithRelationInput | specialMonsterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: specialMonsterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` specialMonsters from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` specialMonsters.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned specialMonsters
+    **/
+    _count?: true | SpecialMonsterCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SpecialMonsterAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SpecialMonsterSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SpecialMonsterMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SpecialMonsterMaxAggregateInputType
+  }
+
+  export type GetSpecialMonsterAggregateType<T extends SpecialMonsterAggregateArgs> = {
+        [P in keyof T & keyof AggregateSpecialMonster]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSpecialMonster[P]>
+      : GetScalarType<T[P], AggregateSpecialMonster[P]>
+  }
+
+
+
+
+  export type specialMonsterGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: specialMonsterWhereInput
+    orderBy?: specialMonsterOrderByWithAggregationInput | specialMonsterOrderByWithAggregationInput[]
+    by: SpecialMonsterScalarFieldEnum[] | SpecialMonsterScalarFieldEnum
+    having?: specialMonsterScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SpecialMonsterCountAggregateInputType | true
+    _avg?: SpecialMonsterAvgAggregateInputType
+    _sum?: SpecialMonsterSumAggregateInputType
+    _min?: SpecialMonsterMinAggregateInputType
+    _max?: SpecialMonsterMaxAggregateInputType
+  }
+
+  export type SpecialMonsterGroupByOutputType = {
+    id: number
+    hp: number
+    attack: number
+    speed: number
+    score: number
+    gold: number
+    stage: number
+    cycle: number | null
+    _count: SpecialMonsterCountAggregateOutputType | null
+    _avg: SpecialMonsterAvgAggregateOutputType | null
+    _sum: SpecialMonsterSumAggregateOutputType | null
+    _min: SpecialMonsterMinAggregateOutputType | null
+    _max: SpecialMonsterMaxAggregateOutputType | null
+  }
+
+  type GetSpecialMonsterGroupByPayload<T extends specialMonsterGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SpecialMonsterGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SpecialMonsterGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SpecialMonsterGroupByOutputType[P]>
+            : GetScalarType<T[P], SpecialMonsterGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type specialMonsterSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    hp?: boolean
+    attack?: boolean
+    speed?: boolean
+    score?: boolean
+    gold?: boolean
+    stage?: boolean
+    cycle?: boolean
+  }, ExtArgs["result"]["specialMonster"]>
+
+
+  export type specialMonsterSelectScalar = {
+    id?: boolean
+    hp?: boolean
+    attack?: boolean
+    speed?: boolean
+    score?: boolean
+    gold?: boolean
+    stage?: boolean
+    cycle?: boolean
+  }
+
+
+  export type $specialMonsterPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "specialMonster"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      hp: number
+      attack: number
+      speed: number
+      score: number
+      gold: number
+      stage: number
+      cycle: number | null
+    }, ExtArgs["result"]["specialMonster"]>
+    composites: {}
+  }
+
+  type specialMonsterGetPayload<S extends boolean | null | undefined | specialMonsterDefaultArgs> = $Result.GetResult<Prisma.$specialMonsterPayload, S>
+
+  type specialMonsterCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<specialMonsterFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: SpecialMonsterCountAggregateInputType | true
+    }
+
+  export interface specialMonsterDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['specialMonster'], meta: { name: 'specialMonster' } }
+    /**
+     * Find zero or one SpecialMonster that matches the filter.
+     * @param {specialMonsterFindUniqueArgs} args - Arguments to find a SpecialMonster
+     * @example
+     * // Get one SpecialMonster
+     * const specialMonster = await prisma.specialMonster.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends specialMonsterFindUniqueArgs>(args: SelectSubset<T, specialMonsterFindUniqueArgs<ExtArgs>>): Prisma__specialMonsterClient<$Result.GetResult<Prisma.$specialMonsterPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one SpecialMonster that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {specialMonsterFindUniqueOrThrowArgs} args - Arguments to find a SpecialMonster
+     * @example
+     * // Get one SpecialMonster
+     * const specialMonster = await prisma.specialMonster.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends specialMonsterFindUniqueOrThrowArgs>(args: SelectSubset<T, specialMonsterFindUniqueOrThrowArgs<ExtArgs>>): Prisma__specialMonsterClient<$Result.GetResult<Prisma.$specialMonsterPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first SpecialMonster that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {specialMonsterFindFirstArgs} args - Arguments to find a SpecialMonster
+     * @example
+     * // Get one SpecialMonster
+     * const specialMonster = await prisma.specialMonster.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends specialMonsterFindFirstArgs>(args?: SelectSubset<T, specialMonsterFindFirstArgs<ExtArgs>>): Prisma__specialMonsterClient<$Result.GetResult<Prisma.$specialMonsterPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first SpecialMonster that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {specialMonsterFindFirstOrThrowArgs} args - Arguments to find a SpecialMonster
+     * @example
+     * // Get one SpecialMonster
+     * const specialMonster = await prisma.specialMonster.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends specialMonsterFindFirstOrThrowArgs>(args?: SelectSubset<T, specialMonsterFindFirstOrThrowArgs<ExtArgs>>): Prisma__specialMonsterClient<$Result.GetResult<Prisma.$specialMonsterPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more SpecialMonsters that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {specialMonsterFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SpecialMonsters
+     * const specialMonsters = await prisma.specialMonster.findMany()
+     * 
+     * // Get first 10 SpecialMonsters
+     * const specialMonsters = await prisma.specialMonster.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const specialMonsterWithIdOnly = await prisma.specialMonster.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends specialMonsterFindManyArgs>(args?: SelectSubset<T, specialMonsterFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$specialMonsterPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a SpecialMonster.
+     * @param {specialMonsterCreateArgs} args - Arguments to create a SpecialMonster.
+     * @example
+     * // Create one SpecialMonster
+     * const SpecialMonster = await prisma.specialMonster.create({
+     *   data: {
+     *     // ... data to create a SpecialMonster
+     *   }
+     * })
+     * 
+     */
+    create<T extends specialMonsterCreateArgs>(args: SelectSubset<T, specialMonsterCreateArgs<ExtArgs>>): Prisma__specialMonsterClient<$Result.GetResult<Prisma.$specialMonsterPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many SpecialMonsters.
+     * @param {specialMonsterCreateManyArgs} args - Arguments to create many SpecialMonsters.
+     * @example
+     * // Create many SpecialMonsters
+     * const specialMonster = await prisma.specialMonster.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends specialMonsterCreateManyArgs>(args?: SelectSubset<T, specialMonsterCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a SpecialMonster.
+     * @param {specialMonsterDeleteArgs} args - Arguments to delete one SpecialMonster.
+     * @example
+     * // Delete one SpecialMonster
+     * const SpecialMonster = await prisma.specialMonster.delete({
+     *   where: {
+     *     // ... filter to delete one SpecialMonster
+     *   }
+     * })
+     * 
+     */
+    delete<T extends specialMonsterDeleteArgs>(args: SelectSubset<T, specialMonsterDeleteArgs<ExtArgs>>): Prisma__specialMonsterClient<$Result.GetResult<Prisma.$specialMonsterPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one SpecialMonster.
+     * @param {specialMonsterUpdateArgs} args - Arguments to update one SpecialMonster.
+     * @example
+     * // Update one SpecialMonster
+     * const specialMonster = await prisma.specialMonster.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends specialMonsterUpdateArgs>(args: SelectSubset<T, specialMonsterUpdateArgs<ExtArgs>>): Prisma__specialMonsterClient<$Result.GetResult<Prisma.$specialMonsterPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more SpecialMonsters.
+     * @param {specialMonsterDeleteManyArgs} args - Arguments to filter SpecialMonsters to delete.
+     * @example
+     * // Delete a few SpecialMonsters
+     * const { count } = await prisma.specialMonster.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends specialMonsterDeleteManyArgs>(args?: SelectSubset<T, specialMonsterDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SpecialMonsters.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {specialMonsterUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SpecialMonsters
+     * const specialMonster = await prisma.specialMonster.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends specialMonsterUpdateManyArgs>(args: SelectSubset<T, specialMonsterUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one SpecialMonster.
+     * @param {specialMonsterUpsertArgs} args - Arguments to update or create a SpecialMonster.
+     * @example
+     * // Update or create a SpecialMonster
+     * const specialMonster = await prisma.specialMonster.upsert({
+     *   create: {
+     *     // ... data to create a SpecialMonster
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SpecialMonster we want to update
+     *   }
+     * })
+     */
+    upsert<T extends specialMonsterUpsertArgs>(args: SelectSubset<T, specialMonsterUpsertArgs<ExtArgs>>): Prisma__specialMonsterClient<$Result.GetResult<Prisma.$specialMonsterPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of SpecialMonsters.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {specialMonsterCountArgs} args - Arguments to filter SpecialMonsters to count.
+     * @example
+     * // Count the number of SpecialMonsters
+     * const count = await prisma.specialMonster.count({
+     *   where: {
+     *     // ... the filter for the SpecialMonsters we want to count
+     *   }
+     * })
+    **/
+    count<T extends specialMonsterCountArgs>(
+      args?: Subset<T, specialMonsterCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SpecialMonsterCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SpecialMonster.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SpecialMonsterAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SpecialMonsterAggregateArgs>(args: Subset<T, SpecialMonsterAggregateArgs>): Prisma.PrismaPromise<GetSpecialMonsterAggregateType<T>>
+
+    /**
+     * Group by SpecialMonster.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {specialMonsterGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends specialMonsterGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: specialMonsterGroupByArgs['orderBy'] }
+        : { orderBy?: specialMonsterGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, specialMonsterGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSpecialMonsterGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the specialMonster model
+   */
+  readonly fields: specialMonsterFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for specialMonster.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__specialMonsterClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the specialMonster model
+   */ 
+  interface specialMonsterFieldRefs {
+    readonly id: FieldRef<"specialMonster", 'Int'>
+    readonly hp: FieldRef<"specialMonster", 'Int'>
+    readonly attack: FieldRef<"specialMonster", 'Int'>
+    readonly speed: FieldRef<"specialMonster", 'Int'>
+    readonly score: FieldRef<"specialMonster", 'Int'>
+    readonly gold: FieldRef<"specialMonster", 'Int'>
+    readonly stage: FieldRef<"specialMonster", 'Int'>
+    readonly cycle: FieldRef<"specialMonster", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * specialMonster findUnique
+   */
+  export type specialMonsterFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the specialMonster
+     */
+    select?: specialMonsterSelect<ExtArgs> | null
+    /**
+     * Filter, which specialMonster to fetch.
+     */
+    where: specialMonsterWhereUniqueInput
+  }
+
+  /**
+   * specialMonster findUniqueOrThrow
+   */
+  export type specialMonsterFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the specialMonster
+     */
+    select?: specialMonsterSelect<ExtArgs> | null
+    /**
+     * Filter, which specialMonster to fetch.
+     */
+    where: specialMonsterWhereUniqueInput
+  }
+
+  /**
+   * specialMonster findFirst
+   */
+  export type specialMonsterFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the specialMonster
+     */
+    select?: specialMonsterSelect<ExtArgs> | null
+    /**
+     * Filter, which specialMonster to fetch.
+     */
+    where?: specialMonsterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of specialMonsters to fetch.
+     */
+    orderBy?: specialMonsterOrderByWithRelationInput | specialMonsterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for specialMonsters.
+     */
+    cursor?: specialMonsterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` specialMonsters from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` specialMonsters.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of specialMonsters.
+     */
+    distinct?: SpecialMonsterScalarFieldEnum | SpecialMonsterScalarFieldEnum[]
+  }
+
+  /**
+   * specialMonster findFirstOrThrow
+   */
+  export type specialMonsterFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the specialMonster
+     */
+    select?: specialMonsterSelect<ExtArgs> | null
+    /**
+     * Filter, which specialMonster to fetch.
+     */
+    where?: specialMonsterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of specialMonsters to fetch.
+     */
+    orderBy?: specialMonsterOrderByWithRelationInput | specialMonsterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for specialMonsters.
+     */
+    cursor?: specialMonsterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` specialMonsters from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` specialMonsters.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of specialMonsters.
+     */
+    distinct?: SpecialMonsterScalarFieldEnum | SpecialMonsterScalarFieldEnum[]
+  }
+
+  /**
+   * specialMonster findMany
+   */
+  export type specialMonsterFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the specialMonster
+     */
+    select?: specialMonsterSelect<ExtArgs> | null
+    /**
+     * Filter, which specialMonsters to fetch.
+     */
+    where?: specialMonsterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of specialMonsters to fetch.
+     */
+    orderBy?: specialMonsterOrderByWithRelationInput | specialMonsterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing specialMonsters.
+     */
+    cursor?: specialMonsterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` specialMonsters from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` specialMonsters.
+     */
+    skip?: number
+    distinct?: SpecialMonsterScalarFieldEnum | SpecialMonsterScalarFieldEnum[]
+  }
+
+  /**
+   * specialMonster create
+   */
+  export type specialMonsterCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the specialMonster
+     */
+    select?: specialMonsterSelect<ExtArgs> | null
+    /**
+     * The data needed to create a specialMonster.
+     */
+    data: XOR<specialMonsterCreateInput, specialMonsterUncheckedCreateInput>
+  }
+
+  /**
+   * specialMonster createMany
+   */
+  export type specialMonsterCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many specialMonsters.
+     */
+    data: specialMonsterCreateManyInput | specialMonsterCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * specialMonster update
+   */
+  export type specialMonsterUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the specialMonster
+     */
+    select?: specialMonsterSelect<ExtArgs> | null
+    /**
+     * The data needed to update a specialMonster.
+     */
+    data: XOR<specialMonsterUpdateInput, specialMonsterUncheckedUpdateInput>
+    /**
+     * Choose, which specialMonster to update.
+     */
+    where: specialMonsterWhereUniqueInput
+  }
+
+  /**
+   * specialMonster updateMany
+   */
+  export type specialMonsterUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update specialMonsters.
+     */
+    data: XOR<specialMonsterUpdateManyMutationInput, specialMonsterUncheckedUpdateManyInput>
+    /**
+     * Filter which specialMonsters to update
+     */
+    where?: specialMonsterWhereInput
+  }
+
+  /**
+   * specialMonster upsert
+   */
+  export type specialMonsterUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the specialMonster
+     */
+    select?: specialMonsterSelect<ExtArgs> | null
+    /**
+     * The filter to search for the specialMonster to update in case it exists.
+     */
+    where: specialMonsterWhereUniqueInput
+    /**
+     * In case the specialMonster found by the `where` argument doesn't exist, create a new specialMonster with this data.
+     */
+    create: XOR<specialMonsterCreateInput, specialMonsterUncheckedCreateInput>
+    /**
+     * In case the specialMonster was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<specialMonsterUpdateInput, specialMonsterUncheckedUpdateInput>
+  }
+
+  /**
+   * specialMonster delete
+   */
+  export type specialMonsterDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the specialMonster
+     */
+    select?: specialMonsterSelect<ExtArgs> | null
+    /**
+     * Filter which specialMonster to delete.
+     */
+    where: specialMonsterWhereUniqueInput
+  }
+
+  /**
+   * specialMonster deleteMany
+   */
+  export type specialMonsterDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which specialMonsters to delete
+     */
+    where?: specialMonsterWhereInput
+  }
+
+  /**
+   * specialMonster without action
+   */
+  export type specialMonsterDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the specialMonster
+     */
+    select?: specialMonsterSelect<ExtArgs> | null
+  }
+
+
+  /**
    * Model tower
    */
 
@@ -3894,6 +4903,20 @@ export namespace Prisma {
   export type MonsterScalarFieldEnum = (typeof MonsterScalarFieldEnum)[keyof typeof MonsterScalarFieldEnum]
 
 
+  export const SpecialMonsterScalarFieldEnum: {
+    id: 'id',
+    hp: 'hp',
+    attack: 'attack',
+    speed: 'speed',
+    score: 'score',
+    gold: 'gold',
+    stage: 'stage',
+    cycle: 'cycle'
+  };
+
+  export type SpecialMonsterScalarFieldEnum = (typeof SpecialMonsterScalarFieldEnum)[keyof typeof SpecialMonsterScalarFieldEnum]
+
+
   export const TowerScalarFieldEnum: {
     id: 'id',
     towerName: 'towerName',
@@ -3916,6 +4939,14 @@ export namespace Prisma {
   };
 
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+  export const NullsOrder: {
+    first: 'first',
+    last: 'last'
+  };
+
+  export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
   /**
@@ -4100,6 +5131,75 @@ export namespace Prisma {
     gold?: IntWithAggregatesFilter<"monster"> | number
     stage?: IntWithAggregatesFilter<"monster"> | number
     cycle?: IntWithAggregatesFilter<"monster"> | number
+  }
+
+  export type specialMonsterWhereInput = {
+    AND?: specialMonsterWhereInput | specialMonsterWhereInput[]
+    OR?: specialMonsterWhereInput[]
+    NOT?: specialMonsterWhereInput | specialMonsterWhereInput[]
+    id?: IntFilter<"specialMonster"> | number
+    hp?: IntFilter<"specialMonster"> | number
+    attack?: IntFilter<"specialMonster"> | number
+    speed?: IntFilter<"specialMonster"> | number
+    score?: IntFilter<"specialMonster"> | number
+    gold?: IntFilter<"specialMonster"> | number
+    stage?: IntFilter<"specialMonster"> | number
+    cycle?: IntNullableFilter<"specialMonster"> | number | null
+  }
+
+  export type specialMonsterOrderByWithRelationInput = {
+    id?: SortOrder
+    hp?: SortOrder
+    attack?: SortOrder
+    speed?: SortOrder
+    score?: SortOrder
+    gold?: SortOrder
+    stage?: SortOrder
+    cycle?: SortOrderInput | SortOrder
+  }
+
+  export type specialMonsterWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: specialMonsterWhereInput | specialMonsterWhereInput[]
+    OR?: specialMonsterWhereInput[]
+    NOT?: specialMonsterWhereInput | specialMonsterWhereInput[]
+    hp?: IntFilter<"specialMonster"> | number
+    attack?: IntFilter<"specialMonster"> | number
+    speed?: IntFilter<"specialMonster"> | number
+    score?: IntFilter<"specialMonster"> | number
+    gold?: IntFilter<"specialMonster"> | number
+    stage?: IntFilter<"specialMonster"> | number
+    cycle?: IntNullableFilter<"specialMonster"> | number | null
+  }, "id">
+
+  export type specialMonsterOrderByWithAggregationInput = {
+    id?: SortOrder
+    hp?: SortOrder
+    attack?: SortOrder
+    speed?: SortOrder
+    score?: SortOrder
+    gold?: SortOrder
+    stage?: SortOrder
+    cycle?: SortOrderInput | SortOrder
+    _count?: specialMonsterCountOrderByAggregateInput
+    _avg?: specialMonsterAvgOrderByAggregateInput
+    _max?: specialMonsterMaxOrderByAggregateInput
+    _min?: specialMonsterMinOrderByAggregateInput
+    _sum?: specialMonsterSumOrderByAggregateInput
+  }
+
+  export type specialMonsterScalarWhereWithAggregatesInput = {
+    AND?: specialMonsterScalarWhereWithAggregatesInput | specialMonsterScalarWhereWithAggregatesInput[]
+    OR?: specialMonsterScalarWhereWithAggregatesInput[]
+    NOT?: specialMonsterScalarWhereWithAggregatesInput | specialMonsterScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"specialMonster"> | number
+    hp?: IntWithAggregatesFilter<"specialMonster"> | number
+    attack?: IntWithAggregatesFilter<"specialMonster"> | number
+    speed?: IntWithAggregatesFilter<"specialMonster"> | number
+    score?: IntWithAggregatesFilter<"specialMonster"> | number
+    gold?: IntWithAggregatesFilter<"specialMonster"> | number
+    stage?: IntWithAggregatesFilter<"specialMonster"> | number
+    cycle?: IntNullableWithAggregatesFilter<"specialMonster"> | number | null
   }
 
   export type towerWhereInput = {
@@ -4341,6 +5441,80 @@ export namespace Prisma {
     gold?: IntFieldUpdateOperationsInput | number
     stage?: IntFieldUpdateOperationsInput | number
     cycle?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type specialMonsterCreateInput = {
+    hp: number
+    attack: number
+    speed: number
+    score: number
+    gold: number
+    stage: number
+    cycle?: number | null
+  }
+
+  export type specialMonsterUncheckedCreateInput = {
+    id?: number
+    hp: number
+    attack: number
+    speed: number
+    score: number
+    gold: number
+    stage: number
+    cycle?: number | null
+  }
+
+  export type specialMonsterUpdateInput = {
+    hp?: IntFieldUpdateOperationsInput | number
+    attack?: IntFieldUpdateOperationsInput | number
+    speed?: IntFieldUpdateOperationsInput | number
+    score?: IntFieldUpdateOperationsInput | number
+    gold?: IntFieldUpdateOperationsInput | number
+    stage?: IntFieldUpdateOperationsInput | number
+    cycle?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type specialMonsterUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    hp?: IntFieldUpdateOperationsInput | number
+    attack?: IntFieldUpdateOperationsInput | number
+    speed?: IntFieldUpdateOperationsInput | number
+    score?: IntFieldUpdateOperationsInput | number
+    gold?: IntFieldUpdateOperationsInput | number
+    stage?: IntFieldUpdateOperationsInput | number
+    cycle?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type specialMonsterCreateManyInput = {
+    id?: number
+    hp: number
+    attack: number
+    speed: number
+    score: number
+    gold: number
+    stage: number
+    cycle?: number | null
+  }
+
+  export type specialMonsterUpdateManyMutationInput = {
+    hp?: IntFieldUpdateOperationsInput | number
+    attack?: IntFieldUpdateOperationsInput | number
+    speed?: IntFieldUpdateOperationsInput | number
+    score?: IntFieldUpdateOperationsInput | number
+    gold?: IntFieldUpdateOperationsInput | number
+    stage?: IntFieldUpdateOperationsInput | number
+    cycle?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type specialMonsterUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    hp?: IntFieldUpdateOperationsInput | number
+    attack?: IntFieldUpdateOperationsInput | number
+    speed?: IntFieldUpdateOperationsInput | number
+    score?: IntFieldUpdateOperationsInput | number
+    gold?: IntFieldUpdateOperationsInput | number
+    stage?: IntFieldUpdateOperationsInput | number
+    cycle?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type towerCreateInput = {
@@ -4607,6 +5781,93 @@ export namespace Prisma {
     cycle?: SortOrder
   }
 
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
+  }
+
+  export type specialMonsterCountOrderByAggregateInput = {
+    id?: SortOrder
+    hp?: SortOrder
+    attack?: SortOrder
+    speed?: SortOrder
+    score?: SortOrder
+    gold?: SortOrder
+    stage?: SortOrder
+    cycle?: SortOrder
+  }
+
+  export type specialMonsterAvgOrderByAggregateInput = {
+    id?: SortOrder
+    hp?: SortOrder
+    attack?: SortOrder
+    speed?: SortOrder
+    score?: SortOrder
+    gold?: SortOrder
+    stage?: SortOrder
+    cycle?: SortOrder
+  }
+
+  export type specialMonsterMaxOrderByAggregateInput = {
+    id?: SortOrder
+    hp?: SortOrder
+    attack?: SortOrder
+    speed?: SortOrder
+    score?: SortOrder
+    gold?: SortOrder
+    stage?: SortOrder
+    cycle?: SortOrder
+  }
+
+  export type specialMonsterMinOrderByAggregateInput = {
+    id?: SortOrder
+    hp?: SortOrder
+    attack?: SortOrder
+    speed?: SortOrder
+    score?: SortOrder
+    gold?: SortOrder
+    stage?: SortOrder
+    cycle?: SortOrder
+  }
+
+  export type specialMonsterSumOrderByAggregateInput = {
+    id?: SortOrder
+    hp?: SortOrder
+    attack?: SortOrder
+    speed?: SortOrder
+    score?: SortOrder
+    gold?: SortOrder
+    stage?: SortOrder
+    cycle?: SortOrder
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
   export type EnumattackTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.attackType | EnumattackTypeFieldRefInput<$PrismaModel>
     in?: $Enums.attackType[]
@@ -4724,6 +5985,14 @@ export namespace Prisma {
     set?: string
   }
 
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type EnumattackTypeFieldUpdateOperationsInput = {
     set?: $Enums.attackType
   }
@@ -4805,6 +6074,44 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type NestedEnumattackTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.attackType | EnumattackTypeFieldRefInput<$PrismaModel>
     in?: $Enums.attackType[]
@@ -4851,6 +6158,10 @@ export namespace Prisma {
      * @deprecated Use monsterDefaultArgs instead
      */
     export type monsterArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = monsterDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use specialMonsterDefaultArgs instead
+     */
+    export type specialMonsterArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = specialMonsterDefaultArgs<ExtArgs>
     /**
      * @deprecated Use towerDefaultArgs instead
      */
