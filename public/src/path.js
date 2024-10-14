@@ -12,7 +12,8 @@ class pathManager {
     const path = [];
     let currentX = 0;
     let currentY = Math.floor(Math.random() * 21) + 500; // 500 ~ 520 범위의 y 시작 (캔버스 y축 중간쯤에서 시작할 수 있도록 유도)
-
+    const startY = currentY;
+    const limitHeight = 300;
     path.push({ x: currentX, y: currentY });
 
     while (currentX < this.canvas.width) {
@@ -23,6 +24,12 @@ class pathManager {
       }
 
       currentY += Math.floor(Math.random() * 200) - 100; // -100 ~ 100 범위의 y 변경
+      // currentY가 맵 밖으로 벗어나지 않도록 위아래 상/하한 범위 설정
+      if(currentY > startY + limitHeight){
+        currentY = startY + limitHeight;
+      } else if (currentY < startY - limitHeight){
+        currentY = startY  - limitHeight;
+      }
       // y 좌표에 대한 clamp 처리
       if (currentY < 0) {
         currentY = 0;

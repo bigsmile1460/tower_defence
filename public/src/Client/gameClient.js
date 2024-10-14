@@ -19,7 +19,9 @@ class GameClient {
     this.score = 3000; // 현재 플레이어의 스코어
     this.highScore = 0; // 현재 서버 최고 스코어
     this.backgroundImage = null; // 배경 이미지
-    this.towerImage = null; // 타워 이미지
+    this.healTowerImage = null;
+    this.singletowerImage = null;
+    this.multiAttackTowerImage = null; // 타워 이미지
     this.inhibitorImage = null; // 억제기 이미지
     this.pathImage = null; // 경로 이미지
     this.monsterImages = []; // 몬스터 이미지
@@ -93,7 +95,9 @@ class GameClient {
 
   loadGameImages(infos) {
     this.backgroundImage = infos.backgroundImage;
-    this.towerImage = infos.towerImage;
+    this.healTowerImage = infos.healTowerImage;
+    this.singletowerImage = infos.singletowerImage;
+    this.multiAttackTowerImage = infos.multiAttackTowerImage;
     this.inhibitorImage = infos.inhibitorImage;
     this.pathImage = infos.pathImage;
     this.monsterImages = infos.monsterImages;
@@ -126,7 +130,7 @@ class GameClient {
     );
     this.path.drawPath(this.monsterPath);
     this.player.draw();
-    this.player.move();   
+    this.player.move();
 
     this.inhibitor.draw(this.ctx, this.inhibitorImage);
 
@@ -147,7 +151,12 @@ class GameClient {
     }
 
     this.towers.forEach((tower) => {
-      tower.draw(this.ctx, this.towerImage);
+      tower.draw(
+        this.ctx,
+        this.singletowerImage,
+        this.multiAttackTowerImage,
+        this.healTowerImage
+      );
       tower.singleAttack(this.monsters); // 단일 공격
       tower.multiAttack(this.monsters); // 다중 공격
       tower.heal(this.inhibitor); // 힐

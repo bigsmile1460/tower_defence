@@ -1,3 +1,4 @@
+import { intervalId } from "../operator/monsterOperator.js";
 import { stageChangeInterval } from "../operator/stageOperator.js";
 import { handlerEvent } from "./handler.js";
 
@@ -7,6 +8,7 @@ const registerHandler = (io) => {
       socket.on("event", (data) => handlerEvent(socket, data));
       socket.on("disconnect", () => {
         clearInterval(stageChangeInterval);
+        clearInterval(intervalId);
       });
     });
   } catch (error) {
