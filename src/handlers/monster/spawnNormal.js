@@ -1,7 +1,10 @@
 import { spawnStart } from "../../operator/monsterOperator.js";
 
-export const spawnNormal = async (socket, userId) => {    
+export const spawnNormal = async (socket, userId) => {
+  try {
     //몬스터 스폰 시작
-    spawnStart(socket, userId);    
+    spawnStart(socket, userId);
+  } catch (err) {
+    throw new Error(`몬스터 스폰 에러`);
+  }
 };
-
