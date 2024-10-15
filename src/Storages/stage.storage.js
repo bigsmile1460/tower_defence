@@ -71,7 +71,6 @@ export function clearStage(userId) {
     console.log(`지울 스테이지가 존재하지 않습니다.`);
   }
 }
-
 export function getUserGold(userId) {
   return getStage(userId).stageInfo.gold;
 }
