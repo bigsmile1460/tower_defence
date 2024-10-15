@@ -2,7 +2,6 @@ import GameClient from "../../Client/gameClient.js";
 import { Tower } from "../../tower.js";
 
 export const towerBuy = (payload) => {
-
   const tower = new Tower(
     GameClient.getInstance().player.x,
     GameClient.getInstance().player.y,
@@ -16,5 +15,5 @@ export const towerBuy = (payload) => {
   const audio = new Audio("../../../sounds/buy.mp3");
   audio.play();
   audio.loop = false; // 반복재생
-  audio.volume = 0.3; // 음량 설정
+  audio.volume = 0.2 + 0.04 * GameClient.getInstance().effectVolume; // 음량 설정
 };
