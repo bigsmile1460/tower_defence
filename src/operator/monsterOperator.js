@@ -26,8 +26,7 @@ export const spawnStart = async (socket, userId) => {
     let nowStage = stageInfo.stageId; //초기 스테이지
     let getMonsterInfo = await getMonster(nowStage); //현재 스테이지에 알맞는 스폰 몬스터
     let interval = getMonsterInfo.cycle; // 몬스터 스폰 주기
-    let intervalStatus = "normal"; // 억제기 상태 확인 값
-    console.log(getMonsterInfo);
+    let intervalStatus = "normal"; // 억제기 상태 확인 값    
 
     const startInterval = () => {
       intervalId[userId] = setInterval(async () => {
@@ -48,8 +47,7 @@ export const spawnStart = async (socket, userId) => {
         if (nowStage !== stageCompare) {
           //스테이지가 변경 되었는지 확인
           nowStage = stageCompare; //변경된 스테이지로 현재 스테이지 정보 변경
-          getMonsterInfo = await getMonster(nowStage); //스테이지가 변경되면 몬스터 정보 재할당
-          console.log(getMonsterInfo);
+          getMonsterInfo = await getMonster(nowStage); //스테이지가 변경되면 몬스터 정보 재할당          
 
           if (getMonsterInfo) {
             //스테이지에 해당되는 몬스터가 존재하는지 확인
