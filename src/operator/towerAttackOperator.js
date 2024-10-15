@@ -71,11 +71,9 @@ class towerAttackOperator {
     // 제공 받은 몬스터 UUID를 통하여 공격받은 몬스터 조회
     const serverMonsters = getMonsters(userId);
     const attackedIndex = [];
-    const attackedMonster = [];
     for (let x = 0; x < serverMonsters.length; x++) {
       if (serverMonsters[x].uuid === payload.monsterUUID[0]) {
         attackedIndex.push(x);
-        attackedMonster.push(serverMonsters[x]);
         break;
       }
     }
@@ -91,12 +89,6 @@ class towerAttackOperator {
       deadIndex.push(attackedIndex[0]);
       deadMonster.push(serverMonsters[attackedIndex[0]]);
     }
-
-    // 업데이트 된 체력상태 클라이언트로 전달
-    socket.emit("event", {
-      handlerId: 13,
-      payload: { attackedMonster: attackedMonster },
-    });
 
     // 공격받은 몬스터 사망 시 서버에서 삭제
     if (deadIndex.length) {
@@ -119,12 +111,11 @@ class towerAttackOperator {
     // 제공 받은 몬스터 UUID를 통하여 공격받은 몬스터 조회
     const serverMonsters = getMonsters(userId);
     const attackedIndex = [];
-    const attackedMonster = [];
+
     for (let i = 0; i < payload.monsterUUID.length; i++) {
       for (let x = 0; x < serverMonsters.length; x++) {
         if (serverMonsters[x].uuid === payload.monsterUUID[i]) {
           attackedIndex.push(x);
-          attackedMonster.push(serverMonsters[x]);
           break;
         }
       }
@@ -140,12 +131,6 @@ class towerAttackOperator {
         deadMonster.push(serverMonsters[attackedIndex[i]]);
       }
     }
-
-    // 업데이트 된 체력상태 클라이언트로 전달
-    socket.emit("event", {
-      handlerId: 13,
-      payload: { attackedMonster: attackedMonster },
-    });
 
     // 공격받아 사망한 몬스터 서버에서 삭제
     for (let i = 0; i < deadIndex.length; i++) {

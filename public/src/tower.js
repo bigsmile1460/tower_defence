@@ -112,6 +112,7 @@ export class Tower {
         Math.pow(this.x - monster.x, 2) + Math.pow(this.y - monster.y, 2)
       );
       if (distance < this.attackRange) {
+        monster.hp -= this.attackPower; // 몬스터 체력 감소
         monsterUUID.push(monster.monsterUUID); // 공격 대상 담아두기
         this.beamDuration = 30; // 광선 지속 시간 (30프레임)
         this.target = [monster]; // 광선의 목표 설정
@@ -160,6 +161,7 @@ export class Tower {
         Math.pow(this.x - monster.x, 2) + Math.pow(this.y - monster.y, 2)
       );
       if (distance < this.attackRange) {
+        monster.hp -= this.attackPower; // 몬스터 체력 감소
         monsterUUID.push(monster.monsterUUID); // 공격 대상 담아두기
         this.beamDuration = 30; // 광선 지속 시간 (0.5초)
         this.target.push(monster); // 광선의 목표 설정

@@ -270,6 +270,10 @@ class GameClient {
     );
     for (let i = this.monsters.length - 1; i >= 0; i--) {
       const monster = this.monsters[i];
+      /* 몬스터 삭제 */
+      if (monster.hp <= 0) {
+        this.monsters.splice(i, 1);
+      }
 
       /* 몬스터 이동 */
       monster.move(this.inhibitor);
