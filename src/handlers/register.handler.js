@@ -1,4 +1,5 @@
 import { intervalId } from "../operator/monsterOperator.js";
+import { stageChangeInterval } from "../operator/stageOperator.js";
 import { clearMonsters } from "../Storages/monster.storage.js";
 import { deleteStage } from "../Storages/stage.storage.js";
 import { clearTower } from "../Storages/tower.storage.js";
@@ -10,6 +11,7 @@ const registerHandler = (io) => {
       socket.on("event", (data) => handlerEvent(socket, data));
       socket.on("disconnect", () => {
         clearInterval(intervalId[users[socket.id]]);
+        clearInterval(stageChangeInterval[users[socket.id]]);
         clearTower(users[socket.id][0]);
         deleteStage(users[socket.id][0]);
         clearMonsters(users[socket.id][0]);
