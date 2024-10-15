@@ -88,7 +88,7 @@ class stagesOperator {
       });
     }
 
-    if (isStageClear) {
+    if (isStageClear[userId]) {
       socket.emit("event", {
         handlerId: 3,
         payload: { clear: `clear` },
