@@ -58,12 +58,15 @@ export async function nextStage(userId) {
 }
 
 export function clearStage(userId) {
-  const stageIndex = stages.indexOf((element) => {
-    element.userId === userId;
-    if (stageIndex) {
+  if (stages.includes(getStage(userId))) {
+    const stageIndex = stages.find((element) => {
+      element.userId === userId;
+    });
+
+    if (stages.indexOf(stageIndex)) {
       stages.splice(stageIndex, 1);
     }
-  });
+  }
 }
 
 export function getUserGold(userId) {
