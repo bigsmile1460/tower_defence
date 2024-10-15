@@ -77,22 +77,22 @@ usersRouter.post("/SignIn", async (req, res, next) => {
       .json({ message: `${email}은 존재하지 않는 이메일입니다.` });
   }
 
-  if (LoginReqUser.isLogin == false) {
-    await prismaUser.user.update({
-      data: {
-        isLogin: true
-      },
-      where: {
-        id: LoginReqUser.id
-      }
-    })
-  }
-  else
-  {
-    return res
-      .status(404)
-      .json({message: `중복 로그인`});
-  }  
+  // if (LoginReqUser.isLogin == false) {
+  //   await prismaUser.user.update({
+  //     data: {
+  //       isLogin: true
+  //     },
+  //     where: {
+  //       id: LoginReqUser.id
+  //     }
+  //   })
+  // }
+  // else
+  // {
+  //   return res
+  //     .status(404)
+  //     .json({message: `중복 로그인`});
+  // }  
 
   if (!(await bcrypt.compare(password, LoginReqUser.password))) {
     return res.status(404).json({ message: `비밀번호가 일치하지 않습니다.` });
