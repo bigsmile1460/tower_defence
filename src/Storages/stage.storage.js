@@ -1,7 +1,7 @@
 import { prismaAsset } from "../lib/utils/prisma/index.js";
 
 // 스테이지에 대한 휘발성 메모리 저장
-export const stages = [];
+export const stages = {};
 
 export async function createStage(userId) {
   const {
@@ -19,28 +19,23 @@ export async function createStage(userId) {
       id: 1,
     },
   });
-  stages.push({
-    userId: userId,
-    stageInfo: {
-      stageId: 1, // 스테이지 레벨
-      gold: gold, // 유저가 가진 골드
-      score: 0, // 현재 점수
-      towerAmountLimit: towerAmountLimit, // 타워 최대 개수
-      inhibitorHp: inhibitorHp, // 억제기 Hp
-      inhibitorHpLimit: inhibitorHpLimit, // 억제기 최대 HP 제한
-      inhibitorStatus: inhibitorStatus, // 억제기 상태 ( normal , broken )
-      inhibitorInterval: inhibitorInterval, // 억제기 재생 시간
-      monsterCount: monsterCount, // 몬스터 수
-      monsterCountLimit: monsterCountLimit, // 몬스터 제한(제한 오버시 게임 종료)
-      stageChangeInterval: stageChangeInterval,
-    },
-  });
+  stages[userId] = {
+    stageId: 1, // 스테이지 레벨
+    gold: gold, // 유저가 가진 골드
+    score: 0, // 현재 점수
+    towerAmountLimit: towerAmountLimit, // 타워 최대 개수
+    inhibitorHp: inhibitorHp, // 억제기 Hp
+    inhibitorHpLimit: inhibitorHpLimit, // 억제기 최대 HP 제한
+    inhibitorStatus: inhibitorStatus, // 억제기 상태 ( normal , broken )
+    inhibitorInterval: inhibitorInterval, // 억제기 재생 시간
+    monsterCount: monsterCount, // 몬스터 수
+    monsterCountLimit: monsterCountLimit, // 몬스터 제한(제한 오버시 게임 종료)
+    stageChangeInterval: stageChangeInterval,
+  };
 }
 
 export function getStage(userId) {
-  const stage = stages.find((stage) => {
-    return stage.userId === userId;
-  });
+  const stage = stages[userId];
   return stage;
 }
 
@@ -53,72 +48,66 @@ export async function nextStage(userId) {
     },
   });
 
-  stage.stageInfo.stageId++;
-  stage.stageInfo.gold += gold;
+  stage.stageId++;
+  stage.gold += gold;
 }
 
 export function clearStage(userId) {
-  // 일단 스테이지 존재 유무 확인
-  if (stages.includes(getStage(userId))) {
-    // 스테이지 찾기
-    const stageIndex = getStage(userId);
-
-    // 스테이지 위치 확인
-    if (stages.indexOf(stageIndex)) {
-      stages.splice(stageIndex, 1);
-    }
-  } else {
-    console.log(`지울 스테이지가 존재하지 않습니다.`);
-  }
+  stages[userId] = [];
 }
+
+export function deleteStage(userId) {
+  delete stages[userId];
+}
+
 export function getUserGold(userId) {
-  return getStage(userId).stageInfo.gold;
+  return getStage(userId).gold;
 }
 
 export function setUserGold(userId, gold) {
-  getStage(userId).stageInfo.gold = gold;
+  getStage(userId).gold = gold;
 }
 
 export function getUserScore(userId) {
-  return getStage(userId).stageInfo.score;
+  return getStage(userId).score;
 }
 
 export function setUserScore(userId, score) {
-  getStage(userId).stageInfo.score = score;
+  getStage(userId).score = score;
 }
 
 export function setMonsterCount(userId, monsterCount) {
-  getStage(userId).stageInfo.monsterCount = monsterCount;
+  getStage(userId).monsterCount = monsterCount;
 }
 
 export function getMonsterCount(userId) {
-  return getStage(userId).stageInfo.monsterCount;
+  return getStage(userId).monsterCount;
 }
 
 export function setInhibitorHp(userId, inhibitorHp) {
-  getStage(userId).stageInfo.inhibitorHp = inhibitorHp;
+  getStage(userId).inhibitorHp = inhibitorHp;
 }
 
 export function getInhibitorHp(userId) {
-  return getStage(userId).stageInfo.inhibitorHp;
+  return getStage(userId).inhibitorHp;
 }
 
 export function getInhibitorHpLimit(userId) {
-  return getStage(userId).stageInfo.inhibitorHpLimit;
+  return getStage(userId).inhibitorHpLimit;
 }
 
 export function getInhibitorStatus(userId) {
-  return getStage(userId).stageInfo.inhibitorStatus;
+  return getStage(userId).inhibitorStatus;
 }
 
 export function setInhibitorStatus(userId, status) {
-  getStage(userId).stageInfo.inhibitorStatus = status;
+  getStage(userId).inhibitorStatus = status;
 }
 
 export function towerAmountLimit(userId) {
-  return getStage(userId).stageInfo.towerAmountLimit;
+  return getStage(userId).towerAmountLimit;
 }
 
 export function getinhibitorInterval(userId) {
-  return getStage(userId).stageInfo.inhibitorInterval;
+  return getStage(userId).inhibitorInterval;
 }
