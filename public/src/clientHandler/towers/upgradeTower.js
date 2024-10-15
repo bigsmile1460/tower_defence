@@ -11,5 +11,5 @@ export const towerUpgrade = (payload) => {
   const audio = new Audio("../../../sounds/towerUpgrade.mp3");
   audio.play();
   audio.loop = false; // 반복재생
-  audio.volume = 0.2 + 0.04 * GameClient.getInstance().effectVolume; // 음량 설정
+  audio.volume = 0.05 * GameClient.getInstance().effectVolume; // 음량 설정
 };

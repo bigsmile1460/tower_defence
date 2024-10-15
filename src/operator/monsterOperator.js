@@ -1,10 +1,7 @@
+import { BROKEN, NORMAL } from "../constants.js";
 import { prismaAsset } from "../lib/utils/prisma/index.js";
 import { addMonster, getMonsterLength } from "../Storages/monster.storage.js";
-import {
-  getStage,
-  getInhibitorStatus,
-  setInhibitorStatus,
-} from "../Storages/stage.storage.js";
+import { getStage, getInhibitorStatus } from "../Storages/stage.storage.js";
 import stageOperator from "./stageOperator.js";
 
 export let intervalId = []; //몬스터 스폰
@@ -51,7 +48,7 @@ export const spawnStart = async (socket, userId) => {
 
           if (getMonsterInfo) {
             //스테이지에 해당되는 몬스터가 존재하는지 확인
-            if (intervalStatus === "broken") {
+            if (intervalStatus === BROKEN) {
               interval = getMonsterInfo.cycle / 2; //몬스터 스폰 주기 재설정 - 억제기가 부서졌을 때
             } else {
               interval = getMonsterInfo.cycle; //몬스터 스폰 주기 재설정 - 억제기가 존재할 때
@@ -70,21 +67,21 @@ export const spawnStart = async (socket, userId) => {
         }
         //억제기 파괴되었을 때 몬스터 스폰 2배
         if (
-          getInhibitorStatus(userId) === "broken" &&
-          intervalStatus !== "broken"
+          getInhibitorStatus(userId) === BROKEN &&
+          intervalStatus !== BROKEN
         ) {
           interval /= 2; //스폰 값 2배로 변경
-          intervalStatus = "broken"; //억제기 상태를 "broken"으로 변경
+          intervalStatus = BROKEN; //억제기 상태를 "broken"으로 변경
           clearInterval(intervalId[userId]); // 몬스터 스폰 중지
           startInterval(); //몬스터 스폰 시작(재귀)
         }
         //억제기 재생성 시 몬스터 스폰 정상화
         if (
-          getInhibitorStatus(userId) === "noraml" &&
-          intervalStatus !== "normal"
+          getInhibitorStatus(userId) === NORMAL &&
+          intervalStatus !== NORMAL
         ) {
           interval *= 2; //스폰 값 1배로 변경
-          intervalStatus = "normal"; //억제기 상태를 "normal"로 변경
+          intervalStatus = NORMAL; //억제기 상태를 "normal"로 변경
           clearInterval(intervalId[userId]); // 몬스터 스폰 중지
           startInterval(); //몬스터 스폰 시작(재귀)
         }

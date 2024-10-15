@@ -1,5 +1,7 @@
-import { getTowerGoldCheck } from "../../operator/towerSellOperator.js";
-import { deleteTower } from "../../Storages/tower.storage.js";
+import {
+  deleteServerTower,
+  getTowerGoldCheck,
+} from "../../operator/towerSellOperator.js";
 
 export const towerSell = (socket, payload, userId) => {
   try {
@@ -7,8 +9,7 @@ export const towerSell = (socket, payload, userId) => {
     getTowerGoldCheck(userId, payload);
 
     // 타워 삭제
-    deleteTower(userId, payload);
-    socket.emit("event", { handlerId: 10, payload: payload });
+    deleteServerTower(userId, payload, socket);
 
     return { status: "success", Message: "타워 판매" };
   } catch (error) {

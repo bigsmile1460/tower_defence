@@ -44,6 +44,9 @@ class stagesOperator {
 
     // 쿨 타임마다 스테이지 변경 함수 실행
     stageChangeInterval[userId] = setInterval(() => {
+      if (!getStage(userId)) {
+        return;
+      }
       this.stageChange(socket, userId);
     }, stageChangeTime);
   }

@@ -1,5 +1,5 @@
 import { getUserGold, setUserGold } from "../Storages/stage.storage.js";
-import { getTower } from "../Storages/tower.storage.js";
+import { deleteTower, getTower } from "../Storages/tower.storage.js";
 
 // 골드 업데이트
 export const getTowerGoldCheck = (userId, id) => {
@@ -20,4 +20,10 @@ export const getTowerGoldCheck = (userId, id) => {
     userId,
     gold + Math.ceil(sellTower.towerPrice * sellTower.sellPriceRate)
   );
+};
+
+// 서버 타워 데이터 삭제
+export const deleteServerTower = (userId, id, socket) => {
+  deleteTower(userId, id);
+  socket.emit("event", { handlerId: 10, payload: id });
 };
