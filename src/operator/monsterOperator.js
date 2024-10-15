@@ -12,7 +12,7 @@ export let isStageClear = []; // 스테이지 클리어 조건 확인
 
 //몬스터 정보 호출
 export const getMonster = (stageId) => {
-  return prismaAsset.monster.findMany({
+  return prismaAsset.monster.findFirst({
     where: { stage: +stageId },
   });
 };
@@ -25,13 +25,14 @@ export const spawnStart = async (socket, userId) => {
     const gameEnd = stageInfo.monsterCountLimit; //게임 종료 조건
     let nowStage = stageInfo.stageId; //초기 스테이지
     let getMonsterInfo = await getMonster(nowStage); //현재 스테이지에 알맞는 스폰 몬스터
-    let interval = getMonsterInfo[0].cycle; // 몬스터 스폰 주기
+    let interval = getMonsterInfo.cycle; // 몬스터 스폰 주기
     let intervalStatus = "normal"; // 억제기 상태 확인 값
+    console.log(getMonsterInfo);
 
     const startInterval = () => {
       intervalId[userId] = setInterval(async () => {
         //서버에 몬스터 객체 생성
-        const monsterData = addMonster(userId, getMonsterInfo[0]);
+        const monsterData = addMonster(userId, getMonsterInfo);
         //서버 스테이지에 스테이지 종료 전달
         if (gameEnd <= getMonsterLength(userId)) {
           isStageClear[userId] = false;
@@ -48,13 +49,14 @@ export const spawnStart = async (socket, userId) => {
           //스테이지가 변경 되었는지 확인
           nowStage = stageCompare; //변경된 스테이지로 현재 스테이지 정보 변경
           getMonsterInfo = await getMonster(nowStage); //스테이지가 변경되면 몬스터 정보 재할당
+          console.log(getMonsterInfo);
 
-          if (getMonsterInfo.length !== 0) {
+          if (getMonsterInfo) {
             //스테이지에 해당되는 몬스터가 존재하는지 확인
             if (intervalStatus === "broken") {
-              interval = getMonsterInfo[0].cycle / 2; //몬스터 스폰 주기 재설정 - 억제기가 부서졌을 때
+              interval = getMonsterInfo.cycle / 2; //몬스터 스폰 주기 재설정 - 억제기가 부서졌을 때
             } else {
-              interval = getMonsterInfo[0].cycle; //몬스터 스폰 주기 재설정 - 억제기가 존재할 때
+              interval = getMonsterInfo.cycle; //몬스터 스폰 주기 재설정 - 억제기가 존재할 때
             }
 
             clearInterval(intervalId[userId]); // 몬스터 스폰 중지
