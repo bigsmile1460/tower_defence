@@ -1,9 +1,10 @@
-# 스파르타 내일배움캠프 Node.js 6기
-# TowerDefence 6조 [한 자리도 없어요]
+#### 스파르타 내일배움캠프 Node.js 6기
+#### TowerDefence 6조 [한 자리도 없어요]
 
 >## 필수 과제
 
 1. 회원 가입 / 로그인 
+    - Rest API로 통신합니다.
 2. 유저 별 게임 데이터 관리
     - 게임 시작 시 DB에 저장되어 있는 값을 서버로 불러오고 src / Storags 폴더 내 해당 데이터를 담는 파일들에 각각 객체를 생성해 저장합니다. 
     - 게임 중 클라이언트에서 일어나는 이벤트들을 서버에서 응답받아 데이터 연산 하여 클라이언트로 다시 넘겨줍니다.
@@ -15,15 +16,11 @@
     - 클라이언트는 public / src / clientHandler / HandlerMapping.js에서 맵핑된 함수들을 사용하게 됩니다.
     - 서버는 src / handlers / register.handler.js에서 이벤트처리에 대한 응답을 받습니다.
 5. 유저 별 최고 기록 스코어 저장
-    - 유저별 최고 기록은 userDB 내 user 테이블 내 highScore 필드에 각 유저별 최고기록이 저장되어 있습니다.
-    - 스테이지가 시작되면 서버에서 저장된 모든 유저들의 highScore 중 가장 높은 점수부터 내림차순으로 정렬하여 가장 높은 점수 '하나'만 클라이언트가 출력합니다. 
-    -> src / operator / stageOperator.js (stageOperator클래스 내 stageStart 함수에서 확인)
-    - 스테이지가 종료되면 해당 유저의 최고기록과 현재 스코어를 비교해 더 높은 점수를 user테이블의 highScore 필드에 업데이트합니다. 
-    -> src / operator / stageOperator.js (stageOperator클래스 내 stageEnd 함수에서 확인)
+    - 게임 종료시(게임 오버, 게임 클리어) userDB의 highScore 필드에 저장된 데이터와 현재 스코어를 비교하여 높은 값을 저장한다.
 
 >#### 저희가 구현한 코드에서의 웹소켓 통신 흐름은 이렇습니다.
 
-클라이언트 <- WebSocket -> src/handlers/register.hanlder.js -> src/handlers/handler.js -> handlerMapping.js -> src/handlers 하위의 monster,stage,tower 폴더 내 파일에서 함수 실행 ->
+클라이언트 <- WebSocket -> register.hanlder.js -> src/handlers/handler.js -> handlerMapping.js -> src/handlers 하위의 monster,stage,tower 폴더 내 파일에서 함수 실행 ->
 socket.emit()을 통해 "event"이벤트로 패킷(검증 후 데이터 연산) 클라이언트로 전송
 
 Operator 폴더 : 
@@ -31,7 +28,7 @@ Operator 폴더 :
 
 Storages 폴더 :
     - 해당 폴더 이름에 따라 각 속성을 담는 객체를 만들어 데이터를 저장합니다.
-    - DB와 다르게 영속성을 갖지 않으면서 서버에서 저장해야할 메모리들을 여기에 저장합니다.
+    - DB와 다르게 영속성을 갖지 않으면서 서버에서 저장해야할 데이터들을 여기에 저장합니다.
 
 
 >## 도전 과제
@@ -107,7 +104,7 @@ public
                 / stageChange.js
                     - 스테이지를 변경할 때 데이터를 연산한다. (스테이지레벨 상승, 골드보너스)
                 / stageEnd.js
-                    - 스테이지가 끝날 때 페이지를 새로고침한다. (리소스 다시 불러오기)
+                    - 스테이지가 끝날 때 엔딩 페이지로 이동한다. (게임 오버, 게임 클리어)
                 / stageStart.js
                     - 스테이지를 시작하면서 초기값을 설정한다. (GameClient 클래스 내 데이터)
             
@@ -124,6 +121,11 @@ public
                     - 업그레이드할 타워의 id값을 확인해 해당 타워를 업그레이드 한다.
                     - 업그레이드마다 타워의 공격력과 업그레이드 비용이 증가하며 타워의 레벨이 1 오른다.
                     - 업그레이드 시 골드가 소모된다.
+            / inhibitor
+                / inhibitorStatus.js
+                    - 서버에서 전달받은 억제기 상태 및 체력을 업데이트한다.
+                    - 억제기 상태에 따라서 특수 몬스터를 출현시킨다.
+
             / handler.js
                 - userSocket 클래스가 서버로부터 이벤트 요청을 받으면 기능을 수행한다.
             / handlerMapping.js
@@ -132,7 +134,7 @@ public
         / Network
             / userSocket.js
                 - 소켓 연결을 전역(static)변수를 사용해 연결하기 위해 만든 클래스가 정의되어 있다.
-                - getInstatnce()를 통해 새로운 socketIO를 통해 웹소켓 연결이 가능하도록 정의되어 있다.
+                - getInstatnce()를 통해 웹소켓 연결이 가능하도록 정의되어 있다.
                 - 클라이언트의 이벤트 핸들러처리(서버로부터 연산이 끝난 데이터값을 받아 사용함) 또는 서버에 직접 패킷을 요청하기도 한다. (SendEvent)
         / game.js
                 - 실제 클라이언트가 실행되는 파일
@@ -154,7 +156,7 @@ src /
         
         / monster
             / monsterAttack.js
-                - 몬스터가 억제기를 타격할 때 공격을 검증하고 타격이 유효하면 success 상태를 보낸다.
+                - 몬스터가 억제기를 타격할 때 공격을 검증하고 타격이 유효하면 억제기의 체력을 감소시킨다.
             / spawnNormal.js
                 - 몬스터 소환을 시작한다.
                 - 몬스터가 소환되는 주기(cycle)을 생성한다.
@@ -162,7 +164,7 @@ src /
             / stageHandler.js
                 - 스테이지 시작될 때 기능을 정의한다.
                 - 스테이지 시작 시 게임이 재시작되는 것에 대한 처리로 데이터를 초기화한다. (스테이지, 몬스터, 타워 속성을 초기값으로 변경)
-                - socket.emit("event", ~ )를 통해 클라이언트로 스테이지를 시작하라고 payload와 함께 메시지를 보낸다.
+                - 클라이언트로 스테이지 시작 메시지를 보낸다.
         / tower
             / towerAttack.js
                 - 타워 공격시 공격하는 것이 유효한 지를 검증한다.
@@ -180,6 +182,10 @@ src /
                 - 업그레이드 하려는 유저가 유효한 지 검증 후 통과시 아래의 기능을 진행한다.
                 - 업그레이드에 필요한 비용보다 골드가 부족하다면 업그레이드를 진행하지 않는다.
                 - 업그레이드 시 해당 비용만큼 골드가 차감된다.
+        / inhibitor
+            / inhibitorBroken.js
+                - 억제기 파괴와 재생성에 대한 기능을 담당한다.
+                - 억제기 파괴시 특수 몬스터가 생성되며 시간이 경과되면 억제기를 재생성한다.
             
     / init 
         / socket.js
@@ -188,7 +194,7 @@ src /
     / lib / utils
         / prisma
             / index.js
-                - 유저 / 애셋 테이블에 연결하기 위한 프리즈마 클라이언트
+                - userDB/assetDB에 연결하기 위한 프리즈마 클라이언트
         / token
             / tokenCreate.js
                 - 액세스 토큰을 생성하고 검증한다.
@@ -196,7 +202,7 @@ src /
     / route
         / middlewares
             / auth.middleware.js
-                - 로그인 시 해당 유저의 아이디를 액세스 토큰으로 검증하는 미들웨어
+                - 액세스 토큰으로 검증하는 미들웨어
 
     / Operator
         - 타워, 몬스터, initGame과 같은 DB 데이터를 이곳에 정의된 함수들을 통해 핸들러에서 데이터 연산하거나 검증한다.
