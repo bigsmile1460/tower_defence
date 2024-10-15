@@ -66,23 +66,30 @@
     });
 
     // 로그아웃 버튼 클릭
-    document.getElementById("logOutButton").addEventListener("click", async () => {      
-      const email = localStorage.getItem("email");      
+    document.getElementById("logOutButton").addEventListener("click", async () => {
+      const email = localStorage.getItem("email");
 
-      localStorage.removeItem("email");
-      localStorage.removeItem("authorization");      
+      if (email !== null) {
+        localStorage.removeItem("email");
+        localStorage.removeItem("authorization");
 
-      window.location.href = "index.html";
+        window.location.href = "index.html";
 
-      const response = await fetch("/TowerDefence/SignOut", {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json"          
-        },
-        body: JSON.stringify({
-          email
-        })
-      });                      
+        const response = await fetch("/TowerDefence/SignOut", {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            email
+          })
+        });
+      }
+      else
+      {
+        alert("로그인을 하고 로그아웃을 누르세요");
+      }
+
     })
 
     // 플레이 버튼 클릭
