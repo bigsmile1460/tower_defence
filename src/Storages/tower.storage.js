@@ -47,8 +47,9 @@ export const pushTower = (userId, towerData, timeStamp) => {
 };
 
 // 타워 제거
-export const deleteTower = (userId, tower) => {
-  const towerIndex = towers[userId].findIndex((data) => data.id === tower.id);
+export const deleteTower = (userId, id) => {
+  const towerIndex = towers[userId].findIndex((data) => data.id === id);
+
   return towers[userId].splice(towerIndex, 1);
 };
 

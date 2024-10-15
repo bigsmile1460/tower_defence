@@ -8,10 +8,11 @@ export const towerSell = (payload) => {
   const sellPrcie = Math.ceil(sellTower.towerPrice * sellTower.sellPriceRate);
   GameClient.getInstance().towers[towerIndex].upgradeButton.remove();
   GameClient.getInstance().towers[towerIndex].sellButton.remove();
+  GameClient.getInstance().towers[towerIndex].combatPower.remove();
   GameClient.getInstance().towers.splice(towerIndex, 1);
   GameClient.getInstance().userGold += sellPrcie;
   const audio = new Audio("../../../sounds/buy.mp3");
   audio.play();
   audio.loop = false; // 반복재생안함
-  audio.volume = 0.1 * GameClient.getInstance().effectVolume; // 음량 설정
+  audio.volume = 0.05 * GameClient.getInstance().effectVolume; // 음량 설정
 };

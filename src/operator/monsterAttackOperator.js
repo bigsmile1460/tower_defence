@@ -1,3 +1,4 @@
+import { BROKEN } from "../constants.js";
 import { getMonsters } from "../Storages/monster.storage.js";
 import {
   getInhibitorHp,
@@ -20,7 +21,7 @@ export const monsterAttackCheck = (socket, payload, userId) => {
   setInhibitorHp(userId, updateInhibitorHp);
 
   // 억제기 파괴 여부 검사
-  if (updateInhibitorHp <= 0 && getInhibitorStatus(userId) !== "broken") {
+  if (updateInhibitorHp <= 0 && getInhibitorStatus(userId) !== BROKEN) {
     // 억제기 파괴 함수 호출
     inhibitorBroken(socket, userId);
   }

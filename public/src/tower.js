@@ -130,7 +130,7 @@ export class Tower {
     const audio = new Audio("../../sounds/singleTower.mp3");
     audio.play();
     audio.loop = false; // 반복재생
-    audio.volume = 0.05 * GameClient.getInstance().effectVolume; // 음량 설정
+    audio.volume = 0.04 * GameClient.getInstance().effectVolume; // 음량 설정
 
     // 공격 신호 서버에 전달
     this.lastAttack = Date.now();
@@ -178,7 +178,7 @@ export class Tower {
     const audio = new Audio("../../sounds/muitiTower.mp3");
     audio.play();
     audio.loop = false; // 반복재생
-    audio.volume = 0.05 * GameClient.getInstance().effectVolume; // 음량 설정
+    audio.volume = 0.04 * GameClient.getInstance().effectVolume; // 음량 설정
 
     // 공격 신호 서버에 전달
     this.lastAttack = Date.now();
@@ -230,16 +230,18 @@ export class Tower {
     upgradeButton.style.cursor = "pointer";
     document.body.appendChild(upgradeButton);
     upgradeButton.addEventListener("click", () => {
-      UserSocket.getInstance().SendEvent(8, this.id);
       if (GameClient.getInstance().userGold >= this.upgradePrice) {
-        upgradeButton.textContent =
-          "강화 비용" +
-          (Number(this.upgradeAddPrice) + Number(this.upgradePrice)) +
-          "원";
-        sellButton.textContent = "LV" + (this.level + 1) + this.name + "판매";
-        combatPower.textContent =
-          "전투력: " +
-          Math.ceil(Math.sqrt(this.towerPrice + this.upgradePrice));
+        UserSocket.getInstance().SendEvent(8, this.id);
+        if (GameClient.getInstance().userGold >= this.upgradePrice) {
+          upgradeButton.textContent =
+            "강화 비용" +
+            (Number(this.upgradeAddPrice) + Number(this.upgradePrice)) +
+            "원";
+          sellButton.textContent = "LV" + (this.level + 1) + this.name + "판매";
+          combatPower.textContent =
+            "전투력: " +
+            Math.ceil(Math.sqrt(this.towerPrice + this.upgradePrice));
+        }
       }
     });
     this.upgradeButton = upgradeButton;
@@ -268,7 +270,7 @@ export class Tower {
     combatPower.style.right = 2070 - this.x + "px";
     combatPower.style.padding = "50px 100";
     combatPower.style.fontSize = "30";
-    // combatPower.disabled = true;
     document.body.appendChild(combatPower);
+    this.combatPower = combatPower;
   }
 }

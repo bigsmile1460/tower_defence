@@ -1,3 +1,4 @@
+import { BROKEN, HEAL, MULTI_ATTACK, SINGLE_ATTACK } from "../constants.js";
 import { getMonsters } from "../Storages/monster.storage.js";
 import {
   getInhibitorHp,
@@ -29,17 +30,17 @@ class towerAttackOperator {
     }
 
     // 공격 타입이 singleAttack인 경우
-    if (serverTower.attackType === "singleAttack") {
+    if (serverTower.attackType === SINGLE_ATTACK) {
       this.singleAttackCheck(socket, payload, userId, serverTower);
     }
 
     // 공격 타입이 multiAttack인 경우
-    else if (serverTower.attackType === "multiAttack") {
+    else if (serverTower.attackType === MULTI_ATTACK) {
       this.multiAttackCheck(socket, payload, userId, serverTower);
     }
 
     // 공격 타입이 heal인 경우
-    else if (serverTower.attackType === "heal") {
+    else if (serverTower.attackType === HEAL) {
       this.healAttackCheck(socket, payload, userId, serverTower);
     }
 
@@ -149,7 +150,7 @@ class towerAttackOperator {
     const serverInhibitorstatus = getInhibitorStatus(userId);
 
     // 억제기가 파괴상태일 경우 (무의미한 로직 생략)
-    if (serverInhibitorstatus === "broken") {
+    if (serverInhibitorstatus === BROKEN) {
       serverTower.lastAttack = payload.lastAttack;
       return;
     }
