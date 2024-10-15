@@ -58,14 +58,17 @@ export async function nextStage(userId) {
 }
 
 export function clearStage(userId) {
+  // 일단 스테이지 존재 유무 확인
   if (stages.includes(getStage(userId))) {
-    const stageIndex = stages.find((element) => {
-      element.userId === userId;
-    });
+    // 스테이지 찾기
+    const stageIndex = getStage(userId);
 
+    // 스테이지 위치 확인
     if (stages.indexOf(stageIndex)) {
       stages.splice(stageIndex, 1);
     }
+  } else {
+    console.log(`지울 스테이지가 존재하지 않습니다.`);
   }
 }
 

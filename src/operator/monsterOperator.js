@@ -62,10 +62,12 @@ export const spawnStart = async (socket, userId) => {
             clearInterval(intervalId[userId]); // 몬스터 스폰 중지
             startInterval(); //몬스터 스폰 시작(재귀)
           } else {
-            //스테이지 클리어
-            isStageClear[userId] = true;
-            clearInterval(intervalId[userId]); // 몬스터 스폰 중지
-            stageOperator.stageEnd(socket, userId);
+            if (getMonsterLength === 0) {
+              //스테이지 클리어
+              isStageClear[userId] = true;
+              clearInterval(intervalId[userId]); // 몬스터 스폰 중지
+              stageOperator.stageEnd(socket, userId);
+            }
           }
         }
         //억제기 파괴되었을 때 몬스터 스폰 2배
