@@ -66,8 +66,7 @@
     });
 
     // 로그아웃 버튼 클릭
-    document.getElementById("logOutButton").addEventListener("click", async () => {
-      const accessToken = localStorage.getItem("authorization");
+    document.getElementById("logOutButton").addEventListener("click", async () => {      
       const email = localStorage.getItem("email");      
 
       localStorage.removeItem("email");
