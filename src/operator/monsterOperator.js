@@ -89,7 +89,7 @@ export const spawnStart = async (socket, userId) => {
       }, interval);
     };
 
-    startInterval()
+    startInterval();
   } catch (e) {
     clearInterval(intervalId[userId]);
     throw new Error(e);
