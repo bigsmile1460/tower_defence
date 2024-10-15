@@ -22,7 +22,7 @@ export const stageStart = async (socket, payload, userId) => {
     // 스테이지 변경함수 시작
     await stageOperator.stageChangeData(socket, userId);
 
-    return { status: "success",  Message:`스테이지 시작`};
+    return { status: "success", Message: `스테이지 시작` };
   } catch (error) {
     console.log(error.message, error);
     return { status: "fail", Message: `스테이지 시작 중 에러 발생` };

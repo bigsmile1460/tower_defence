@@ -174,7 +174,7 @@ class GameClient {
   }
   setStageInfo(stages) {
     this.stages = stages;
-    this.userGold = stages.stageInfo.gold;
+    this.userGold = stages.gold;
   }
 
   placeinhibitor() {
@@ -207,8 +207,8 @@ class GameClient {
     audio.volume = 0.35; // 음량 설정
     this.audio = audio;
     this.stages = stages;
-    this.userGold += stages.stageInfo.gold;
-    this.inhibitorHp = stages.stageInfo.inhibitorHp;
+    this.userGold += stages.gold;
+    this.inhibitorHp = stages.inhibitorHp;
     this.highScore = highScore ? highScore : this.highScore;
     this.path = new pathManager(this.canvas, this.ctx, this.pathImage, 60, 60);
     this.monsterPath = this.path.generateRandomMonsterPath();
@@ -245,11 +245,7 @@ class GameClient {
     this.ctx.fillText(`몬스터 수: ${this.monsters.length}`, 100, 250); // 몬스터수 표시
     if (this.stages) {
       this.ctx.fillStyle = "green";
-      this.ctx.fillText(
-        `현재 스테이지: ${this.stages.stageInfo.stageId}`,
-        100,
-        200
-      ); // 현재 스테이지 표시
+      this.ctx.fillText(`현재 스테이지: ${this.stages.stageId}`, 100, 200); // 현재 스테이지 표시
     }
 
     this.towers.forEach((tower) => {

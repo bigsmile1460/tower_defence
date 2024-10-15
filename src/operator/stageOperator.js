@@ -11,7 +11,7 @@ export let stageChangeInterval = [];
 
 class stagesOperator {
   // 스테이지 시작
-  async stageStart(socket,userId) {
+  async stageStart(socket, userId) {
     const users = await prismaUser.user.findMany({
       orderBy: {
         highScore: "desc",
@@ -37,7 +37,7 @@ class stagesOperator {
   // 스테이지 변경 정보 조회
   async stageChangeData(socket, userId) {
     // 스테이지 변경 쿨 타임 조회
-    const stageChangeTime = getStage(userId).stageInfo.stageChangeInterval;
+    const stageChangeTime = getStage(userId).stageChangeInterval;
     if (!stageChangeTime) {
       throw new Error(`스테이지 변경 시간이 존재하지 않습니다.`);
     }
