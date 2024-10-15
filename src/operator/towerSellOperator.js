@@ -16,5 +16,8 @@ export const getTowerGoldCheck = (userId, id) => {
   }
 
   // 골드 가산
-  setUserGold(userId, gold + sellTower.towerPrice * sellTower.sellPriceRate);
+  setUserGold(
+    userId,
+    gold + Math.ceil(sellTower.towerPrice * sellTower.sellPriceRate)
+  );
 };

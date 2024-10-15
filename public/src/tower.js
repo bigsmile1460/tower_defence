@@ -112,6 +112,7 @@ export class Tower {
         Math.pow(this.x - monster.x, 2) + Math.pow(this.y - monster.y, 2)
       );
       if (distance < this.attackRange) {
+        monster.hp -= this.attackPower; // 몬스터 체력 감소
         monsterUUID.push(monster.monsterUUID); // 공격 대상 담아두기
         this.beamDuration = 30; // 광선 지속 시간 (30프레임)
         this.target = [monster]; // 광선의 목표 설정
@@ -129,7 +130,7 @@ export class Tower {
     const audio = new Audio("../../sounds/singleTower.mp3");
     audio.play();
     audio.loop = false; // 반복재생
-    audio.volume = 0.15; // 음량 설정
+    audio.volume = 0.05 * GameClient.getInstance().effectVolume; // 음량 설정
 
     // 공격 신호 서버에 전달
     this.lastAttack = Date.now();
@@ -160,6 +161,7 @@ export class Tower {
         Math.pow(this.x - monster.x, 2) + Math.pow(this.y - monster.y, 2)
       );
       if (distance < this.attackRange) {
+        monster.hp -= this.attackPower; // 몬스터 체력 감소
         monsterUUID.push(monster.monsterUUID); // 공격 대상 담아두기
         this.beamDuration = 30; // 광선 지속 시간 (0.5초)
         this.target.push(monster); // 광선의 목표 설정
@@ -176,7 +178,7 @@ export class Tower {
     const audio = new Audio("../../sounds/muitiTower.mp3");
     audio.play();
     audio.loop = false; // 반복재생
-    audio.volume = 0.15; // 음량 설정
+    audio.volume = 0.05 * GameClient.getInstance().effectVolume; // 음량 설정
 
     // 공격 신호 서버에 전달
     this.lastAttack = Date.now();
@@ -202,7 +204,7 @@ export class Tower {
     const audio = new Audio("../../sounds/healTower.mp3");
     audio.play();
     audio.loop = false; // 반복재생
-    audio.volume = 0.1; // 음량 설정
+    audio.volume = 0.04 * GameClient.getInstance().effectVolume; // 음량 설정
 
     inhibitor.hp = Math.min(inhibitor.hp + this.attackPower, inhibitor.maxHp);
     this.beamDuration = 30; // 광선 지속 시간 (0.5초)
@@ -216,18 +218,12 @@ export class Tower {
     });
   }
 
-  upgradeTower() {
-    this.attackPower += this.upgradeAttackPower;
-    this.level += 1;
-    // 소리라도 넣어볼까?
-  }
-
   buttonMake() {
     // 업그레이드 버튼
     const upgradeButton = document.createElement("button");
     upgradeButton.textContent = "강화 비용" + this.upgradePrice + "원";
     upgradeButton.style.position = "absolute";
-    upgradeButton.style.top = this.y + 160 + "px";
+    upgradeButton.style.top = this.y + 200 + "px";
     upgradeButton.style.right = 2050 - this.x + "px";
     upgradeButton.style.padding = "50px 100";
     upgradeButton.style.fontSize = "30";
@@ -241,6 +237,9 @@ export class Tower {
           (Number(this.upgradeAddPrice) + Number(this.upgradePrice)) +
           "원";
         sellButton.textContent = "LV" + (this.level + 1) + this.name + "판매";
+        combatPower.textContent =
+          "전투력: " +
+          Math.ceil(Math.sqrt(this.towerPrice + this.upgradePrice));
       }
     });
     this.upgradeButton = upgradeButton;
@@ -249,7 +248,7 @@ export class Tower {
     const sellButton = document.createElement("button");
     sellButton.textContent = "LV" + this.level + this.name + "판매";
     sellButton.style.position = "absolute";
-    sellButton.style.top = this.y + 190 + "px";
+    sellButton.style.top = this.y + 225 + "px";
     sellButton.style.right = 2050 - this.x + "px";
     sellButton.style.padding = "50px 100";
     sellButton.style.fontSize = "30";
@@ -259,5 +258,17 @@ export class Tower {
       UserSocket.getInstance().SendEvent(10, this.id);
     });
     this.sellButton = sellButton;
+
+    // 전투력 표기
+    const combatPower = document.createElement("button");
+    combatPower.textContent =
+      "전투력: " + Math.ceil(Math.sqrt(this.towerPrice));
+    combatPower.style.position = "absolute";
+    combatPower.style.top = this.y + 250 + "px";
+    combatPower.style.right = 2070 - this.x + "px";
+    combatPower.style.padding = "50px 100";
+    combatPower.style.fontSize = "30";
+    // combatPower.disabled = true;
+    document.body.appendChild(combatPower);
   }
 }
