@@ -59,10 +59,11 @@ export async function nextStage(userId) {
 
 export function clearStage(userId) {
   const stageIndex = stages.indexOf((element) => {
-    return element.userId === userId;
+    element.userId === userId;
+    if (stageIndex) {
+      stages.splice(stageIndex, 1);
+    }
   });
-
-  stages.splice(stageIndex, 1);
 }
 
 export function getUserGold(userId) {
