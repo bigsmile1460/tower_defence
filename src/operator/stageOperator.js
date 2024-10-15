@@ -11,18 +11,27 @@ export let stageChangeInterval = [];
 
 class stagesOperator {
   // 스테이지 시작
-  async stageStart(userId) {
+  async stageStart(socket,userId) {
     const users = await prismaUser.user.findMany({
       orderBy: {
         highScore: "desc",
       },
     });
 
+    const highScore = users[0].highScore;
+
     await createStage(userId);
 
     const stage = getStage(userId);
 
-    return [stage, users[0].highScore];
+    // 클라이언트로 게임 시작 정보 전달
+    socket.emit("event", {
+      handlerId: 1,
+      payload: {
+        stage,
+        highScore,
+      },
+    });
   }
 
   // 스테이지 변경 정보 조회
