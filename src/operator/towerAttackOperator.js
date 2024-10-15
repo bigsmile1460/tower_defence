@@ -56,14 +56,14 @@ class towerAttackOperator {
 
   // 공격 타입이 singleAttack인 경우
   singleAttackCheck(socket, payload, userId, serverTower) {
-    // 공격 받은 몬스터가 여러 마리일 경우
+    // 제공 받은 몬스터 UUID가 여러개일 경우
     if (payload.monsterUUID.length > 1) {
       throw new Error(
         `singleAttack 타워가 여러차례 공격하였습니다: ${payload.monstersUUID.length}회`
       );
     }
 
-    // 공격 받은 몬스터가 없을 경우
+    // 제공 받은 몬스터 UUID가 없을 경우
     if (payload.monsterUUID.length < 1) {
       throw new Error(`공격받은 몬스터가 없습니다.`);
     }
@@ -72,25 +72,24 @@ class towerAttackOperator {
     const serverMonsters = getMonsters(userId);
     const attackedIndex = [];
     const attackedMonster = [];
-    for (let i = 0; i < payload.monsterUUID.length; i++) {
-      for (let x = 0; x < serverMonsters.length; x++) {
-        if (serverMonsters[x].uuid === payload.monsterUUID[i]) {
-          attackedIndex.push(x);
-          attackedMonster.push(serverMonsters[x]);
-          break;
-        }
+    for (let x = 0; x < serverMonsters.length; x++) {
+      if (serverMonsters[x].uuid === payload.monsterUUID[0]) {
+        attackedIndex.push(x);
+        attackedMonster.push(serverMonsters[x]);
+        break;
       }
+    }
+    if (attackedIndex.length < 1) {
+      throw new Error(`서버에 존재하지 않는 몬스터 UUID 입니다.`);
     }
 
     // 공격 받은 몬스터의 체력상태 업데이트
     const deadIndex = [];
     const deadMonster = [];
-    for (let i = 0; i < attackedIndex.length; i++) {
-      serverMonsters[attackedIndex[i]].hp -= serverTower.attackPower;
-      if (serverMonsters[attackedIndex[i]].hp <= 0) {
-        deadIndex.push(attackedIndex[i]);
-        deadMonster.push(serverMonsters[attackedIndex[i]]);
-      }
+    serverMonsters[attackedIndex[0]].hp -= serverTower.attackPower;
+    if (serverMonsters[attackedIndex[0]].hp <= 0) {
+      deadIndex.push(attackedIndex[0]);
+      deadMonster.push(serverMonsters[attackedIndex[0]]);
     }
 
     // 업데이트 된 체력상태 클라이언트로 전달
@@ -99,9 +98,9 @@ class towerAttackOperator {
       payload: { attackedMonster: attackedMonster },
     });
 
-    // 공격받아 사망한 몬스터 서버에서 삭제
-    for (let i = 0; i < deadIndex.length; i++) {
-      serverMonsters.splice(deadIndex[i] - i, 1);
+    // 공격받은 몬스터 사망 시 서버에서 삭제
+    if (deadIndex.length) {
+      serverMonsters.splice(deadIndex[0], 1);
     }
 
     // 삭제된 몬스터 존재 시 추가 처리 (점수, 골드 등..)
